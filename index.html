@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SEO &amp; AI-Search Requirements — Coverage Assessment</title>
+  <style>
+    :root {
+      --bg: #f6f3ee;
+      --paper: #fffcf7;
+      --ink: #1c1917;
+      --muted: #57534e;
+      --line: #e7e0d6;
+      --accent: #1e5086;
+      --covered: #166534;
+      --partial: #a16207;
+      --missing: #b91c1c;
+      --conflict: #7c3aed;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.55 "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    }
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+    article {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 40px 44px 56px;
+      box-shadow: 0 12px 40px rgba(28,25,23,.06);
+    }
+    h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.02em; }
+    h2 { font-size: 1.45rem; margin: 2.2em 0 .7em; padding-top: .4em; border-top: 1px solid var(--line); }
+    h3 { font-size: 1.12rem; margin: 1.6em 0 .5em; color: var(--accent); }
+    p, li { color: var(--ink); }
+    a { color: var(--accent); }
+    strong { font-weight: 700; }
+    blockquote {
+      margin: 1.2em 0;
+      padding: .2em 1em;
+      border-left: 3px solid var(--accent);
+      color: var(--muted);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: .88em;
+    }
+    code { background: #efe8dc; padding: .1em .35em; border-radius: 4px; }
+    pre {
+      background: #1c1917;
+      color: #fafaf9;
+      padding: 16px 18px;
+      border-radius: 10px;
+      overflow: auto;
+    }
+    pre code { background: transparent; color: inherit; padding: 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .92em;
+      margin: 1em 0 1.4em;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: .55em .7em;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #efe8dc; font-weight: 650; }
+    tr:nth-child(even) td { background: #fbf7f0; }
+    .meta {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: .82rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    hr { border: 0; border-top: 1px solid var(--line); margin: 2em 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <article>
+      <h1>SEO &amp; AI-Search Requirements — Coverage Assessment</h1>
+<p><strong>Date:</strong> 2026-08-26
+<strong>Source:</strong> Competitive-audit checklist (16 sections, ~100 items) vs live JSG CMS code + Software Factory FRDs
+<strong>Verdict:</strong> The platform already makes <em>a lot</em> of structural SEO automatic. It does <strong>not</strong> yet invert the failure mode the audit names — uniqueness is still optional, YMYL attribution is author-only, and local depth is a single Locations page plus city tokens on flat slugs.</p>
+<hr>
+<h2>1. How to read this</h2>
+<p>Each checklist item is scored:</p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Covered</strong></td>
+<td>Implemented and matches the intent</td>
+</tr>
+<tr>
+<td><strong>Partial</strong></td>
+<td>Exists, but missing fields, enforcement, CI, or is a weaker substitute</td>
+</tr>
+<tr>
+<td><strong>Specified</strong></td>
+<td>In an FRD, not built to this bar</td>
+</tr>
+<tr>
+<td><strong>Conflict</strong></td>
+<td>A recorded decision <em>forbids</em> or fights the checklist</td>
+</tr>
+<tr>
+<td><strong>Missing</strong></td>
+<td>Neither specified nor implemented</td>
+</tr>
+</tbody></table>
+<p>Priorities are the checklist&#39;s: <strong>P0</strong> launch-blocking, <strong>P1</strong> required before client migration at scale, <strong>P2</strong> fast-follow.</p>
+<p>Evidence is from:</p>
+<ul>
+<li>FRDs: <em>SEO and LLM Optimization</em>, <em>Author Attribution</em>, <em>Page Types</em>, <em>Coverage Type Taxonomy</em>, <em>CGE</em> (<code>REQ-CGE-006.3</code>), <em>Security</em>, <em>Tracking</em>, <em>Auto-Translation</em>, <em>Reviews</em>, <em>Custom Domain</em>, <em>Super Admin Dashboard</em></li>
+<li>Code: static export, <code>jsonld.ts</code>, <code>verify-seo.ts</code>, <code>verify-nojs.tsx</code>, Authors collection, CountUp, NAP validator, location schema, flat URL router</li>
+</ul>
+<hr>
+<h2>2. Executive scoreboard</h2>
+<p>Rough counts (checklist items, not weighted):</p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Count</th>
+<th>Share</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Covered</td>
+<td>~18</td>
+<td>~18%</td>
+</tr>
+<tr>
+<td>Partial</td>
+<td>~28</td>
+<td>~27%</td>
+</tr>
+<tr>
+<td>Specified (not at this bar)</td>
+<td>~6</td>
+<td>~6%</td>
+</tr>
+<tr>
+<td>Conflict</td>
+<td>4</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Missing</td>
+<td>~48</td>
+<td>~47%</td>
+</tr>
+</tbody></table>
+<p><strong>P0s only</strong> (the launch-blocking set): about <strong>one third covered or partial</strong>, the rest missing or in conflict. The covered P0s are almost all <em>rendering and basic schema</em>. The missing P0s are almost all <em>enforcement, YMYL roles, uniqueness, two-tier local, and URL hygiene</em>.</p>
+<h3>Where we already win</h3>
+<p>The old WordPress failure modes the audit hammers — JS-only counters, image CTAs, <code>author = admin</code>, no JSON-LD, no <code>llms.txt</code>, leaked staging, NAP typed into every page — are <strong>largely designed out</strong> of this stack:</p>
+<table>
+<thead>
+<tr>
+<th>Audit failure</th>
+<th>Platform response</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JS-animated counters render as 0</td>
+<td>Static HTML export + <code>CountUp</code> SSR of the final value + <code>verify:nojs</code></td>
+<td><strong>Covered</strong> (script exists; <strong>not in CI</strong>)</td>
+</tr>
+<tr>
+<td>Image CTAs / redirect-service links</td>
+<td><code>CtaBlock</code> is a real <code>&lt;a&gt;</code> with <code>buttonText</code></td>
+<td><strong>Partial</strong> — no linter forbidding image-as-button in CustomBlock/heroes</td>
+</tr>
+<tr>
+<td>Author = admin</td>
+<td>First-class Author collection, byline, <code>/authors/{slug}/</code>, Person JSON-LD</td>
+<td><strong>Partial</strong> — no reviewer, no <code>dateReviewed</code>, no YMYL publish gate</td>
+</tr>
+<tr>
+<td>Schema hand-pasted per client</td>
+<td>Central <code>jsonLdForPage()</code> from the content model</td>
+<td><strong>Partial</strong> — types incomplete, no <code>@id</code> graph</td>
+</tr>
+<tr>
+<td>NAP drift</td>
+<td>Intake is source of truth; <code>validateNap()</code> blocks incomplete NAP</td>
+<td><strong>Partial</strong> — licenses/NPN/founding year not in footer; location count hardcoded in <code>WhoWeAre</code></td>
+</tr>
+<tr>
+<td>Staging indexed</td>
+<td>HMAC cookie + <code>X-Robots-Tag: noindex</code> on every staging response</td>
+<td><strong>Covered</strong></td>
+</tr>
+<tr>
+<td>LLM-invisible sites</td>
+<td><code>/llms.txt</code>, FAQPage, question-H2 prompt criterion</td>
+<td><strong>Partial</strong> — no required Answer Summary field</td>
+</tr>
+<tr>
+<td>Scaled content across the book</td>
+<td>CGE uniqueness via <em>prompt context</em>, not comparison</td>
+<td><strong>Conflict</strong> — <code>AC-CGE-006.3</code> <strong>forbids</strong> cross-tenant similarity checks</td>
+</tr>
+</tbody></table>
+<h3>The inversion the audit wants vs what we built</h3>
+<p>Checklist governing principle: <em>structural quality automatic, content uniqueness mandatory.</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Structural quality</th>
+<th>Content uniqueness</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Checklist</strong></td>
+<td>Schema, canonicals, breadcrumbs, rendering — machine-enforced</td>
+<td>Publish blocked on stubs, geo-tokens, cross-tenant dupes</td>
+</tr>
+<tr>
+<td><strong>JSG CMS today</strong></td>
+<td>Mostly automatic (static export, JSON-LD, NAP, SEO templates)</td>
+<td><strong>Explicitly not compared.</strong> <code>REQ-CGE-006.3</code>: uniqueness via context + block-plan variance; <em>“The system shall not perform cross-client embedding comparison.”</em> Starter pages can publish. <code>targetCity</code>/<code>targetState</code> exist — the doorway-page primitive.</td>
+</tr>
+</tbody></table>
+<p>That is the single most important finding. Closing the uniqueness gap is not a new feature on a blank slate — it is a <strong>product-decision reversal</strong>.</p>
+<hr>
+<h2>3. Four recorded conflicts (resolve before writing WOs)</h2>
+<p>Do not extract work orders for these until a human accepts the reversal. Silent divergence from <code>decisions.md</code> / FRDs is forbidden.</p>
+<h3>C1 — Cross-tenant duplicate detection is forbidden today</h3>
+<ul>
+<li><strong>Checklist P0:</strong> shingle/embed body on publish; hard-block &gt;80%, warn &gt;60%; per-tenant duplication score.</li>
+<li><strong>Recorded:</strong> <code>REQ-CGE-006.3</code> — <em>“The system shall not perform cross-client embedding comparison or similarity checks against other clients&#39; pages.”</em></li>
+<li><strong>Why it was rejected:</strong> cost/complexity; uniqueness via per-tenant context.</li>
+<li><strong>Why the audit overrides it:</strong> one shared starter library across N tenants <em>is</em> scaled-content abuse. Prompt context does not catch “foundational liability coverage” copied with a city swap.</li>
+<li><strong>Recommendation:</strong> amend CGE. Keep context-driven generation; <strong>add</strong> a publish-time comparator as a second line of defense. Do not replace generation uniqueness with detection — stack them.</li>
+</ul>
+<h3>C2 — Flat URLs vs hierarchical URL enforcement</h3>
+<ul>
+<li><strong>Checklist P0:</strong> <code>/{category}/{product}/</code>, <code>/locations/{city-state}/{product}/</code>, <code>/learning-center/{slug}/</code>. Editors choose a parent, not a raw path.</li>
+<li><strong>Recorded:</strong> Round 4.10 — product, blog, ads, landing pages are <strong>flat</strong> <code>/${slug}/</code> (<code>pathForPage</code>, <code>content.flatSlugs.test.ts</code>). Collision guard exists; hierarchy does not.</li>
+<li><strong>Recommendation:</strong> do not flip URL shape until a <strong>redirect engine</strong> exists. Hierarchical URLs are Stage C, gated on Stage A redirects.</li>
+</ul>
+<h3>C3 — Hedge vs quote</h3>
+<ul>
+<li><strong>Checklist P1:</strong> hedge-word linter (<code>may help</code>, <code>typically</code>, <code>in most cases</code>) because hedged sentences are unquotable by AI.</li>
+<li><strong>Recorded:</strong> compliance stage flags <em>definitive</em> language and tells reviewers <em>“Insurance copy should hedge.”</em> (<code>ComplianceFlagService</code>, <code>complianceLabels.ts</code>).</li>
+<li><strong>This is a real YMYL tension</strong>, not a bug. Insurance sites must not promise coverage. Answer engines must still extract a sentence.</li>
+<li><strong>Recommendation:</strong> split the rules. <strong>Quotable definitions</strong> (what GL is / is not) stay unhedged and live in the Answer Summary. <strong>Advice/eligibility</strong> stays hedged. Linters apply per field, not per page.</li>
+</ul>
+<h3>C4 — NAP validator vs per-location phones</h3>
+<ul>
+<li><strong>Checklist P0:</strong> per-location phone is first-class; NAP is a single source of truth <em>per location</em>.</li>
+<li><strong>Code:</strong> <code>validateNap()</code> warns if a page body mentions any phone whose last 10 digits differ from the <em>agency</em> phone.</li>
+<li><strong>If we add location phones without changing this, every location page will fail NAP.</strong></li>
+<li><strong>Recommendation:</strong> evolve the validator to an allowlist of entity phones (agency + each location), still blocking free-text numbers that match neither.</li>
+</ul>
+<hr>
+<h2>4. The six leverage items (checklist order) vs us</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Leverage item</th>
+<th>Score</th>
+<th>What we have</th>
+<th>What&#39;s missing</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Server-render everything; kill JS-dependent content</td>
+<td><strong>Partial / strong</strong></td>
+<td><code>output: &#39;export&#39;</code>; CountUp SSR; FAQ in <code>&lt;details&gt;</code> (content in DOM); <code>verify:nojs</code></td>
+<td>Not a CI gate; WhoWeAre stats hardcoded; no CTA/image linter; embeds are iframes</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Person + mandatory author, reviewer, review date</td>
+<td><strong>Partial</strong></td>
+<td>Authors collection, <code>/authors/{slug}/</code>, byline, ProfilePage JSON-LD, Default Author invariant</td>
+<td>Reviewer/editor roles; <code>dateReviewed</code>; YMYL hard gate; NPN / per-state licenses / expertise taxonomy; Person ≠ CMS login is true, portable-across-tenants is not</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Cross-tenant duplicate detection + hard publish gates</td>
+<td><strong>Conflict</strong></td>
+<td>Context-driven uniqueness; I5 human review; required-human fields</td>
+<td>Comparator, <code>template_stub</code>, geo-token detector — and a FRD that currently <em>bans</em> the comparator</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Required answer-first summary</td>
+<td><strong>Partial</strong></td>
+<td>REQ-SEO-004 question-H2 + first-1–2-sentences (prompt quality, not a field); FAQ block + FAQPage; KeyTakeaways block</td>
+<td>Required 40–60 word Answer Summary; exclusion prompt; bounds enforcement; used as meta-description default</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Location entity + two-tier national/local + jurisdiction library</td>
+<td><strong>Missing</strong> (thin partial)</td>
+<td><code>locationSchema</code> (name, address string, phone, optional geo); one <code>/locations/</code> page; <code>targetCity</code>/<code>targetState</code> on pages; Coverage Types can include Industry</td>
+<td>No per-location URL; no location×product matrix; no uniqueness gate on local pages; no jurisdiction library (KB is <em>internal CMS help</em>, not statutes)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Platform schema + canonical/redirect/sandbox CI</td>
+<td><strong>Partial</strong></td>
+<td>JSON-LD per type; self-canonical; sitemap; staging noindex; GSC OAuth; SEO templates</td>
+<td>No <code>@id</code> graph; no BreadcrumbList; no SearchAction; no Article <code>reviewedBy</code>; no robots.txt; no redirect engine; <code>verify:seo</code> / <code>verify:nojs</code> <strong>not in CI</strong>; no production-noindex guard; no production→staging link crawl</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>5. Item-by-item coverage</h2>
+<h3>5.1 Rendering &amp; crawlability</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SSR or static 100% of indexable content</td>
+<td>P0</td>
+<td><strong>Covered</strong></td>
+<td>Next <code>output: &#39;export&#39;</code>; templates are pure functions of baked JSON. Decision: static export, not SSR.</td>
+</tr>
+<tr>
+<td>Automated JS-off diff in CI</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td><code>scripts/verify-nojs.tsx</code> renders static markup and asserts stats/carriers/reviews + CountUp final value. <strong>Not wired in <code>.github/workflows/ci.yml</code>.</strong> No full-DOM-vs-no-JS delta threshold. <strong><code>verify-seo.ts</code> is also stale:</strong> product/FAQ checks still look for <code>products/</code> and <code>lp/</code> prefixes, which Round 4.10 flattened — those assertions can pass vacuously.</td>
+</tr>
+<tr>
+<td>CTAs are real <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code> with text</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td><code>CtaBlock</code> is an <code>&lt;a&gt;</code>. Header/footer/mobile nav are real links (<code>&lt;details&gt;</code>, no <code>javascript:</code>). No enforcement against image-as-button or marketing-automation redirect domains.</td>
+</tr>
+<tr>
+<td>Counters render final value in HTML</td>
+<td>P0</td>
+<td><strong>Covered</strong></td>
+<td><code>CountUp</code> initial state = final value.</td>
+</tr>
+<tr>
+<td>Accordion/tab content in DOM at load</td>
+<td>P1</td>
+<td><strong>Covered</strong></td>
+<td>FAQ uses native <code>&lt;details&gt;</code> with answer in markup; first item <code>open</code>.</td>
+</tr>
+<tr>
+<td><code>prefers-reduced-motion</code> global</td>
+<td>P1</td>
+<td><strong>Covered</strong></td>
+<td><code>globals.css</code> kills marquee; CountUp/Carousel honor the media query + <code>--motion-intensity</code>.</td>
+</tr>
+<tr>
+<td>Third-party embed SSR or text fallback</td>
+<td>P2</td>
+<td><strong>Missing</strong></td>
+<td><code>EmbedBlock</code> is a sandboxed iframe. Reviews are first-party baked text (good), but quote widgets/embeds have no text fallback.</td>
+</tr>
+</tbody></table>
+<p><strong>Section call:</strong> rendering is our strongest area. Remaining P0 work is <strong>CI enforcement + CTA lint</strong>, not a new rendering architecture.</p>
+<p><strong>Bug to fix while here:</strong> <code>WhoWeAre</code> hardcodes <code>17</code> states / <code>4</code> offices / <code>30+</code> carriers. <code>StatBand</code> defaults to <code>14,500+</code> / <code>30+</code> / <code>17</code> / <code>98%</code>. This is the exact “4 vs 5 offices” class of error. Location count must be computed from the entity list.</p>
+<hr>
+<h3>5.2 Authors, reviewers, editorial trust</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Person content type, separate from logins</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td><code>authors</code> collection: name, slug, role, photo, short/long bio, credentials (free text), yearsExperience, email, phone, socialLinks. <strong>Missing:</strong> designations as structured data, per-state licenses, NPN, expertise taxonomy.</td>
+</tr>
+<tr>
+<td>Indexable bio page at stable URL</td>
+<td>P0</td>
+<td><strong>Covered</strong></td>
+<td><code>/authors/{slug}/</code> + <code>/authors/</code> index. Not a modal. Slug stable across rename.</td>
+</tr>
+<tr>
+<td>Person schema: sameAs, worksFor, knowsAbout</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td>ProfilePage + Person with worksFor, sameAs from social links. No <code>knowsAbout</code>. Author-on-article Person is thin (name, url, jobTitle, image). No shared <code>@id</code>.</td>
+</tr>
+<tr>
+<td>Person portable across tenants</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td>Authors are tenant-scoped. Multi-brand = duplicate the person.</td>
+</tr>
+<tr>
+<td>Author / reviewer / editor as Person refs</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>Author only, and only on blog + product pages. “Reviewer” in the codebase is a <strong>CMS operator</strong> on drafts (<code>reviewedBy</code> user id), not a licensed Person on the public page.</td>
+</tr>
+<tr>
+<td><code>datePublished</code> / <code>dateModified</code> / <code>dateReviewed</code> displayed + in schema</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td><code>publishedAt</code> is baked from Payload <code>updatedAt</code> for blog/product (author-page sort only) and <strong>never emitted in JSON-LD</strong>. A modified-date bump is exactly the fake-freshness the checklist warns against. No <code>dateReviewed</code>.</td>
+</tr>
+<tr>
+<td>YMYL publish blocked without author + reviewer + review date</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>Publish path is I5 (human approve) but does not require those three fields. Pages can go live with Default Author only, or none.</td>
+</tr>
+<tr>
+<td>Scheduled review cycles + stale dashboard</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td>Auto-regen is for <em>failed generation</em>, not editorial freshness.</td>
+</tr>
+<tr>
+<td>Reviewer sign-off auditable (who, when, version)</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Immutable audit trail + page <code>versionHistory</code> exist for CMS actions. Not a licensed-reviewer event tied to a public <code>dateReviewed</code>.</td>
+</tr>
+<tr>
+<td>Auto Editorial Process page, linked from byline</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>Privacy + Terms exist. No methodology page type. Byline links only to the author page.</td>
+</tr>
+<tr>
+<td>Correction channel on every content page</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Trust &amp; Standards page template</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Per-page compliance disclaimer library</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Intake <code>licenceNumbers</code> + compliance <em>flags</em> on generated drafts. No selectable disclaimer blocks from a managed library.</td>
+</tr>
+<tr>
+<td>Tenant entity: legal name, DBA, NPN, per-state licenses, founding year, parent/affiliate — footer + Organization schema</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td><code>legalName</code>, <code>yearsInBusiness</code>, <code>licenceNumbers</code> (required-human array of strings). Footer shows copyright year + legal name <strong>only</strong>. Licenses not rendered. No NPN, no DBA, no founding year (only years-in-business), no parent/affiliate. Schema has <code>legalName</code> optional, no identifier for NPN/licenses.</td>
+</tr>
+</tbody></table>
+<p><strong>Section call:</strong> Author Attribution (WO-216–224, 260–261) closed the “admin author” anti-signal for blogs and products. It is <strong>not</strong> YMYL E-E-A-T. The cheapest P0 left in this section is: expand Person fields, add reviewer + three dates, hard-gate YMYL page types, emit them in schema, put licenses/NPN/founding year in the footer from intake.</p>
+<hr>
+<h3>5.3 URL architecture, taxonomy, internal linking</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Enforced hierarchical URL patterns</td>
+<td>P0</td>
+<td><strong>Conflict</strong></td>
+<td>Flat slugs by design. Editors pick a slug, not a parent.</td>
+</tr>
+<tr>
+<td>One taxonomy; migrate + 301, don&#39;t leave both alive</td>
+<td>P0</td>
+<td><strong>Partial / Missing</strong></td>
+<td>Coverage Types is one global taxonomy. Deactivating a type does <strong>not</strong> unpublish its pages (I5) — galleries can keep serving thin/orphan URLs. No redirect engine, so a URL-shape change would leave both patterns alive — the exact failure the audit describes.</td>
+</tr>
+<tr>
+<td>Auto breadcrumbs + BreadcrumbList schema</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td><code>Breadcrumbs</code> section exists; <strong>only on blog posts</strong>. Not derived from hierarchy (there isn&#39;t one). No BreadcrumbList JSON-LD.</td>
+</tr>
+<tr>
+<td>Two orthogonal nav axes: product vs industry</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Coverage Types can add Industry with <code>showInNav</code>. ProductGallery filters by type. Not a first-class second hub tree with non-cannibalizing URLs.</td>
+</tr>
+<tr>
+<td>Auto hub pages listing children</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td><code>/products/</code> gallery is a hub. Not generated from hierarchy with editorial order/descriptions; no orphan detection.</td>
+</tr>
+<tr>
+<td>Related-content module, descriptive anchors</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td><code>RelatedCoverages</code> / <code>RelatedPosts</code> exist. Generation also runs <code>injectInternalLinks</code>. Variant 2 uses <strong>“Learn more →”</strong>.</td>
+</tr>
+<tr>
+<td>Internal link health monitor</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>No pagination for primary product nav</td>
+<td>P2</td>
+<td><strong>Covered</strong></td>
+<td>Coverage grid is not paginated.</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>5.4 Two-tier content model (national + local)</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Location as first-class entity (NAP, geo, hours, service area, staff, GBP place ID, per-location phone)</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td><code>locationSchema</code>: name, address <em>string</em>, phone, optional geo/image/description. Hours/service area/staff/GBP id are site-level, not per location. Address is not structured NAP.</td>
+</tr>
+<tr>
+<td>Location × product matrix + unique-content publish gate</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td><code>targetCity</code>/<code>targetState</code> on a product page is a geo <em>token</em>, not a matrix page.</td>
+</tr>
+<tr>
+<td>Every location gets its own indexable page</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>One <code>/locations/</code> page. Footer lists up to 4 location <em>names</em> as text, not links.</td>
+</tr>
+<tr>
+<td>Jurisdiction content library, versioned, referenced</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td>Knowledge Base = internal CMS how-tos. Content Grounding = web retrieval for citations. Neither is a statute library.</td>
+</tr>
+<tr>
+<td>National ↔ local cross-link enforcement</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Proximity-aware internal linking</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Per-location reviews and staff</td>
+<td>P2</td>
+<td><strong>Missing</strong></td>
+<td>Reviews and authors are tenant-global.</td>
+</tr>
+</tbody></table>
+<p><strong><code>targetCity</code> is a trap.</strong> It is useful for <em>one</em> local page. Used to stamp 50 city pages it <em>is</em> the doorway pattern. Do not scale city generation until uniqueness + jurisdiction gates exist.</p>
+<hr>
+<h3>5.5 Uniqueness &amp; anti-boilerplate</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cross-tenant duplicate detection, hard-block / warn</td>
+<td>P0</td>
+<td><strong>Conflict</strong></td>
+<td><code>AC-CGE-006.3</code></td>
+</tr>
+<tr>
+<td>Starter content <code>template_stub</code>, cannot publish</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>Onboard + standard pages can materialize and (after human approve) publish. Preview allows empty body. No stub flag.</td>
+</tr>
+<tr>
+<td>Geo-token detection (city/state swap only)</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Information-gain checklist at publish</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Citations + grounding + PSB “must cover / never” exist for <em>generation</em>. Not a publish-time “at least one of: primary source, jurisdiction fact, first-hand, original data, named local example.” Product/blog prompts have also been seen inventing “22–99 customers”-style figures; compliance flags them as unverified numbers but does not block publish.</td>
+</tr>
+<tr>
+<td>Hedge-word linter</td>
+<td>P1</td>
+<td><strong>Conflict</strong></td>
+<td>We flag the opposite class of language.</td>
+</tr>
+<tr>
+<td>Per-tenant voice/style guide in the editor</td>
+<td>P2</td>
+<td><strong>Partial</strong></td>
+<td>Page Strategy Briefs are <strong>global</strong> per page type. Tenant context is name/city/coverages, not a voice guide.</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>5.6 Answer-first / GEO</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Required 40–60 word Answer Summary under H1; meta default</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>Meta comes from SEO templates / page <code>seo.metaDescription</code>.</td>
+</tr>
+<tr>
+<td>Prompt summary to include boundaries/exclusions</td>
+<td>P0</td>
+<td><strong>Specified (weak)</strong></td>
+<td>PSB/generation prompts can say this; it is not a field-level prompt or validator.</td>
+</tr>
+<tr>
+<td>FAQ block: self-contained answers, min length, FAQPage</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td>FAQ block + FAQPage schema. Schema requires <code>q</code>/<code>a</code> min 1 char. No self-contained or min-length check.</td>
+</tr>
+<tr>
+<td>Heading hierarchy linter</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Prose block has required <code>h2</code>. No “exactly one H1 / no skipped levels” linter.</td>
+</tr>
+<tr>
+<td>Key-takeaways / TL;DR block</td>
+<td>P1</td>
+<td><strong>Covered</strong></td>
+<td><code>KeyTakeaways</code> in the catalog; ProductPage rules require Prose + FAQ, not KeyTakeaways.</td>
+</tr>
+<tr>
+<td>Definition/term block + DefinedTerm + glossary</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Semantic <code>&lt;table&gt;</code>, <code>&lt;dl&gt;</code>, <code>&lt;ul&gt;</code></td>
+<td>P1</td>
+<td><strong>Covered</strong></td>
+<td>Table is a real <code>&lt;table&gt;</code>; Stats is a <code>&lt;dl&gt;</code>; Steps/FAQ are lists/details. CGE forbids infographic-as-image.</td>
+</tr>
+<tr>
+<td>Citable-claims text-only preview</td>
+<td>P2</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h3>5.7 Structured data engine</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Centrally managed JSON-LD, versioned, CI vs Schema.org / Rich Results</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td>Central builders + <code>verify:seo</code> (parse + required <code>@type</code> per page). Not Schema.org/Google CI in GitHub Actions. Not versioned as a schema pack.</td>
+</tr>
+<tr>
+<td>Required types (Org/InsuranceAgency+NPN, LocalBusiness/location, BreadcrumbList, WebSite+SearchAction, Person, Article+reviewedBy+dates, FAQPage, Service, DefinedTerm)</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td>Have: InsuranceAgency, Person, FAQPage, Service, WebPage, ProfilePage, CollectionPage, AggregateRating. <strong>Missing:</strong> BreadcrumbList, WebSite/SearchAction, Article/BlogPosting, DefinedTerm, NPN/license identifiers, per-location LocalBusiness.</td>
+</tr>
+<tr>
+<td><code>@id</code> entity graph</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>Org on homepage and <code>worksFor</code> on bios are disconnected nodes (name + url only).</td>
+</tr>
+<tr>
+<td>sameAs management (social, GBP, associations)</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td><code>socialLinks</code> → Organization <code>sameAs</code>. No association/carrier-directory sameAs set.</td>
+</tr>
+<tr>
+<td>AggregateRating only first-party / policy-compliant</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Emitted on InsuranceAgency from baked <code>site.reviews</code> (Google-sourced, human-gated except scheduled 5★). Not emitted on Service pages today (good). Need an explicit “never on service pages” rule so it stays that way.</td>
+</tr>
+<tr>
+<td>Schema regression tests + alerting when Google changes</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td><code>verify:seo</code> is the regression test. Not in CI; no Google-change alerting.</td>
+</tr>
+<tr>
+<td>Per-tenant schema audit dashboard</td>
+<td>P2</td>
+<td><strong>Missing</strong></td>
+<td>SEO admin is templates + GSC connect, not a coverage/error dashboard.</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>5.8 Technical SEO fundamentals</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Self-canonical + override + conflict detection</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td>Self-canonical from <code>SITE_URL</code> + path; per-page override. No conflict detector (e.g. two pages claiming the same canonical).</td>
+</tr>
+<tr>
+<td>Unique templated title/description, length lint, duplicate detection</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td>Templates + overrides; title ≤60 / desc ≤160 in <code>verify:seo</code>. No within-tenant duplicate title/description detector. “Home | Agency” is still possible if an override is bad.</td>
+</tr>
+<tr>
+<td>Segmented XML sitemaps + lastmod + index + robots reference</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td>One <code>sitemap.xml</code> with hreflang alternates. Not segmented (pages/posts/locations/people). lastmod not confirmed as real modified dates. <strong>No <code>robots.txt</code> at all.</strong></td>
+</tr>
+<tr>
+<td>Managed redirect engine</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>Custom-domain apex↔www 301s exist. No CMS redirect map, bulk import, chain flattening, loop detection, 404 suggestions.</td>
+</tr>
+<tr>
+<td>Staging noindex + password/IP + never linkable from production</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td>Staging: HMAC cookie + noindex header. <strong>Missing:</strong> crawl of production HTML for links to <code>staging-*.cms.jumpsuitgroup.com</code> (or other non-prod hosts) as a build fail.</td>
+</tr>
+<tr>
+<td>Environment-aware robots + hard guard against noindex on production</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>Dashboard is noindex (good). Zod <code>seo.noindex</code> exists; <strong>Payload <code>Pages.seo</code> does not expose it</strong> (title/meta/og/canonical only). No robots.txt. No prod-build check that indexable HTML lacks a global noindex.</td>
+</tr>
+<tr>
+<td>HTTPS, HSTS, one canonical hostname</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Custom domain Go-Live issues cert; nginx 301 www↔apex. No HSTS in app/nginx templates found.</td>
+</tr>
+<tr>
+<td>Auto copyright year + last updated</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Footer <code>new Date().getFullYear()</code>. No visible last-updated / <code>dateModified</code>.</td>
+</tr>
+<tr>
+<td>Global content linter (tokens, shortcodes, empty modules, nav misspellings)</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Image pipeline: modern formats, srcset, lazy below-fold, alt linter</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td><code>altText</code> on media; Figure has <code>alt</code>. No srcset, no filename-as-alt reject, no mismatch linter. Onboard still uses <code>altText: &#39;logo&#39;</code> in places.</td>
+</tr>
+<tr>
+<td>Broken external link scanner</td>
+<td>P2</td>
+<td><strong>Partial</strong></td>
+<td>Citation verification checks cited URLs. Not a site-wide external-link crawl.</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>5.9 NAP integrity &amp; local SEO ops</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Single source of truth for NAP; no free-text addresses in editor</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td>Header/footer/JSON-LD from intake. Location <code>address</code> is a <strong>string</strong>, so free-text addresses <em>are</em> in the editor. Body phones that differ from agency phone = warning only.</td>
+</tr>
+<tr>
+<td>Location count computed, never typed</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td><code>WhoWeAre</code> hardcodes 4 offices.</td>
+</tr>
+<tr>
+<td>NAP change workflow (GBP, aggregators, directories, redirects, old-city content)</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td>Intake change triggers rebuild (NAP completeness), not an ops checklist.</td>
+</tr>
+<tr>
+<td>Citation consistency monitoring</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>GBP integration (pull reviews/hours/posts; push; dashboard counts)</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Reviews pull via aggregator (listing URL / place). Hours are intake, not GBP. No push. No per-location review counts in a local-SEO dashboard.</td>
+</tr>
+<tr>
+<td>Service-area pages with uniqueness gates</td>
+<td>P2</td>
+<td><strong>Missing</strong></td>
+<td><code>serviceAreas</code> is a string list rendered into schema <code>areaServed</code>.</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>5.10 AI crawler access &amp; GEO ops</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Per-tenant AI crawler allow/deny</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>No robots.txt, so no GPTBot/ClaudeBot/etc. policy. Default is “whatever the host does.”</td>
+</tr>
+<tr>
+<td>Verify WAF/CDN not 403ing AI crawlers</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>Hostinger static hosting; no monitoring.</td>
+</tr>
+<tr>
+<td><code>/llms.txt</code></td>
+<td>P1</td>
+<td><strong>Covered</strong></td>
+<td>Generated from site + pages + authors.</td>
+</tr>
+<tr>
+<td>Clean-text endpoint per page</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>AI referral tracking (ChatGPT, Perplexity, AI Overviews)</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td>Tracking codes can <em>inject</em> GA4; no platform segmentation.</td>
+</tr>
+<tr>
+<td>Brand/citation monitoring in AI engines</td>
+<td>P2</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h3>5.11 Performance</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CWV budgets in CI per template</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td><code>eslint-plugin-next/core-web-vitals</code> only. No LCP/INP/CLS budget job.</td>
+</tr>
+<tr>
+<td>No render-blocking third-party above the fold; TTM deferred</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td>Tracking slots include <code>head-start</code> (can be render-blocking). Validator allowlists GTM. No “must defer chat/GTM” rule. <code>TrackingCodeInjector</code> currently emits <strong>head slots at the top of <code>&lt;body&gt;</code></strong>, so “head-start” is not actually <code>&lt;head&gt;</code>.</td>
+</tr>
+<tr>
+<td>RUM + per-tenant CWV dashboard</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Governance over client-added scripts</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Allowlist validator before persist (good). No performance review gate. Client role cannot manage tracking (good).</td>
+</tr>
+<tr>
+<td>Edge cache / CDN + per-tenant purge on publish</td>
+<td>P2</td>
+<td><strong>Specified/partial</strong></td>
+<td>Custom-domain central serving is the path; Hostinger rsync is still the other path. No purge API.</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>5.12 Accessibility &amp; compliance</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WCAG 2.2 AA baseline; axe-core in CI</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td><code>axe-core</code> is a transitive dep; not a CI check.</td>
+</tr>
+<tr>
+<td>Semantic landmarks, visible focus, keyboard nav</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td>Header <code>&lt;header&gt;</code> + <code>nav aria-label=&quot;Primary&quot;</code>; footer <code>&lt;footer&gt;</code>; breadcrumb <code>nav</code>; mobile menu is <code>&lt;details&gt;</code> (keyboard-OK). <strong>No <code>&lt;main&gt;</code> and no skip link</strong> on the public <code>PageRenderer</code>. Desktop dropdowns are hover-CSS, not keyboard-operable.</td>
+</tr>
+<tr>
+<td>Editor a11y lint (alt, heading order, link text, token contrast)</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Consent/privacy per tenant/jurisdiction, without blocking crawlers</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td>Privacy page type exists. No consent CMP.</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>5.13 Multilingual</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Real translated URLs, hreflang, translated metadata/schema, own author/reviewer</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>WO-26: <code>/lang/&lt;code&gt;/</code>, hreflang, sitemap alternates, language switcher, translation through review queue. Author/reviewer attribution on translations not specified. Schema <code>inLanguage</code> not confirmed.</td>
+</tr>
+<tr>
+<td>Language-specific service pages, not homepage-only</td>
+<td>P1</td>
+<td><strong>Covered (specified)</strong></td>
+<td>ATL: all 17 page types + custom pages translate; not a widget. Operational completeness depends on enabling ES and generating every product page.</td>
+</tr>
+<tr>
+<td>Native-speaker reviewer role</td>
+<td>P2</td>
+<td><strong>Missing</strong></td>
+<td>Same I5 reviewer as English.</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>5.14 Editor experience &amp; governance</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Publish-time scorecard; block on P0 failures</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>Review queue shows content, plan, image prompts, compliance flags. Not a pass/fail SEO+YMYL+uniqueness scorecard. Build checklist warns on incomplete <em>ops</em> tasks, not content P0s.</td>
+</tr>
+<tr>
+<td>Per-tenant SEO health dashboard</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Tenant health: custom blocks, last deploy, pending reviews, compliance. SEO tab: templates + GSC. No stale/dupe/orphan/schema/CWV/index pack. ADM-004 mentions “uniqueness check results” — but CGE forbids the check.</td>
+</tr>
+<tr>
+<td>Writer / reviewer / publisher roles</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Super Admin / JSG Team / Client. Not writer vs licensed-reviewer vs publisher. Author can be whoever the operator selects; no “reviewer cannot be the author” rule.</td>
+</tr>
+<tr>
+<td>Version history with diff/rollback including metadata/schema</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>WO-182 page <code>versionHistory</code> + rollback (body, seo, overrides, slug, title). Prompt templates versioned. Not a full metadata+schema diff UI.</td>
+</tr>
+<tr>
+<td>Content briefs on pages (query, intent, jurisdiction facts, link targets)</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>Page Strategy Briefs are per <em>page type</em>, global. Content Schedule has coverage + author + city/state. Not a per-page brief attached to the live page.</td>
+</tr>
+<tr>
+<td>Bulk find-replace / bulk metadata / bulk redirect import</td>
+<td>P2</td>
+<td><strong>Partial</strong></td>
+<td>Live Site Table can bulk-set author. No find-replace, no redirect import.</td>
+</tr>
+<tr>
+<td>Monthly client-facing “what changed” digest</td>
+<td>P2</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h3>5.15 Migration tooling (WordPress → platform)</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pre-migration crawl + traffic/rank inventory → mandatory redirect map</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>Onboard is <em>portal intake</em>, not a WP URL inventory.</td>
+</tr>
+<tr>
+<td>Post-launch 301 coverage, index monitoring, rank tracking, rollback plan</td>
+<td>P0</td>
+<td><strong>Partial</strong></td>
+<td>Deploy rollback of static artifact exists. GSC sitemap ping exists. No 301-coverage suite, no rank tracker, no launch runbook that includes these.</td>
+</tr>
+<tr>
+<td>Triage: keep / rewrite / consolidate / retire — do not port boilerplate</td>
+<td>P0</td>
+<td><strong>Missing</strong></td>
+<td>Coverage import generates <em>new</em> product drafts (good). No classification of legacy URLs.</td>
+</tr>
+<tr>
+<td>Author/reviewer backfill before go-live</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td><code>backfill:page-authors</code> + Default Author. No reviewer/date backfill.</td>
+</tr>
+<tr>
+<td>Legacy URL taxonomy normalization as part of migration</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td>Depends on redirect engine.</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>5.16 Measurement &amp; proof</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pri</th>
+<th>Score</th>
+<th>Evidence / gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Per-tenant report: organic + conversions + local pack + AI referrals + citations + CWV + content health</td>
+<td>P1</td>
+<td><strong>Partial</strong></td>
+<td>GSC OAuth + basic index/sitemap status. No unified report.</td>
+</tr>
+<tr>
+<td>Benchmark vs named local competitors</td>
+<td>P1</td>
+<td><strong>Missing</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>National vs local page performance (two-tier attribution)</td>
+<td>P2</td>
+<td><strong>Missing</strong></td>
+<td>Requires the two-tier model first.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>6. What this means for sequencing</h2>
+<p>Do <strong>not</strong> start with location×product generation or hierarchical URLs. Those amplify whatever uniqueness and redirect story we have. Today uniqueness is unenforced and redirects don&#39;t exist — so building the matrix first would manufacture doorway pages with no 301 safety net.</p>
+<p>Sequence by <em>what the audit said is highest leverage</em> <strong>intersected with</strong> <em>what we can land on current primitives without reversing architecture</em>.</p>
+<pre><code>Stage 0  Decisions (C1–C4)     ──human──┐
+                                         │
+Stage A  Enforce what we already render ─┤  P0 hygiene, CI, footer identity, stats-from-entities
+                                         │
+Stage B  YMYL + answer-first + uniqueness┤  the GEO core (needs C1, C3)
+                                         │
+Stage C  Location entity + two-tier + URLs   needs A redirects + B uniqueness
+                                         │
+Stage D  Health dashboards, roles, a11y, CWV, AI crawler policy
+                                         │
+Stage E  Migration tooling + measurement     before scale migration
+                                         │
+Stage F  P2 fast-follow
+</code></pre>
+<hr>
+<h2>7. Staged plan</h2>
+<h3>Stage 0 — Decisions (days, not a sprint)</h3>
+<p>Owner: product + you. Output: accepted FRD amendments, not code.</p>
+<ol>
+<li><strong>Amend <code>REQ-CGE-006.3</code>.</strong> Generation stays context-driven. Add a publish-time similarity gate (within tenant <em>and</em> cross-tenant). Record the reversal in <code>decisions.md</code>.</li>
+<li><strong>Keep flat URLs until Stage C.</strong> Accept hierarchical URLs as a later breaking change that requires the redirect engine.</li>
+<li><strong>Split hedge vs quote.</strong> Answer Summary = unhedged definition + exclusions. Body advice = may hedge. Compliance flags updated so they don&#39;t fight GEO.</li>
+<li><strong>NAP allowlist.</strong> Agency phone + each location phone are legal; others warn/block.</li>
+</ol>
+<p>Optional: confirm YMYL page-type list (product, blog, service-center, location×product, learning-center) vs standard pages (home/about/contact) that stay author-optional.</p>
+<p><strong>Exit:</strong> four decision records. Then extract WOs.</p>
+<hr>
+<h3>Stage A — Launch-blocking hygiene on current architecture</h3>
+<p>Goal: make the <em>already-built</em> structural quality <strong>impossible to ship wrong</strong>. No new content model.</p>
+<table>
+<thead>
+<tr>
+<th>Work</th>
+<th>Checklist</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Repair <code>verify-seo.ts</code> path prefixes (<code>products/</code> / <code>lp/</code> → flat <code>/{slug}/</code>), then wire <code>verify:seo</code> + <code>verify:nojs</code> into CI on the static-export job; fail the build</td>
+<td>§1 P0, §7 P0</td>
+<td>Scripts exist but product/FAQ assertions are currently vacuously skippable</td>
+</tr>
+<tr>
+<td>JS-off delta threshold (visible text vs hydrated DOM), not just “stat string present”</td>
+<td>§1 P0</td>
+<td>Upgrade <code>verify-nojs</code></td>
+</tr>
+<tr>
+<td>CTA lint: no <code>&lt;img&gt;</code>-only buttons; no known redirect-service hosts as primary CTA href</td>
+<td>§1 P0</td>
+<td></td>
+</tr>
+<tr>
+<td>Compute office/carrier/licensed-state counts from entities; delete WhoWeAre/StatBand hardcoded defaults</td>
+<td>§9 P0</td>
+<td>Directly the 4-vs-5 bug</td>
+</tr>
+<tr>
+<td>Render <code>licenceNumbers</code>, <code>yearsInBusiness</code> (or founding year), legal name in footer; emit as Organization identifiers</td>
+<td>§2.4 P0</td>
+<td>Data already in intake</td>
+</tr>
+<tr>
+<td>BreadcrumbList JSON-LD wherever Breadcrumbs render; add breadcrumbs to product pages</td>
+<td>§3 P0</td>
+<td>Cheap</td>
+</tr>
+<tr>
+<td><code>@id</code> on Organization, Person, Service; reuse across page builders</td>
+<td>§7 P0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>Article</code>/<code>BlogPosting</code> on blog + product (author now; reviewedBy in Stage B)</td>
+<td>§7 P0</td>
+<td></td>
+</tr>
+<tr>
+<td>WebSite + SearchAction if site search exists; otherwise WebSite node only</td>
+<td>§7 P0</td>
+<td>Don&#39;t fake SearchAction</td>
+</tr>
+<tr>
+<td>Emit <code>robots.txt</code> (allow, sitemap link); production build fails if <code>noindex</code> would ship globally</td>
+<td>§8 P0</td>
+<td></td>
+</tr>
+<tr>
+<td>Crawl baked HTML for links to staging/non-prod hosts; fail materialize</td>
+<td>§8 P0</td>
+<td></td>
+</tr>
+<tr>
+<td>Canonical conflict + duplicate title/description detector at materialize</td>
+<td>§8 P0</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Redirect collection</strong>: source, target, 301/410, bulk CSV, chain flatten, loop detect</td>
+<td>§8 P0</td>
+<td><strong>Hard dependency for C and E</strong></td>
+</tr>
+<tr>
+<td>NAP validator allowlist (C4) so location phones don&#39;t false-fail</td>
+<td>§9 P0</td>
+<td>Prep for C</td>
+</tr>
+<tr>
+<td>FAQ min-length + “answer restates the question context” check</td>
+<td>§6 P0</td>
+<td></td>
+</tr>
+<tr>
+<td>AggregateRating: document and test “never on Service pages”</td>
+<td>§7 P1</td>
+<td>Lock current behavior</td>
+</tr>
+</tbody></table>
+<p><strong>Exit:</strong> a static export of Steve White (or JSG) fails CI if counters, NAP, schema, robots, or staging links are wrong. Footer shows licenses + years. Redirects can be imported.</p>
+<hr>
+<h3>Stage B — GEO core: YMYL, answer-first, uniqueness</h3>
+<p>Goal: invert “quality is optional.” Still no location matrix.</p>
+<table>
+<thead>
+<tr>
+<th>Work</th>
+<th>Checklist</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Expand Author/Person: designations, NPN, licenses[] <code>{state, number}</code>, expertise taxonomy, LinkedIn required-for-YMYL</td>
+<td>§2.1 P0</td>
+<td></td>
+</tr>
+<tr>
+<td>Page fields: <code>author</code>, <code>reviewer</code>, <code>editor</code> (Person refs); <code>datePublished</code>, <code>dateModified</code>, <code>dateReviewed</code>; <code>reviewIntervalMonths</code></td>
+<td>§2.2 P0–P1</td>
+<td>Reviewer must be a Person with a license in the page&#39;s state when known</td>
+</tr>
+<tr>
+<td>YMYL publish hard-gate</td>
+<td>§2.2 P0</td>
+<td>Block, not warn</td>
+</tr>
+<tr>
+<td>Reviewer ≠ author on YMYL; CMS role split writer/reviewer/publisher</td>
+<td>§14 P1</td>
+<td>Client role is not this</td>
+</tr>
+<tr>
+<td>Sign-off event in audit (person, timestamp, version hash)</td>
+<td>§2.2 P1</td>
+<td></td>
+</tr>
+<tr>
+<td>Editorial Process page type, auto-provisioned, tenant-editable, linked from byline</td>
+<td>§2.3 P0</td>
+<td></td>
+</tr>
+<tr>
+<td>Correction mailto from tenant-configured address on content pages</td>
+<td>§2.3 P0</td>
+<td></td>
+</tr>
+<tr>
+<td>Required <code>answerSummary</code> (40–60 words) rendered under H1; default meta description; must mention a boundary</td>
+<td>§6 P0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>template_stub</code> on onboard/generated starter copy; cannot publish</td>
+<td>§5 P0</td>
+<td></td>
+</tr>
+<tr>
+<td>Cross-tenant + within-tenant similarity on publish (C1)</td>
+<td>§5 P0</td>
+<td>Start with shingles; embeddings if needed</td>
+</tr>
+<tr>
+<td>Geo-token detector (sibling pages differing only by city/state)</td>
+<td>§5 P0</td>
+<td>Especially <code>targetCity</code> pages</td>
+</tr>
+<tr>
+<td>Publish scorecard UI: summary, author/reviewer/dates, uniqueness, schema, meta unique, alts, headings</td>
+<td>§14 P0</td>
+<td>Blocks on P0s</td>
+</tr>
+<tr>
+<td>Stale-review queue (interval elapsed)</td>
+<td>§2.2 P1</td>
+<td>Can ship with the gate</td>
+</tr>
+<tr>
+<td>Information-gain checklist (at least one gain type)</td>
+<td>§5 P1</td>
+<td></td>
+</tr>
+<tr>
+<td>Hedge linter <strong>on Answer Summary only</strong> (C3)</td>
+<td>§5 P1</td>
+<td>Body keeps over-promise linter</td>
+</tr>
+</tbody></table>
+<p><strong>FRDs to amend/create:</strong> Author Attribution (reviewer/dates/YMYL), SEO (answer summary + uniqueness gates — currently SEO FRD has no uniqueness), CGE-006.3, new <em>Editorial Trust</em> child or SEO child for Editorial Process + correction channel.</p>
+<p><strong>Exit:</strong> a product page cannot go live as a stub, without a named licensed reviewer, without an answer summary, or as a near-duplicate of another tenant&#39;s GL page.</p>
+<hr>
+<h3>Stage C — Local depth (the stolen pattern)</h3>
+<p>Depends on: Stage A redirects, Stage B uniqueness.</p>
+<table>
+<thead>
+<tr>
+<th>Work</th>
+<th>Checklist</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Location entity: structured NAP, geo, hours, service area, staff, GBP place ID, per-location phone</td>
+<td>§4 P0</td>
+<td>Promote <code>locationSchema</code></td>
+</tr>
+<tr>
+<td>Per-location indexable page <code>/locations/{city-state}/</code></td>
+<td>§4 P0</td>
+<td>301 from nothing — these URLs are new</td>
+</tr>
+<tr>
+<td>Location × product scaffold <code>/locations/{city-state}/{product}/</code> with <strong>mandatory unique-content + answer-summary + jurisdiction-or-local-example gate</strong></td>
+<td>§4 P0</td>
+<td>Refuse publish if geo-token-only</td>
+</tr>
+<tr>
+<td>National product page remains flat or moves to <code>/{category}/{product}/</code> <strong>with 301s from current <code>/{slug}/</code></strong></td>
+<td>§3 P0</td>
+<td>This is the URL break; do it once</td>
+</tr>
+<tr>
+<td>Auto breadcrumbs from the new tree</td>
+<td>§3 P0</td>
+<td></td>
+</tr>
+<tr>
+<td>Coverage Types: product axis vs industry axis as two hub trees, not one nav flag</td>
+<td>§3 P1</td>
+<td></td>
+</tr>
+<tr>
+<td>Hub pages auto-list children; editorial order/descriptions</td>
+<td>§3 P1</td>
+<td></td>
+</tr>
+<tr>
+<td>Related module: descriptive anchors, no “Learn more”</td>
+<td>§3 P1</td>
+<td></td>
+</tr>
+<tr>
+<td>Jurisdiction library (state facts, limits, regulators, effective dates); city pages <em>reference</em> rows</td>
+<td>§4 P1</td>
+<td>New feature. Not Knowledge Base.</td>
+</tr>
+<tr>
+<td>Cross-link national ↔ local with distinct generated anchors; warn if unpaired</td>
+<td>§4 P1</td>
+<td></td>
+</tr>
+<tr>
+<td>Internal link health: orphans, broken, chains, inbound &lt; N</td>
+<td>§3 P1</td>
+<td>Uses redirect engine</td>
+</tr>
+</tbody></table>
+<p><strong>Do not</strong> generate a city×coverage matrix for every tenant on day one. Ship the <em>gate</em> first, then generate for one flagship (Steve White) and prove uniqueness scores.</p>
+<p><strong>Exit:</strong> one tenant has national GL + one city GL, bidirectional descriptive links, different bodies, both passing similarity and geo-token checks, 301s from old flat slug.</p>
+<hr>
+<h3>Stage D — Operate it (P1 platform)</h3>
+<p>Can overlap late B / C.</p>
+<table>
+<thead>
+<tr>
+<th>Work</th>
+<th>Checklist</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SEO health dashboard: stale, missing reviewers, dupe score, orphans, 404s, schema errors, CWV, index coverage</td>
+<td>§14 P1</td>
+</tr>
+<tr>
+<td>AI crawler robots policy per tenant + default allow; monitor 403s</td>
+<td>§10 P0</td>
+</tr>
+<tr>
+<td>Image pipeline: srcset/webp, lazy below fold, alt linter (reject filename / logo-mismatch)</td>
+<td>§8 P1</td>
+</tr>
+<tr>
+<td>Content linter (unrendered tokens, empty modules, nav spelling)</td>
+<td>§8 P1</td>
+</tr>
+<tr>
+<td>axe-core per template in CI; editor heading/alt/link-text lint</td>
+<td>§12 P0–P1</td>
+</tr>
+<tr>
+<td>CWV budgets in CI; tracking slot policy (no GTM/chat in <code>head-start</code>)</td>
+<td>§11 P0</td>
+</tr>
+<tr>
+<td>HSTS + hostname canonical already partly there</td>
+<td>§8 P1</td>
+</tr>
+<tr>
+<td>sameAs manager (GBP, Trusted Choice, IIABA, state assoc.)</td>
+<td>§7 P1</td>
+</tr>
+<tr>
+<td>Trust &amp; Standards page + disclaimer library</td>
+<td>§2.3 P1</td>
+</tr>
+<tr>
+<td>Content briefs attached to pages</td>
+<td>§14 P1</td>
+</tr>
+<tr>
+<td>Person portability across tenants (multi-brand)</td>
+<td>§2.1 P1</td>
+</tr>
+<tr>
+<td>Clean-text / markdown endpoint; AI referral source in analytics</td>
+<td>§10 P1</td>
+</tr>
+<tr>
+<td>Consent tooling that does not <code>noindex</code> or cloak content</td>
+<td>§12 P1</td>
+</tr>
+<tr>
+<td>GBP hours/posts pull; NAP-change checklist</td>
+<td>§9 P1</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>Stage E — Migration at scale (before the book moves)</h3>
+<table>
+<thead>
+<tr>
+<th>Work</th>
+<th>Checklist</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WP crawl + GSC/rank inventory → redirect map (mandatory)</td>
+<td>§15 P0</td>
+</tr>
+<tr>
+<td>Triage vocabulary: keep / rewrite / consolidate / retire</td>
+<td>§15 P0</td>
+</tr>
+<tr>
+<td>Do not import boilerplate; mark stubs</td>
+<td>§15 P0 + §5</td>
+</tr>
+<tr>
+<td>Author+reviewer backfill workflow</td>
+<td>§15 P1</td>
+</tr>
+<tr>
+<td>Post-launch: 301 coverage, GSC index, fixed keyword set, rollback</td>
+<td>§15 P0</td>
+</tr>
+<tr>
+<td>Combined reporting + competitor bench</td>
+<td>§16 P1</td>
+</tr>
+<tr>
+<td>Two-tier performance split</td>
+<td>§16 P2</td>
+</tr>
+</tbody></table>
+<p>Onboard Buddy / portal import stays for <em>new</em> clients. WordPress migration is a <strong>different pipeline</strong>. Do not overload <code>onboard-client</code>.</p>
+<hr>
+<h3>Stage F — Fast-follow (P2)</h3>
+<p>Embed text fallbacks, glossary/DefinedTerm, citable-claims preview, voice guide, bulk ops, monthly digest, citation monitoring vs AI engines, RUM, CDN purge, native-speaker translation reviewer, proximity linking, per-location reviews/staff, service-area pages with the same uniqueness gates.</p>
+<hr>
+<h2>8. Suggested Software Factory shape (after Stage 0)</h2>
+<p>Do not create these until C1–C4 are accepted. Sketch only:</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Document</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Amend</td>
+<td>SEO and LLM Optimization</td>
+<td>Answer summary, uniqueness gates, robots.txt, segmented sitemaps, canonical conflict, BreadcrumbList, <code>@id</code>, Article dates, AI crawler policy, publish scorecard</td>
+</tr>
+<tr>
+<td>Amend</td>
+<td>Author Attribution</td>
+<td>Reviewer/editor, dates, YMYL gate, Person fields (NPN/licenses/expertise), Editorial Process link</td>
+</tr>
+<tr>
+<td>Amend</td>
+<td>CGE <code>REQ-CGE-006.3</code></td>
+<td>Reverse the ban; add comparator + stub + geo-token</td>
+</tr>
+<tr>
+<td>Amend</td>
+<td>Page Types</td>
+<td>Editorial Process, Trust &amp; Standards, Location page, optional Learning Center; location×product type</td>
+</tr>
+<tr>
+<td>Amend</td>
+<td>Security</td>
+<td>Writer/reviewer/publisher vs current 3 roles; disclaimer library</td>
+</tr>
+<tr>
+<td>New</td>
+<td>Location Entity &amp; Two-Tier Content</td>
+<td>Location as entity, matrix, jurisdiction library, cross-links</td>
+</tr>
+<tr>
+<td>New</td>
+<td>Redirects &amp; URL Governance</td>
+<td>Engine, migration maps, chain/loop, production→staging link crawl</td>
+</tr>
+<tr>
+<td>New</td>
+<td>SEO Health &amp; Measurement</td>
+<td>Dashboard, AI referrals, competitor bench (can wait for D/E)</td>
+</tr>
+</tbody></table>
+<p>Keep jurisdiction library <strong>out</strong> of Knowledge Base (internal help) and <strong>out</strong> of Content Grounding (open-web retrieval). It is a curated, versioned, insurance-statute dataset.</p>
+<hr>
+<h2>9. What I would <em>not</em> do</h2>
+<ul>
+<li>Do not generate 50 city pages from <code>targetCity</code> before uniqueness gates.</li>
+<li>Do not change URL hierarchy before redirects.</li>
+<li>Do not treat Authors as “E-E-A-T done.”</li>
+<li>Do not treat CGE context-uniqueness as a substitute for duplicate detection.</li>
+<li>Do not put hedge-word lint on the whole page and fight compliance.</li>
+<li>Do not SSR the public sites. Static export already satisfies “SSR or statically generate.” The remaining job is CI + no JS-only meaning.</li>
+<li>Do not wait for a full SEO-health dashboard before the publish scorecard. The scorecard is the gate; the dashboard is the report.</li>
+</ul>
+<hr>
+<h2>10. Bottom line</h2>
+<p>The CMS is already a better <em>technical</em> SEO platform than the WordPress builds the audit tore apart. Static HTML, real CTAs, NAP-from-intake, JSON-LD, sitemap, <code>llms.txt</code>, authors with real URLs, staging noindex, citations, and a human publish gate are real.</p>
+<p>It is <strong>not</strong> yet the platform the audit describes as the competitive moat:</p>
+<ol>
+<li>Uniqueness is optional (and comparison is banned).</li>
+<li>Reviewer + review date — the cheap E-E-A-T differentiator — do not exist.</li>
+<li>Answer Summary is a prompt wish, not a field.</li>
+<li>Location is a list on one page, not an entity graph.</li>
+<li>Enforcement that exists (<code>verify:seo</code>, <code>verify:nojs</code>) is not in CI. Product/FAQ checks in <code>verify-seo.ts</code> still look for <code>/products/</code> and <code>/lp/</code> — they no longer match flat URLs.</li>
+<li>Licenses and founding-year equity sit in intake and never reach the footer.</li>
+<li><code>publishedAt</code> is Payload <code>updatedAt</code>, not a real publish date, and is not in JSON-LD — a save bumps “published.”</li>
+<li>Public pages have no <code>&lt;main&gt;</code> / skip link; tracking “head” slots actually inject at the top of <code>&lt;body&gt;</code>.</li>
+</ol>
+<p>If the team can only do three things after Stage 0: <strong>put the existing verifiers in CI and stop shipping hardcoded stats (A), ship YMYL reviewer + answer summary + stub/dupe gates (B), then build location×product behind those gates (C).</strong> That is the audit&#39;s leverage order, mapped onto this codebase.</p>
+
+    </article>
+  </div>
+</body>
+</html>
