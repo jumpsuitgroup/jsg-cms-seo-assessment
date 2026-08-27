@@ -21,16 +21,26 @@
   pre code { background:none; padding:0; }
   .scroll { overflow-x:auto; margin:.8em 0; -webkit-overflow-scrolling:touch; }
   table { border-collapse:collapse; width:100%; margin:.8em 0; font-size:.93em; }
-  .scroll table { margin:0; min-width:640px; }
-  th,td { border:1px solid var(--border); padding:.45em .7em; vertical-align:top; text-align:left; word-break:break-word; }
+  .scroll table { margin:0; }
+  th,td { border:1px solid var(--border); padding:.5em .7em; vertical-align:top; text-align:left; overflow-wrap:break-word; word-break:normal; }
   th { font-weight:600; background:var(--code-bg); }
+  td.num { width:2.4em; white-space:nowrap; }
+  td.piece { width:11em; }
+  td.grade, th.grade { width:7.5em; }
+  td.owner, th.owner { width:7em; white-space:nowrap; }
+  td.li, th.li { width:6.5em; white-space:nowrap; }
+  .grades { display:flex; flex-direction:column; align-items:flex-start; gap:.25em; }
+  .grades .pill { margin-left:0; }
+  td code { overflow-wrap:anywhere; }
   ul { padding-left:1.4em; } li { margin:.25em 0; }
   details { margin:.5em 0; } details > summary { cursor:pointer; font-weight:600; padding:.4em 0; }
   hr { border:none; border-top:1px solid var(--border); margin:2em 0; }
   .meta { color:var(--muted); font-size:.85em; }
   .sub { color:var(--muted); font-size:.95em; margin-top:.3em; }
   .status { background:color-mix(in srgb, var(--accent) 12%, var(--bg)); border:1px solid var(--accent); border-radius:8px; padding:.9em 1.2em; margin:1.2em 0; }
+  .status-head { display:flex; flex-wrap:wrap; align-items:center; gap:.4em .8em; }
   .status .badge { display:inline-block; background:var(--accent); color:var(--bg); padding:.1em .6em; border-radius:4px; font-size:.78em; font-weight:600; letter-spacing:.02em; }
+  .status .meta { margin-left:auto; }
   .status p { margin:.5em 0 0; font-size:.92em; }
   .next { border:1px solid var(--warn); border-left:4px solid var(--warn); border-radius:8px; padding:.8em 1.2em; margin:1.2em 0; background:color-mix(in srgb, var(--warn) 8%, var(--bg)); }
   .next > summary { cursor:pointer; font-weight:600; font-size:1.02em; padding:0; }
@@ -63,8 +73,10 @@
 </header>
 
 <div class="status">
-  <span class="badge">BRIEF · AWAITING GREEN LIGHT · STAGING FIRST</span>
-  <span class="meta" style="float:right">As of 2026-08-27 12:48 UTC</span>
+  <div class="status-head">
+    <span class="badge">BRIEF · AWAITING GREEN LIGHT · STAGING FIRST</span>
+    <span class="meta">As of 2026-08-27 13:05 UTC</span>
+  </div>
   <p>A scrape agent can stand up a reviewable tenant today via <code>POST /api/onboard-client/</code> (same path as Onboard Buddy). Nothing production-publishes. The first POST will look empty if images 301, coverage keys are “Auto” instead of <code>car_insurance</code>, or Steve White is created as a second tenant. Cutover is blocked on main until redirects ship to that env.</p>
 </div>
 
@@ -103,23 +115,23 @@
     <h2>Success criteria (must-have for a green-light staging pilot)</h2>
     <div class="scroll">
     <table>
-      <tr><th>Criterion</th><th>Statement</th><th>Check</th><th>Status</th></tr>
-      <tr><td>Reviewable tenant</td><td>One staging tenant exists with NAP, team, logo (or a logged skip + byte-upload), catalog coverages as Review Queue drafts, catalog carriers with logos when matched.</td><td>Dashboard Agency Info + Review Queue + staging URL (unpublished pages allowed on staging).</td><td><span class="pill next">not run</span></td></tr>
-      <tr><td>Nothing live</td><td>Tenant status <code>onboarding</code>. No production publish. No DNS cutover.</td><td>Route always <code>skipBuild</code>; confirm env is staging CMS.</td><td><span class="pill next">gate</span></td></tr>
-      <tr><td>Facts not HTML</td><td>No Gutenberg/Avada/shortcodes in intake. Coverage pages are generated, not copied.</td><td>Spot-check a product draft vs the WP article.</td><td><span class="pill next">gate</span></td></tr>
-      <tr><td>QC before POST</td><td>CoS completeness table + Connor yes. Never POST “to see.”</td><td>Written QC artifact attached to the bundle.</td><td><span class="pill next">gate</span></td></tr>
-      <tr><td>Pilot identity</td><td>Steve White is an <em>update</em> of <code>barry-white-insurance</code>, not a second tenant.</td><td>Payload includes explicit <code>slug</code>; domain does not placeholder.</td><td><span class="pill warn">decide</span></td></tr>
+      <tr><th>Criterion</th><th>Statement</th><th>Check</th><th class="grade">Status</th></tr>
+      <tr><td>Reviewable tenant</td><td>One staging tenant exists with NAP, team, logo (or a logged skip + byte-upload), catalog coverages as Review Queue drafts, catalog carriers with logos when matched.</td><td>Dashboard Agency Info + Review Queue + staging URL (unpublished pages allowed on staging).</td><td class="grade"><span class="pill next">not run</span></td></tr>
+      <tr><td>Nothing live</td><td>Tenant status <code>onboarding</code>. No production publish. No DNS cutover.</td><td>Route always <code>skipBuild</code>; confirm env is staging CMS.</td><td class="grade"><span class="pill next">gate</span></td></tr>
+      <tr><td>Facts not HTML</td><td>No Gutenberg/Avada/shortcodes in intake. Coverage pages are generated, not copied.</td><td>Spot-check a product draft vs the WP article.</td><td class="grade"><span class="pill next">gate</span></td></tr>
+      <tr><td>QC before POST</td><td>CoS completeness table + Connor yes. Never POST “to see.”</td><td>Written QC artifact attached to the bundle.</td><td class="grade"><span class="pill next">gate</span></td></tr>
+      <tr><td>Pilot identity</td><td>Steve White is an <em>update</em> of <code>barry-white-insurance</code>, not a second tenant.</td><td>Payload includes explicit <code>slug</code>; domain does not placeholder.</td><td class="grade"><span class="pill warn">decide</span></td></tr>
     </table>
     </div>
 
     <h2>Success criteria (nice-to-have / later)</h2>
     <div class="scroll">
     <table>
-      <tr><th>Criterion</th><th>Statement</th><th>Check</th><th>Status</th></tr>
-      <tr><td>Non-exact coverage names</td><td>Auto / Workers Comp match catalog without the agent synonym table.</td><td>Instinctive Catalog Matching FRD shipped.</td><td><span class="pill next">Factory FRD</span></td></tr>
-      <tr><td>Niche products</td><td>Laser Tag becomes a tenant-local page, not a global catalog row.</td><td>Create If Missing after FRD accept.</td><td><span class="pill next">Factory FRD</span></td></tr>
-      <tr><td>Cutover-safe URLs</td><td>Old WP paths 301 to CMS paths.</td><td>Redirects import on the cutover env (on this branch, not necessarily main/prod).</td><td><span class="pill warn">blocked on main</span></td></tr>
-      <tr><td>Ranked blogs</td><td>Keep URL equity with rewritten <code>blogPost</code> drafts, not keyword-generate replacements.</td><td>Ingest path does not exist; park inventory.</td><td><span class="pill warn">no ingest</span></td></tr>
+      <tr><th>Criterion</th><th>Statement</th><th>Check</th><th class="grade">Status</th></tr>
+      <tr><td>Non-exact coverage names</td><td>Auto / Workers Comp match catalog without the agent synonym table.</td><td>Instinctive Catalog Matching FRD shipped.</td><td class="grade"><span class="pill next">Factory FRD</span></td></tr>
+      <tr><td>Niche products</td><td>Laser Tag becomes a tenant-local page, not a global catalog row.</td><td>Create If Missing after FRD accept.</td><td class="grade"><span class="pill next">Factory FRD</span></td></tr>
+      <tr><td>Cutover-safe URLs</td><td>Old WP paths 301 to CMS paths.</td><td>Redirects import on the cutover env (on this branch, not necessarily main/prod).</td><td class="grade"><span class="pill warn">blocked on main</span></td></tr>
+      <tr><td>Ranked blogs</td><td>Keep URL equity with rewritten <code>blogPost</code> drafts, not keyword-generate replacements.</td><td>Ingest path does not exist; park inventory.</td><td class="grade"><span class="pill warn">no ingest</span></td></tr>
     </table>
     </div>
 
@@ -141,27 +153,27 @@
     <p>Read this table first. Detail for each piece is in the unfold blocks below. “Today” means <strong>main / live onboard-client</strong>, not unmerged Factory work.</p>
     <div class="scroll">
     <table>
-      <tr><th>ID</th><th>Piece</th><th>How it enters</th><th>Grade</th></tr>
-      <tr><td>1</td><td>Tenant identity</td><td><code>POST /api/onboard-client/</code> · slugify(<code>clientName</code>) unless <code>slug</code> is sent · domain from <code>business_website</code></td><td><span class="pill done">Good</span> <span class="pill warn">Landmine</span></td></tr>
-      <tr><td>2</td><td>NAP (name, phone, address)</td><td>v2 <code>agencyInfo</code> → <code>business.*</code> / <code>address.*</code></td><td><span class="pill done">Good</span></td></tr>
-      <tr><td>3</td><td>Hours + timezone</td><td>Free-text parse → <code>hours[]</code>; raw kept in extras; <code>time_zone</code> → <code>timeZone</code></td><td><span class="pill now">OK</span></td></tr>
-      <tr><td>4</td><td>Coverages</td><td><code>coverages[].coverage_key</code> must equal catalog keyword · cards + product drafts for <em>matches only</em></td><td><span class="pill now">OK</span> <span class="pill warn">Landmine</span></td></tr>
-      <tr><td>5</td><td>Carriers</td><td><code>carriers_selected</code> + <code>list_carriers</code> → catalog logos; unmatched name-only</td><td><span class="pill done">Good</span></td></tr>
-      <tr><td>6</td><td>Team + authors</td><td><code>teamMembers[]</code> + headshots · Authors upsert (name/role/bio/email/photo)</td><td><span class="pill now">OK</span></td></tr>
-      <tr><td>7</td><td>Logo + headshots</td><td><code>media.*.signedUrl</code> pull into R2 (allowlist, no redirects)</td><td><span class="pill warn">Landmine</span></td></tr>
-      <tr><td>8</td><td>Hero / about photos</td><td>Not on v2. Session media upload + intake PATCH for <code>heroImage</code></td><td><span class="pill now">OK</span></td></tr>
-      <tr><td>9</td><td>Locations</td><td>HQ = <code>address.*</code> (baked as pin 0). Extras = <code>address_2</code>…<code>_6</code></td><td><span class="pill now">OK</span> <span class="pill warn">Landmine</span></td></tr>
-      <tr><td>10</td><td>Fonts + colors</td><td>Not onboard. Session <code>PATCH …/theme</code> after tenant exists</td><td><span class="pill now">OK</span></td></tr>
-      <tr><td>11</td><td>Social + GBP</td><td><code>facebook_link</code> etc. + <code>google_business_listing</code> if <code>https://</code></td><td><span class="pill done">Good</span></td></tr>
-      <tr><td>12</td><td>Reviews</td><td>v2 ignores <code>reviews[]</code>. Later session reviews/refresh from GBP URL</td><td><span class="pill now">OK</span></td></tr>
-      <tr><td>13</td><td>Forms + quoting tools</td><td>Five standard CMS forms provisioned. Quote iframe → <code>quoting_tool_1</code></td><td><span class="pill done">Good</span></td></tr>
-      <tr><td>14</td><td>Tracking</td><td>Session tracking POST. GA4/GTM/Meta/Clarity/Cloudflare only</td><td><span class="pill now">OK</span></td></tr>
-      <tr><td>15</td><td>Sitemap / URL inventory</td><td>Park in bundle <code>urlInventory</code> with triage. Not imported as pages</td><td><span class="pill warn">Bad</span></td></tr>
-      <tr><td>16</td><td>URL redirects</td><td>Park in bundle. Import API exists on this branch; <strong>not assumed on main/prod</strong></td><td><span class="pill warn">Bad on main</span></td></tr>
-      <tr><td>17</td><td>Blog posts</td><td>CMS generate = new Grok posts, not WP ingest. Park titles/URLs</td><td><span class="pill warn">Bad</span></td></tr>
-      <tr><td>18</td><td>Legal / privacy / terms</td><td>CMS generates stubs. Not attorney copy</td><td><span class="pill warn">Bad</span></td></tr>
-      <tr><td>19</td><td>Licences / go-live gate</td><td>NPN + founding year map on v2. Licence numbers do not. Production enqueue can block</td><td><span class="pill now">OK</span></td></tr>
-      <tr><td>20</td><td>Staging preview</td><td>Onboard enqueues staging build (not production) if worker is up</td><td><span class="pill now">OK</span></td></tr>
+      <tr><th class="num">ID</th><th class="piece">Piece</th><th>How it enters</th><th class="grade">Grade</th></tr>
+      <tr><td class="num">1</td><td class="piece">Tenant identity</td><td><code>POST /api/onboard-client/</code>. Slug from <code>clientName</code> unless <code>slug</code> is sent. Domain from <code>business_website</code>.</td><td class="grade"><div class="grades"><span class="pill done">Good</span><span class="pill warn">Landmine</span></div></td></tr>
+      <tr><td class="num">2</td><td class="piece">NAP</td><td>v2 <code>agencyInfo</code> → <code>business.*</code> and <code>address.*</code></td><td class="grade"><div class="grades"><span class="pill done">Good</span></div></td></tr>
+      <tr><td class="num">3</td><td class="piece">Hours + timezone</td><td>Free-text parse → <code>hours[]</code>. Raw kept in extras. <code>time_zone</code> → <code>timeZone</code>.</td><td class="grade"><div class="grades"><span class="pill now">OK</span></div></td></tr>
+      <tr><td class="num">4</td><td class="piece">Coverages</td><td><code>coverage_key</code> must equal a catalog keyword. Cards and product drafts for matches only.</td><td class="grade"><div class="grades"><span class="pill now">OK</span><span class="pill warn">Landmine</span></div></td></tr>
+      <tr><td class="num">5</td><td class="piece">Carriers</td><td><code>carriers_selected</code> + <code>list_carriers</code> → catalog logos. Unmatched stay name-only.</td><td class="grade"><div class="grades"><span class="pill done">Good</span></div></td></tr>
+      <tr><td class="num">6</td><td class="piece">Team + authors</td><td><code>teamMembers[]</code> + headshots. Authors upsert: name, role, bio, email, photo.</td><td class="grade"><div class="grades"><span class="pill now">OK</span></div></td></tr>
+      <tr><td class="num">7</td><td class="piece">Logo + headshots</td><td><code>media.*.signedUrl</code> pulled into R2. Allowlist, https, no redirects.</td><td class="grade"><div class="grades"><span class="pill warn">Landmine</span></div></td></tr>
+      <tr><td class="num">8</td><td class="piece">Hero / about photos</td><td>Not on v2. Session media upload, then intake PATCH for <code>heroImage</code>.</td><td class="grade"><div class="grades"><span class="pill now">OK</span></div></td></tr>
+      <tr><td class="num">9</td><td class="piece">Locations</td><td>HQ is <code>address.*</code> (baked as pin 0). Extras are <code>address_2</code> through <code>address_6</code>.</td><td class="grade"><div class="grades"><span class="pill now">OK</span><span class="pill warn">Landmine</span></div></td></tr>
+      <tr><td class="num">10</td><td class="piece">Fonts + colors</td><td>Not onboard. Session <code>PATCH …/theme</code> after the tenant exists.</td><td class="grade"><div class="grades"><span class="pill now">OK</span></div></td></tr>
+      <tr><td class="num">11</td><td class="piece">Social + GBP</td><td><code>facebook_link</code> etc. plus <code>google_business_listing</code> if the URL is https.</td><td class="grade"><div class="grades"><span class="pill done">Good</span></div></td></tr>
+      <tr><td class="num">12</td><td class="piece">Reviews</td><td>v2 ignores <code>reviews[]</code>. Later session reviews/refresh from the GBP URL.</td><td class="grade"><div class="grades"><span class="pill now">OK</span></div></td></tr>
+      <tr><td class="num">13</td><td class="piece">Forms + quoting</td><td>Five standard CMS forms. Quote iframe → <code>quoting_tool_1</code>.</td><td class="grade"><div class="grades"><span class="pill done">Good</span></div></td></tr>
+      <tr><td class="num">14</td><td class="piece">Tracking</td><td>Session tracking POST. GA4, GTM, Meta, Clarity, Cloudflare only.</td><td class="grade"><div class="grades"><span class="pill now">OK</span></div></td></tr>
+      <tr><td class="num">15</td><td class="piece">Sitemap / inventory</td><td>Park in <code>urlInventory</code> with triage. Not imported as pages.</td><td class="grade"><div class="grades"><span class="pill warn">Bad</span></div></td></tr>
+      <tr><td class="num">16</td><td class="piece">URL redirects</td><td>Park in the bundle. Import API is on this branch, not assumed on main or prod.</td><td class="grade"><div class="grades"><span class="pill warn">Bad on main</span></div></td></tr>
+      <tr><td class="num">17</td><td class="piece">Blog posts</td><td>CMS generate makes new Grok posts, not WP ingest. Park titles and URLs.</td><td class="grade"><div class="grades"><span class="pill warn">Bad</span></div></td></tr>
+      <tr><td class="num">18</td><td class="piece">Legal / privacy</td><td>CMS generates stubs. Not attorney copy.</td><td class="grade"><div class="grades"><span class="pill warn">Bad</span></div></td></tr>
+      <tr><td class="num">19</td><td class="piece">Licences / go-live</td><td>NPN and founding year map on v2. Licence numbers do not. Production enqueue can block.</td><td class="grade"><div class="grades"><span class="pill now">OK</span></div></td></tr>
+      <tr><td class="num">20</td><td class="piece">Staging preview</td><td>Onboard enqueues a staging build (not production) if the worker is up.</td><td class="grade"><div class="grades"><span class="pill now">OK</span></div></td></tr>
     </table>
     </div>
 
@@ -281,7 +293,7 @@
     <h2>Waiting on others</h2>
     <div class="scroll">
     <table>
-      <tr><th>Who</th><th>What</th><th>Item</th><th>Where</th></tr>
+      <tr><th class="owner">Who</th><th>What</th><th>Item</th><th>Where</th></tr>
       <tr><td>Ops / staging env</td><td>Set <code>ONBOARD_API_KEY</code>, <code>PORTAL_ASSET_ALLOWED_HOSTS</code>, worker + Redis, aggregator keys for reviews</td><td>Images, coverage drafts, GBP refresh</td><td>Staging secrets</td></tr>
       <tr><td>Factory reviewers</td><td>Accept Instinctive Catalog Matching FRD/blueprint tracked suggestions</td><td>Auto/Workers Comp without synonym table; Laser Tag tenant-local pages</td><td>Software Factory</td></tr>
       <tr><td>Agency Content Manager</td><td>Review Queue, licences, Promote custom coverages (after ICM)</td><td>Human publish gate (I5)</td><td>Dashboard</td></tr>
@@ -356,21 +368,21 @@
     <h2>Risks</h2>
     <div class="scroll">
     <table>
-      <tr><th>Risk</th><th>L / I</th><th>Mitigation</th><th>Owner</th></tr>
-      <tr><td>Silent <code>ok: true</code> with no logo (allowlist / 301)</td><td>High / High</td><td>Follow redirects before POST; allowlist final hosts; check <code>media[].ok</code>; byte-upload fallback</td><td>CoS + ops</td></tr>
-      <tr><td>“Auto Insurance” never becomes a card</td><td>High / High</td><td>Mandatory synonym table + QC of keys vs catalog; ICM later</td><td>Scrape agent</td></tr>
-      <tr><td>Second Steve White tenant / domain placeholder</td><td>High / High</td><td>Explicit <code>slug: barry-white-insurance</code></td><td>Connor</td></tr>
-      <tr><td>POST to production</td><td>Med / High</td><td>Name staging host in the runbook; no prod key on the scrape machine</td><td>Connor</td></tr>
-      <tr><td>Theme/tracking with onboard API key</td><td>High / Med</td><td>Split actors: scrape stops at onboard POST</td><td>CoS</td></tr>
-      <tr><td>80 coverage jobs + location×product</td><td>Med / High</td><td>Cap to catalog + featured; uniqueness enforce stays off</td><td>CoS</td></tr>
-      <tr><td>HQ duplicated on the map</td><td>Med / Med</td><td>HQ only in <code>address.*</code>; extras in <code>address_2+</code></td><td>Scrape agent</td></tr>
-      <tr><td>Dark footer color does not change</td><td>Med / Low</td><td>Do not promise it; optional small code fix for <code>--surface-dark</code></td><td>Engineering</td></tr>
-      <tr><td>CallRail / chat / Hotjar dropped</td><td>High / Med</td><td>Park; cutover checklist; do not fight the allowlist</td><td>Ops</td></tr>
-      <tr><td>DNS cutover without redirects</td><td>Med / High</td><td>Hard rule: no DNS until import API is on that env</td><td>Connor</td></tr>
-      <tr><td>Ranked blogs replaced by Grok keyword posts</td><td>Med / High</td><td>Do not use blogs/generate for WP URLs; inventory only</td><td>CoS</td></tr>
-      <tr><td>Worker/Redis down</td><td>Med / High</td><td>Confirm before POST; empty Review Queue is a infra fail</td><td>Ops</td></tr>
-      <tr><td>Go-live blocked on licences</td><td>Med / Med</td><td>Send NPN + year_founded; humans fill licence numbers</td><td>ACM</td></tr>
-      <tr><td>ICM <code>createIfMissing</code> vs <code>create_if_missing</code></td><td>Low / High later</td><td>Emit both when ICM ships; default remains off</td><td>Engineering</td></tr>
+      <tr><th>Risk</th><th class="li">L / I</th><th>Mitigation</th><th class="owner">Owner</th></tr>
+      <tr><td>Silent <code>ok: true</code> with no logo (allowlist / 301)</td><td class="li">High / High</td><td>Follow redirects before POST; allowlist final hosts; check <code>media[].ok</code>; byte-upload fallback</td><td class="owner">CoS + ops</td></tr>
+      <tr><td>“Auto Insurance” never becomes a card</td><td class="li">High / High</td><td>Mandatory synonym table + QC of keys vs catalog; ICM later</td><td class="owner">Scrape agent</td></tr>
+      <tr><td>Second Steve White tenant / domain placeholder</td><td class="li">High / High</td><td>Explicit <code>slug: barry-white-insurance</code></td><td class="owner">Connor</td></tr>
+      <tr><td>POST to production</td><td class="li">Med / High</td><td>Name staging host in the runbook; no prod key on the scrape machine</td><td class="owner">Connor</td></tr>
+      <tr><td>Theme/tracking with onboard API key</td><td class="li">High / Med</td><td>Split actors: scrape stops at onboard POST</td><td class="owner">CoS</td></tr>
+      <tr><td>80 coverage jobs + location×product</td><td class="li">Med / High</td><td>Cap to catalog + featured; uniqueness enforce stays off</td><td class="owner">CoS</td></tr>
+      <tr><td>HQ duplicated on the map</td><td class="li">Med / Med</td><td>HQ only in <code>address.*</code>; extras in <code>address_2+</code></td><td class="owner">Scrape agent</td></tr>
+      <tr><td>Dark footer color does not change</td><td class="li">Med / Low</td><td>Do not promise it; optional small code fix for <code>--surface-dark</code></td><td class="owner">Engineering</td></tr>
+      <tr><td>CallRail / chat / Hotjar dropped</td><td class="li">High / Med</td><td>Park; cutover checklist; do not fight the allowlist</td><td class="owner">Ops</td></tr>
+      <tr><td>DNS cutover without redirects</td><td class="li">Med / High</td><td>Hard rule: no DNS until import API is on that env</td><td class="owner">Connor</td></tr>
+      <tr><td>Ranked blogs replaced by Grok keyword posts</td><td class="li">Med / High</td><td>Do not use blogs/generate for WP URLs; inventory only</td><td class="owner">CoS</td></tr>
+      <tr><td>Worker/Redis down</td><td class="li">Med / High</td><td>Confirm before POST; empty Review Queue is an infra fail</td><td class="owner">Ops</td></tr>
+      <tr><td>Go-live blocked on licences</td><td class="li">Med / Med</td><td>Send NPN + year_founded; humans fill licence numbers</td><td class="owner">ACM</td></tr>
+      <tr><td>ICM <code>createIfMissing</code> vs <code>create_if_missing</code></td><td class="li">Low / High later</td><td>Emit both when ICM ships; default remains off</td><td class="owner">Engineering</td></tr>
     </table>
     </div>
     <h4 style="color:var(--red)">The honest caveat</h4>
@@ -406,7 +418,7 @@
 </main>
 
 <script type="application/json" id="artifact-state">
-{"as_of":"2026-08-27 12:48 UTC","workstreams":[{"id":"1","status":"good+landmine","owner":"onboard-client","what":"tenant identity"},{"id":"2","status":"good","owner":"onboard-client","what":"NAP"},{"id":"3","status":"ok","owner":"onboard-client","what":"hours"},{"id":"4","status":"ok+landmine","owner":"agent synonym table","what":"coverages"},{"id":"5","status":"good","owner":"onboard-client","what":"carriers"},{"id":"6","status":"ok","owner":"onboard-client","what":"team"},{"id":"7","status":"landmine","owner":"ops allowlist","what":"logo headshots"},{"id":"8","status":"ok","owner":"session media","what":"hero"},{"id":"9","status":"ok+landmine","owner":"onboard-client","what":"locations"},{"id":"10","status":"ok","owner":"session theme","what":"fonts colors"},{"id":"11","status":"good","owner":"onboard-client","what":"social GBP"},{"id":"12","status":"ok","owner":"session reviews","what":"reviews"},{"id":"13","status":"good","owner":"onboard-client","what":"forms"},{"id":"14","status":"ok","owner":"session tracking","what":"tracking"},{"id":"15","status":"bad","owner":"park","what":"sitemap inventory"},{"id":"16","status":"bad-on-main","owner":"redirects API","what":"URL redirects"},{"id":"17","status":"bad","owner":"park","what":"blog posts"},{"id":"18","status":"bad","owner":"human","what":"legal"},{"id":"19","status":"ok","owner":"human licences","what":"go-live gate"},{"id":"20","status":"ok","owner":"worker","what":"staging preview"}]}
+{"as_of":"2026-08-27 13:05 UTC","workstreams":[{"id":"1","status":"good+landmine","owner":"onboard-client","what":"tenant identity"},{"id":"2","status":"good","owner":"onboard-client","what":"NAP"},{"id":"3","status":"ok","owner":"onboard-client","what":"hours"},{"id":"4","status":"ok+landmine","owner":"agent synonym table","what":"coverages"},{"id":"5","status":"good","owner":"onboard-client","what":"carriers"},{"id":"6","status":"ok","owner":"onboard-client","what":"team"},{"id":"7","status":"landmine","owner":"ops allowlist","what":"logo headshots"},{"id":"8","status":"ok","owner":"session media","what":"hero"},{"id":"9","status":"ok+landmine","owner":"onboard-client","what":"locations"},{"id":"10","status":"ok","owner":"session theme","what":"fonts colors"},{"id":"11","status":"good","owner":"onboard-client","what":"social GBP"},{"id":"12","status":"ok","owner":"session reviews","what":"reviews"},{"id":"13","status":"good","owner":"onboard-client","what":"forms"},{"id":"14","status":"ok","owner":"session tracking","what":"tracking"},{"id":"15","status":"bad","owner":"park","what":"sitemap inventory"},{"id":"16","status":"bad-on-main","owner":"redirects API","what":"URL redirects"},{"id":"17","status":"bad","owner":"park","what":"blog posts"},{"id":"18","status":"bad","owner":"human","what":"legal"},{"id":"19","status":"ok","owner":"human licences","what":"go-live gate"},{"id":"20","status":"ok","owner":"worker","what":"staging preview"}]}
 </script>
 
 <script>
