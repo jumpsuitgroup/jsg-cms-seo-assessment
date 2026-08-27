@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEO &amp; AI-search build sequence — WO-268–299</title>
+<style>
+  :root { --fg:#1a1a1a; --bg:#fdfdfd; --accent:#0a7d4a; --warn:#b45309; --red:#b91c1c; --muted:#666; --border:#ddd; --code-bg:#f5f5f5; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e4e4e4; --bg:#1a1a1a; --accent:#4ade80; --warn:#fbbf24; --red:#f87171; --muted:#999; --border:#333; --code-bg:#262626; }
+  }
+  * { box-sizing:border-box; }
+  body { font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--fg); background:var(--bg); max-width:980px; margin:1.5em auto; padding:0 1.5em 3em; }
+  h1,h2,h3,h4 { font-weight:600; margin-top:1.6em; line-height:1.3; }
+  h1 { font-size:1.7em; margin-bottom:.2em; }
+  h2 { font-size:1.35em; border-bottom:1px solid var(--border); padding-bottom:.2em; }
+  h3 { font-size:1.1em; }
+  a { color:var(--accent); }
+  code { background:var(--code-bg); padding:.15em .35em; border-radius:3px; font-size:.92em; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; word-break:break-word; }
+  pre { background:var(--code-bg); padding:1em 1.2em; border-radius:6px; overflow-x:auto; font-size:.87em; line-height:1.5; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  pre code { background:none; padding:0; }
+  .scroll { overflow-x:auto; margin:.8em 0; }
+  table { border-collapse:collapse; width:100%; margin:.8em 0; font-size:.93em; }
+  .scroll table { margin:0; }
+  th,td { border:1px solid var(--border); padding:.45em .7em; vertical-align:top; text-align:left; }
+  th { font-weight:600; background:var(--code-bg); }
+  ul { padding-left:1.4em; } li { margin:.25em 0; }
+  details { margin:.5em 0; } details > summary { cursor:pointer; font-weight:600; padding:.4em 0; }
+  hr { border:none; border-top:1px solid var(--border); margin:2em 0; }
+  .meta { color:var(--muted); font-size:.85em; }
+  .sub { color:var(--muted); font-size:.95em; margin-top:.3em; }
+  .status { background:color-mix(in srgb, var(--accent) 12%, var(--bg)); border:1px solid var(--accent); border-radius:8px; padding:.9em 1.2em; margin:1.2em 0; }
+  .status .badge { display:inline-block; background:var(--accent); color:var(--bg); padding:.1em .6em; border-radius:4px; font-size:.78em; font-weight:600; letter-spacing:.02em; }
+  .status p { margin:.5em 0 0; font-size:.92em; }
+  .next { border:1px solid var(--warn); border-left:4px solid var(--warn); border-radius:8px; padding:.8em 1.2em; margin:1.2em 0; background:color-mix(in srgb, var(--warn) 8%, var(--bg)); }
+  .next > summary { cursor:pointer; font-weight:600; font-size:1.02em; padding:0; }
+  .next > summary .meta { font-weight:400; }
+  .next ol { margin:.5em 0 .1em 1.3em; padding:0; }
+  .next ol li { margin:.3em 0; }
+  .next .who { font-weight:600; }
+  .pill { display:inline-block; font-size:.78em; padding:.1em .55em; border-radius:10px; background:var(--code-bg); color:var(--muted); margin-left:.4em; vertical-align:1px; }
+  .pill.done { background:var(--accent); color:var(--bg); }
+  .pill.now  { background:var(--warn);   color:var(--bg); }
+  .pill.next { background:var(--code-bg); color:var(--fg); border:1px solid var(--border); }
+  .pill.warn { background:var(--red);    color:var(--bg); }
+  .callout { border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:4px; padding:.7em 1em; margin:1em 0; font-size:.93em; background:color-mix(in srgb, var(--accent) 5%, var(--bg)); }
+  .tabbar { display:flex; flex-wrap:wrap; gap:.2em; border-bottom:2px solid var(--border); margin:1.2em 0 1.5em; }
+  .tabbar .tab { padding:.55em 1em; cursor:pointer; border:1px solid transparent; border-bottom:none; border-radius:6px 6px 0 0; font:inherit; font-weight:500; font-size:.95em; color:var(--muted); background:none; margin-bottom:-2px; }
+  .tabbar .tab:hover { color:var(--fg); }
+  .tabbar .tab.active { color:var(--fg); border-color:var(--border); border-bottom:2px solid var(--bg); background:var(--bg); font-weight:600; }
+  .pane { display:none; } .pane.active { display:block; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>SEO &amp; AI-search build sequence</h1>
+  <div class="sub">JSG CMS &middot; Software Factory WO-268–299 (32 work orders) &middot; gap-fill after the competitive-audit checklist</div>
+</header>
+
+<div class="status">
+  <span class="badge">EXECUTED · FOUR-WAY BAR · FACTORY IN REVIEW</span>
+  <span class="meta" style="float:right">As of 2026-08-27 02:59 UTC</span>
+  <p>32/32 work orders executed. Local bar: checklists complete, latest review-log <code>VERDICT: APPROVED</code>, dedicated passing <code>wo-&lt;n&gt;-vitest.log</code>. Factory status: <code>in_review</code> (not <code>completed</code>). Uniqueness default: shadow. Enforce switch off.</p>
+</div>
+
+<details class="next" open>
+  <summary>Next steps <span class="meta">· 3 items</span></summary>
+  <ol>
+    <li><span class="who">Human (Steve White / image-prompt reviewers)</span> — accept pending Software Factory FRD and blueprint tracked suggestions. <span class="meta">— closes the requirements loop that these WOs were extracted from</span></li>
+    <li><span class="who">Operators</span> — run staging <code>db:sync</code> (and <code>seed:prompts</code> for Language Scope). <span class="meta">— new Payload fields/collections: redirects, jurisdictionFacts, uniqueness, YMYL dates, Location NAP</span></li>
+    <li><span class="who">Super Admin</span> — leave <code>UNIQUENESS_MODE=shadow</code>; do not generate location×product pages at scale until enforce is on. <span class="meta">— WO-295 exists but the switch stays off until scores are calibrated</span></li>
+  </ol>
+</details>
+
+<div class="tabbar">
+  <button class="tab active" data-pane="over">1 &middot; Overview</button>
+  <button class="tab" data-pane="work">2 &middot; Workstreams</button>
+  <button class="tab" data-pane="att">3 &middot; Attention</button>
+  <button class="tab" data-pane="bg">4 &middot; Background</button>
+  <button class="tab" data-pane="plan">5 &middot; Plan</button>
+  <button class="tab" data-pane="risk">6 &middot; Risks &amp; open questions</button>
+  <button class="tab" data-pane="faq">7 &middot; Decisions</button>
+</div>
+
+<main>
+
+  <section class="pane active" id="over">
+    <div class="callout">Close the SEO / AI-search gap the competitive audit named: uniqueness becomes a second line of defense, YMYL roles and dates actually gate publish, hierarchical URLs are first-class, and Location is an entity with its own NAP — without violating I5 (nothing production-publishes without a human).</div>
+
+    <h2>What “executed” means here</h2>
+    <p>Every WO in 268–299 was run through Software Factory <code>execute-work-order</code> (plan → implement → review-phase). Completion for this sequence is a <strong>four-way bar</strong>, not Factory <code>completed</code>:</p>
+    <ol>
+      <li>Factory status <code>in_review</code></li>
+      <li>Latest <code>.sw-factory/WO-n/review-log.md</code> line is <code>VERDICT: APPROVED</code></li>
+      <li>Checklist all <code>[x]</code> or <code>[SKIP]</code> with a reason (0 unchecked)</li>
+      <li>Dedicated passing scratch log <code>wo-&lt;n&gt;-vitest.log</code></li>
+    </ol>
+    <p>As of this render, <strong>32/32</strong> meet that bar. Factory <code>completed</code> is a human accept step, not an agent step.</p>
+
+    <h2>Success criteria</h2>
+    <h3>Must-have (this sequence)</h3>
+    <div class="scroll">
+    <table>
+      <tr><th style="width:180px">Criterion</th><th>Statement</th><th>Check</th><th style="width:110px">Status</th></tr>
+      <tr><td>All 32 WOs executed</td><td>WO-268 through WO-299 exist, implemented, and sit at Factory <code>in_review</code>.</td><td>Live <code>list_work_orders</code> for 268–299, all <code>in_review</code>.</td><td><span class="pill done">met</span></td></tr>
+      <tr><td>Four-way bar</td><td>Checklist complete, latest review APPROVED, dedicated vitest log pass.</td><td>Local audit 2026-08-27: 0 unchecked, 32 APPROVED, 32 logs.</td><td><span class="pill done">met</span></td></tr>
+      <tr><td>Uniqueness last + shadow-first</td><td>296 (index, record scores) before 295 (enforce). Default shadow. Super Admin switch off.</td><td>Execution log order; <code>UNIQUENESS_MODE</code> store defaults to shadow.</td><td><span class="pill done">met</span></td></tr>
+      <tr><td>I5 preserved</td><td>Dashboard writes use <code>skipBuild</code>; only the scoped reviews auto-publish carve-out remains.</td><td>Page PATCH / review actions do not enqueue production on save.</td><td><span class="pill done">met</span></td></tr>
+      <tr><td>Templates stay pure</td><td>No database reads during render; structure global.</td><td>Render path still content-in, HTML-out.</td><td><span class="pill done">met</span></td></tr>
+      <tr><td>Hierarchical URLs first-class</td><td>Products <code>/{category}/{product}/</code>, blogs <code>/learning-center/{slug}/</code>, locations <code>/locations/{city-state}/</code>. No live clients, so redirects are not a ship gate.</td><td>Path deriver + App Router routes + tests.</td><td><span class="pill done">met</span></td></tr>
+      <tr><td>NAP allowlist includes Location phones</td><td>Agency + each Location phone is in-set; other numbers still warn/block.</td><td><code>validateNap</code> tests.</td><td><span class="pill done">met</span></td></tr>
+      <tr><td>Hedge vs quote field-scoped</td><td>Answer Summary unhedged; body advice may hedge.</td><td>Prompt seeds + compliance flags on body only.</td><td><span class="pill done">met</span></td></tr>
+    </table>
+    </div>
+    <h3>Not yet (human / ops, not missing WOs)</h3>
+    <div class="scroll">
+    <table>
+      <tr><th style="width:180px">Criterion</th><th>Statement</th><th>Check</th><th style="width:110px">Status</th></tr>
+      <tr><td>FRD/blueprint accept</td><td>Pending Software Factory tracked suggestions accepted by a human.</td><td>Factory suggestion queue empty for the SEO/YMYL/RUG/CGE edits.</td><td><span class="pill now">waiting</span></td></tr>
+      <tr><td>Staging schema</td><td>Staging database has new collections/fields.</td><td><code>db:sync</code> on staging.</td><td><span class="pill next">next</span></td></tr>
+      <tr><td>Uniqueness enforce on</td><td>Super Admin flips <code>UNIQUENESS_MODE=enforce</code> after shadow calibration.</td><td>Mode store is <code>enforce</code>; publish refuses 80%+ matches.</td><td><span class="pill next">off by design</span></td></tr>
+      <tr><td>Location×product at scale</td><td>Generate local product pages only after enforce is on.</td><td>No bulk generation jobs for location×product.</td><td><span class="pill next">held</span></td></tr>
+      <tr><td>Factory <code>completed</code></td><td>Human marks each WO completed after review.</td><td>Factory status flips off <code>in_review</code>.</td><td><span class="pill now">human</span></td></tr>
+    </table>
+    </div>
+
+    <h2>Out of scope</h2>
+    <ul>
+      <li>Custom domains Phase 2 / rollback processor (still a stub) — not in 268–299.</li>
+      <li>Turning uniqueness enforce on in this sequence — WO-295 ships the switch; default stays shadow.</li>
+      <li>Generating location×product pages at scale — scaffold only (WO-284).</li>
+      <li>Prior dashboard/onboard waves 243–267 — already at Factory <code>in_review</code>; not re-executed here.</li>
+      <li>Live WordPress cutover — WO-298 is the gate, not the migration itself.</li>
+      <li>Browser QA of every dashboard surface — unit/vitest bar was the WO completion bar.</li>
+    </ul>
+  </section>
+
+  <section class="pane" id="work">
+    <h2>Status</h2>
+    <p>Numbering is <code>X.Y</code>: <code>X</code> is the stage that must exist before the next stage; <code>Y</code> is parallel work inside a stage. Uniqueness is last: <strong>6.1 WO-296</strong> (shadow) then <strong>6.2 WO-295</strong> (enforce). Assignee on every row: Connor MacNeil (live Factory list, 2026-08-27).</p>
+    <p><span class="pill now">in review</span> = Factory status. <span class="pill done">four-way ✓</span> = local bar (checklist, APPROVED, vitest log).</p>
+
+    <h3>Stage 1 — Grounding &amp; extractability</h3>
+    <div class="scroll">
+    <table>
+      <tr><th>ID</th><th>WO</th><th>What</th><th>Depends on</th><th>Status</th></tr>
+      <tr><td>1.0</td><td>268</td><td>Allowlist Location phones in NAP validation</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>1.1</td><td>269</td><td>Field-scope hedge versus quote in generation prompts</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>1.2</td><td>270</td><td>Ground statistics in Tenant Facts and sourced stats</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>1.3</td><td>271</td><td>Require Answer Summary on content pages</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>1.4</td><td>272</td><td>Render organization credentials from intake in footer and schema</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>1.5</td><td>273</td><td>Enforce FAQ answers at forty words and CTA text links</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>1.6</td><td>274</td><td>Require descriptive related-content anchors</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>1.7</td><td>275</td><td>Reject render-blocking GTM and chat in head-start</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+    </table>
+    </div>
+
+    <h3>Stage 2 — Crawl, index, CI</h3>
+    <div class="scroll">
+    <table>
+      <tr><th>ID</th><th>WO</th><th>What</th><th>Depends on</th><th>Status</th></tr>
+      <tr><td>2.0</td><td>276</td><td>Emit production robots.txt from tenant AI crawler policy</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>2.1</td><td>277</td><td>Guard production exports against staging hosts and site-wide noindex</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>2.2</td><td>278</td><td>Fail CI when SEO or no-JS verification fails</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+    </table>
+    </div>
+
+    <h3>Stage 3 — URLs, locations, redirects</h3>
+    <div class="scroll">
+    <table>
+      <tr><th>ID</th><th>WO</th><th>What</th><th>Depends on</th><th>Status</th></tr>
+      <tr><td>3.0</td><td>279</td><td>Derive hierarchical product, blog, and location paths</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>3.1</td><td>280</td><td>Serve hierarchical product, blog, and location routes</td><td>after 279</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>3.2</td><td>281</td><td>Manage Redirect Records with chain, loop, and path-change 301s</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>3.3</td><td>282</td><td>Show breadcrumbs on product and location pages</td><td>after 279, 280</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>3.4</td><td>283</td><td>Store Location as a structured entity and serve Location Pages</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>3.5</td><td>284</td><td>Scaffold Location Product Pages and national/local cross-links</td><td>after 271, 283</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>3.6</td><td>285</td><td>Maintain a versioned Jurisdiction Library</td><td>after 284</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+    </table>
+    </div>
+
+    <h3>Stage 4 — YMYL &amp; editorial trust</h3>
+    <div class="scroll">
+    <table>
+      <tr><th>ID</th><th>WO</th><th>What</th><th>Depends on</th><th>Status</th></tr>
+      <tr><td>4.0</td><td>286</td><td>Capture YMYL Person fields and author/reviewer/editor roles</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>4.1</td><td>287</td><td>Store YMYL dates, record sign-off, and block publish without a reviewer</td><td>after 286</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>4.2</td><td>288</td><td>Provision Editorial Process, Trust pages, and a correction channel</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>4.3</td><td>289</td><td>Surface YMYL pages past their Review Interval</td><td>after 287</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+    </table>
+    </div>
+
+    <h3>Stage 5 — Schema, meta, stubs</h3>
+    <div class="scroll">
+    <table>
+      <tr><th>ID</th><th>WO</th><th>What</th><th>Depends on</th><th>Status</th></tr>
+      <tr><td>5.0</td><td>290</td><td>Emit a JSON-LD entity graph with reused <code>@id</code></td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>5.1</td><td>291</td><td>Detect duplicate titles, descriptions, and canonicals</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>5.2</td><td>292</td><td>Require one information-gain signal on content pages</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>5.3</td><td>293</td><td>Mark onboard starter copy as Template Stub</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+    </table>
+    </div>
+
+    <h3>Stage 6 — Gates (uniqueness last)</h3>
+    <div class="scroll">
+    <table>
+      <tr><th>ID</th><th>WO</th><th>What</th><th>Depends on</th><th>Status</th></tr>
+      <tr><td>6.0</td><td>294</td><td>Show a Publish Scorecard and block on P0 failures</td><td>after 271, 287, 291, 293</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>6.1</td><td>296</td><td>Build uniqueness signature index in shadow mode</td><td>after 270, 271, 279, 283, 293</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>6.2</td><td>295</td><td>Enforce uniqueness thresholds and geo-token detection</td><td>after 296</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>6.3</td><td>297</td><td>Open the SEO Health Dashboard</td><td>after 289, 295</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>6.4</td><td>298</td><td>Require a Migration Redirect Map before CMS cutover</td><td>after 281</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+      <tr><td>6.5</td><td>299</td><td>Fail CI on Core Web Vitals and accessibility regressions per template</td><td>—</td><td><span class="pill now">in review</span> <span class="pill done">four-way ✓</span></td></tr>
+    </table>
+    </div>
+
+    <hr>
+    <h2>Stage 1 — Grounding &amp; extractability <span class="pill done">four-way ✓</span></h2>
+    <h3>What landed</h3>
+    <div class="scroll">
+    <table>
+      <tr><th style="width:140px">Area</th><th></th></tr>
+      <tr><td>NAP</td><td><code>validateNap</code> in-set = agency phone + every Location phone. Free-text numbers outside the set still warn/block.</td></tr>
+      <tr><td>Prompts</td><td>Language Scope: Answer Summary unhedged and names a coverage boundary; body advice may hedge. Killed 22–99 invention / “NEVER definitive” as a global rule.</td></tr>
+      <tr><td>Facts</td><td>Tenant Facts / sourced stats feed WhoWeAre and statistic claims instead of hardcoded counts.</td></tr>
+      <tr><td>Answer Summary</td><td>Required field; Hero and blog <code>ArticleHeader</code> render it under H1; <code>resolveSeo</code> can use it as meta description.</td></tr>
+      <tr><td>Credentials</td><td>Founding year, NPN, licenses in footer/schema. <code>orgCredentialsReadyForProduction</code> on dashboard production POST, command-console <code>enqueue_production_build</code>, and go-live rebuild skip.</td></tr>
+      <tr><td>Tracking</td><td>Head slots emit <code>&lt;script&gt;</code>/<code>&lt;noscript&gt;</code> only (a wrapping <code>&lt;div&gt;</code> pops <code>&lt;/head&gt;</code>). Layout owns <code>body-start</code>.</td></tr>
+    </table>
+    </div>
+    <h3>How it was verified</h3>
+    <p>Dedicated vitest logs for 268–275. WO-272 and WO-275 each needed a Round 2 after skeptic findings (credentials not on every enqueue path; GTM <code>&lt;div&gt;</code> in head). Latest verdict APPROVED.</p>
+
+    <hr>
+    <h2>Stage 3 — URLs, locations, redirects <span class="pill done">four-way ✓</span></h2>
+    <h3>What landed</h3>
+    <p>Hierarchical <code>pathDeriver</code> plus App Router for category/product, learning-center, and <code>/locations/{city-state}/</code>. Location is a structured NAP entity (not a string address), seeded from Agency Address, with hub links and JSON-LD. Redirect Records: dashboard CRUD/import, loop refuse, flatten, path-change 301, <code>_redirects</code> bake. Location Product pages are scaffolded and never auto-published. Jurisdiction Library is Super-Admin-only.</p>
+    <h3>How it was verified</h3>
+    <p>Path tests, location NAP tests (32 in the 283 log), breadcrumb JSON-LD, redirect manager + TenantTabs. WO-281 hung review killed; Round 2 APPROVED.</p>
+
+    <hr>
+    <h2>Stage 4 — YMYL &amp; editorial trust <span class="pill done">four-way ✓</span></h2>
+    <h3>What landed</h3>
+    <p>Person fields for author / reviewer / editor. <code>datePublished</code> / <code>dateModified</code> / <code>dateReviewed</code> and sign-off events on Pages. <code>evaluateProductionPublish</code> on pages PATCH <code>status→published</code>, <code>changePageStatus</code>, and <code>applyReview</code>. Depth-0 Payload IDs bind through <code>resolveYmylPeople</code> so a reviewer id of <code>"1"</code> is not treated as a missing person. Editorial Process / Trust / correction channel pages. Review Interval past-due list.</p>
+    <h3>How it was verified</h3>
+    <p><code>ymylPublishGate</code>, <code>resolveYmylPeople</code> (including string ids), AuthorsTab save path, <code>wo24</code> publish helpers. Round 2 leftover <code>CHANGES_REQUESTED</code> lines on 286/290 cleaned after APPROVED.</p>
+
+    <hr>
+    <h2>Stage 6 — Gates, uniqueness last <span class="pill done">four-way ✓</span></h2>
+    <h3>What landed</h3>
+    <p>Publish Scorecard blocks on P0 (uses real <code>reviewerPerson</code>, no fabricated NPN). Uniqueness signature index in <strong>shadow</strong>: body + Answer Summary, scoped by page type + coverage, legal/nav/schema excluded, geo tokens stripped; scores recorded, publish not refused. Enforce is a Super Admin switch default off. SEO Health dashboard: past-due / missing-reviewer lists with path, reason, editor href; unavailable ≠ 0. Migration Redirect Map required before CMS cutover. CWV budget + a11y CI steps; <code>&lt;main&gt;</code> landmark and keyboard <code>focus-within</code>.</p>
+    <h3>How it was verified</h3>
+    <p>296: 2 files / 31 tests. 295: 2 files / 8 tests. 297: <code>seoHealth</code> + <code>SeoHealthLists</code>. 294: scorecard tests. Execution log records 296 then 295 then 297.</p>
+
+    <h2>Findings fixed during review</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>#</th><th>WO</th><th>Bug</th><th>Fix</th></tr>
+      <tr><td>1</td><td>272</td><td>Credentials gate missed command-console and go-live rebuild.</td><td><code>orgCredentialsReadyForProduction</code> on all three enqueue paths. Round 2 APPROVED.</td></tr>
+      <tr><td>2</td><td>275</td><td>GTM wrapped in a head <code>&lt;div&gt;</code> (pops head) and double-injected at body-start.</td><td>Injector emits script/noscript; layout is sole body-start owner. Round 2 APPROVED.</td></tr>
+      <tr><td>3</td><td>283</td><td>Structured NAP broke fixtures that still used a string address.</td><td>Migrated location schema + tests.</td></tr>
+      <tr><td>4</td><td>296</td><td>Incomplete body / <code>[object Object]</code> in uniqueness text.</td><td>Structured field extraction before shingles.</td></tr>
+      <tr><td>5</td><td>286</td><td>AuthorsTab/API omitted YMYL fields.</td><td>Save path + reviewer completeness of all four.</td></tr>
+      <tr><td>6</td><td>290</td><td><code>/authors</code> missing WebSite JSON-LD.</td><td><code>webSiteJsonLd</code> on that route.</td></tr>
+      <tr><td>7</td><td>271</td><td>Blog frame had no Hero, so Answer Summary never sat under H1.</td><td><code>ArticleHeader</code> in <code>blogPost</code> frame.</td></tr>
+      <tr><td>8</td><td>287</td><td><code>applyReview</code> treated depth-0 ids as <code>{slug,name}</code>, so YMYL always failed.</td><td><code>resolveYmylPeople</code> + tests with <code>'1'</code>/<code>2</code>.</td></tr>
+      <tr><td>9</td><td>297</td><td>SEO Health drill-ins were title-only.</td><td>Path, reason, editorHref from real page docs.</td></tr>
+    </table>
+    </div>
+  </section>
+
+  <section class="pane" id="att">
+    <h2>Waiting on humans</h2>
+    <ol>
+      <li>Accept pending Software Factory FRD/blueprint suggestions (SEO uniqueness reversal, hierarchical URLs, Language Scope, Location entity, YMYL gates). Unblocks treating the requirements set as accepted, not just proposed.</li>
+      <li>Mark WO-268–299 Factory <code>completed</code> after human review of the in-review queue. Agents stop at <code>in_review</code> by design.</li>
+      <li>Run staging <code>db:sync</code> + <code>seed:prompts</code> before exercising redirects, jurisdiction facts, uniqueness scores, or Language Scope on staging.</li>
+    </ol>
+    <h2>Automatic once those land</h2>
+    <ul>
+      <li>Nothing auto-merges these WOs. They live on the working branch until a human ships.</li>
+      <li>Uniqueness enforce does <em>not</em> auto-flip when suggestions are accepted. A Super Admin still has to set <code>UNIQUENESS_MODE=enforce</code>.</li>
+      <li>Redirects bake into <code>_redirects</code> on the next production deploy after records exist — no extra WO.</li>
+    </ul>
+    <h2>Waiting on others</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>Who</th><th>What</th><th>Item</th><th>Where to nudge</th></tr>
+      <tr><td>GitHub Actions</td><td>CI <code>deploy-staging</code> still needs <code>STAGING_SSH_KEY</code></td><td>Deploy workflow</td><td>Repo secrets</td></tr>
+      <tr><td>Super Admin</td><td>Keep uniqueness in shadow; no location×product generation at scale</td><td>WO-295 / WO-284</td><td>Dashboard uniqueness-mode + generation jobs</td></tr>
+      <tr><td>Review Queue</td><td>Steve White coverage drafts still need I5 human publish</td><td>Prior wave 259</td><td>Dashboard Review Queue</td></tr>
+    </table>
+    </div>
+  </section>
+
+  <section class="pane" id="bg">
+    <div class="callout">If you only read one tab besides Workstreams, read this — four product conflicts had to reverse recorded FRDs before any of these WOs could exist.</div>
+    <h2>The inversion</h2>
+    <p>The competitive audit’s governing principle is <em>structural quality automatic, content uniqueness mandatory</em>. JSG CMS already won the old WordPress failure modes (static export, CountUp SSR, NAP, authors, <code>llms.txt</code>, staging noindex). It did <strong>not</strong> invert uniqueness: <code>AC-CGE-006.3</code> explicitly forbade cross-client similarity checks. Starter libraries across N tenants are scaled-content risk. Prompt context does not catch a city-swapped paragraph.</p>
+    <h2>Four conflicts (resolved 2026-08-26, then extracted)</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>ID</th><th>Conflict</th><th>Decision</th></tr>
+      <tr><td>C1</td><td>Comparator forbidden vs publish-time duplicate detection</td><td>Keep generation uniqueness. Reverse the ban. Add a publish-time comparator in SEO. Shadow first, enforce last.</td></tr>
+      <tr><td>C2</td><td>Flat national URLs vs hierarchical products/blogs/locations</td><td>Hierarchy now — no live clients, so a redirect engine is not a ship gate. Path changes still write 301s.</td></tr>
+      <tr><td>C3</td><td>Compliance wants hedges; answer engines need quotes</td><td>Field-scoped: Answer Summary unhedged; body advice may hedge.</td></tr>
+      <tr><td>C4</td><td>NAP validator vs per-location phones</td><td>Allowlist = agency + every Location phone.</td></tr>
+    </table>
+    </div>
+    <h2>Key vocabulary</h2>
+    <p><strong>Four-way bar</strong> — the agent completion definition for this sequence (Factory in_review + APPROVED + checklist + vitest log). <strong>Shadow uniqueness</strong> — scores are stored, publish is not refused. <strong>I5</strong> — nothing production-publishes without a human (reviews auto-publish is the only scoped exception). <strong>Template Stub</strong> — onboard starter copy flagged so uniqueness/scorecard can treat it as not-yet-unique. <strong>Location entity</strong> — structured NAP, not a string on a page.</p>
+    <h2>Prior waves (not this sequence)</h2>
+    <p>WO-243–245 onboard generation, 246–250 photographic image prompts, 251–259 Steve White completeness, 260–267 dashboard polish — all already Factory <code>in_review</code>. This page is the SEO/AI-search gap-fill that followed the assessment in <code>docs/seo-ai-search/GAP-ASSESSMENT.md</code>.</p>
+  </section>
+
+  <section class="pane" id="plan">
+    <h2>Approach</h2>
+    <p>Do not write product code until the four conflicts are decided and the WOs exist. Then execute with Software Factory <code>execute-work-order</code>, one dependency wave at a time, uniqueness last. Parallel independent WOs were a recorded deviation from strict one-at-a-time; the uniqueness pair was not.</p>
+    <h2>Phases</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>Phase</th><th>Goal</th><th>Depends on</th></tr>
+      <tr><td>0 — Decide</td><td>C1–C4 recorded in Memory Bank + FRD/blueprint suggestions</td><td>—</td></tr>
+      <tr><td>1 — Extract</td><td>WO-268–299 created; uniqueness 296←270/271/279/283/293; 295←296; 297←289/295</td><td>Phase 0</td></tr>
+      <tr><td>2 — Execute 1–5</td><td>Grounding, crawl/CI, URLs/locations, YMYL, schema/stubs</td><td>Phase 1</td></tr>
+      <tr><td>3 — Execute 6</td><td>Scorecard, uniqueness shadow, then enforce switch (off), SEO Health, cutover gate, CWV/a11y</td><td>Phase 2 + uniqueness blockers</td></tr>
+      <tr><td>4 — Human/ops</td><td>Accept suggestions, Factory completed, staging db:sync, calibrate shadow, then maybe enforce</td><td>Phase 3</td></tr>
+    </table>
+    </div>
+    <h2>Why uniqueness is last</h2>
+    <p>Comparing onboard of N tenants × ~40 coverage pages pairwise on the publish click would stall Review Queue and false-positive on legal boilerplate and shared starters. Shadow mode needs Answer Summary, hierarchical URLs, Location pages, Template Stubs, and sourced stats to exist, or the scores are noise. Enforce stays off until those scores are believed.</p>
+  </section>
+
+  <section class="pane" id="risk">
+    <h2>Risks</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>Risk</th><th>Likelihood / impact</th><th>Mitigation</th><th>Owner</th></tr>
+      <tr><td>Enforce flipped on before shadow is calibrated — false-positive publish blocks</td><td>Medium / high</td><td>Default shadow; Super Admin switch; do not generate location×product at scale until enforce</td><td>Super Admin</td></tr>
+      <tr><td>Staging schema drift — dashboard 500s on new collections</td><td>High until db:sync / medium</td><td>Next-steps strip: run <code>db:sync</code> before exercising new screens</td><td>Operators</td></tr>
+      <tr><td>FRD suggestions never accepted — code diverges from “official” requirements</td><td>Medium / medium</td><td>Human accept is item 1 in next steps</td><td>Human</td></tr>
+      <tr><td>Scratch vitest logs live in tmp and were wiped once already</td><td>Happened / low now</td><td>Recreated 2026-08-27; four-way bar re-checked the same day</td><td>Agent</td></tr>
+      <tr><td>Pre-existing <code>bakePageAuthor</code> credentials assertion fails in <code>materializeTenant.test.ts</code></td><td>Known / low for this set</td><td>Called out as not introduced by 268–299; do not “fix” it inside a closed WO without a new ticket</td><td>—</td></tr>
+      <tr><td>CI deploy-staging missing <code>STAGING_SSH_KEY</code></td><td>Known / medium</td><td>Manual SSH deploy remains; not a WO-268–299 gap</td><td>GitHub secrets</td></tr>
+    </table>
+    </div>
+    <h4 style="color:var(--red)">⚠ The honest caveat</h4>
+    <p>These WOs are <strong>executed and in review</strong>, not production-proven. Uniqueness enforce is off. Location×product is a scaffold. Staging has not been synced. Browser QA of the new dashboard screens was not the completion bar. A human still has to accept the FRD reversals that authorized this work.</p>
+    <h2>Open questions</h2>
+    <ul>
+      <li>When do we flip <code>UNIQUENESS_MODE=enforce</code>, and who reads the shadow scores? (Super Admin; no date.)</li>
+      <li>Do we generate location×product for Steve White as a pilot after enforce, or wait for a second tenant? (Not decided.)</li>
+      <li>Should Factory <code>completed</code> wait on staging <code>db:sync</code>, or is code+tests enough for human accept? (Not decided.)</li>
+    </ul>
+  </section>
+
+  <section class="pane" id="faq">
+    <h3>Did we execute every WO?</h3>
+    <p>Yes, for the SEO/AI-search set <strong>WO-268–299</strong> (32). Live Factory list: all <code>in_review</code>. Local four-way bar: 32/32. We did <em>not</em> mark them Factory <code>completed</code> — that is a human step.</p>
+    <h3>Why is uniqueness 296 before 295 even though 295 is the lower number?</h3>
+    <p>Factory numbers are extract order, not run order. Shadow index (296) must exist before enforce (295) can consult it. The X.Y column on Workstreams is the run order.</p>
+    <h3>Why not comparison-only uniqueness?</h3>
+    <p>Generation would still converge on starter language. Keep context-driven uniqueness (CGE) and add publish-time comparison as a second line. Stack them; don’t replace one with the other.</p>
+    <h3>Why hierarchical URLs now if we used to wait on redirects?</h3>
+    <p>Waiting was to avoid mixed taxonomies on live URLs. Nothing is live, so hierarchy can ship without recreating that failure. Path changes after publish still write 301s. WordPress cutover still needs a Migration Redirect Map (WO-298).</p>
+    <h3>What does “done” look like?</h3>
+    <p>For this sequence: four-way bar + Factory in_review — that is now true. For the product: uniqueness calibrated then enforced, staging synced, FRDs accepted, location×product generated only after enforce, humans still in the publish loop.</p>
+    <h3>Where is the evidence?</h3>
+    <p>Factory WO-268–299. Local <code>.sw-factory/WO-n/</code> plans, checklists, review logs. Scratch <code>wo-set.txt</code>, <code>wo-execution.txt</code>, and <code>wo-&lt;n&gt;-vitest.log</code>. Memory Bank <code>decisions.md</code> / <code>progress.md</code> / <code>activeContext.md</code>.</p>
+  </section>
+
+</main>
+
+<script type="application/json" id="artifact-state">
+{"as_of":"2026-08-27 02:59 UTC","slug":"seo-ai-search-wo-268-299","factory_status":"in_review","four_way_bar":"32/32","uniqueness_mode":"shadow","workstreams":[{"id":"1.0","wo":268,"status":"in_review","owner":"Connor MacNeil"},{"id":"1.1","wo":269,"status":"in_review","owner":"Connor MacNeil"},{"id":"1.2","wo":270,"status":"in_review","owner":"Connor MacNeil"},{"id":"1.3","wo":271,"status":"in_review","owner":"Connor MacNeil"},{"id":"1.4","wo":272,"status":"in_review","owner":"Connor MacNeil"},{"id":"1.5","wo":273,"status":"in_review","owner":"Connor MacNeil"},{"id":"1.6","wo":274,"status":"in_review","owner":"Connor MacNeil"},{"id":"1.7","wo":275,"status":"in_review","owner":"Connor MacNeil"},{"id":"2.0","wo":276,"status":"in_review","owner":"Connor MacNeil"},{"id":"2.1","wo":277,"status":"in_review","owner":"Connor MacNeil"},{"id":"2.2","wo":278,"status":"in_review","owner":"Connor MacNeil"},{"id":"3.0","wo":279,"status":"in_review","owner":"Connor MacNeil"},{"id":"3.1","wo":280,"status":"in_review","owner":"Connor MacNeil"},{"id":"3.2","wo":281,"status":"in_review","owner":"Connor MacNeil"},{"id":"3.3","wo":282,"status":"in_review","owner":"Connor MacNeil"},{"id":"3.4","wo":283,"status":"in_review","owner":"Connor MacNeil"},{"id":"3.5","wo":284,"status":"in_review","owner":"Connor MacNeil"},{"id":"3.6","wo":285,"status":"in_review","owner":"Connor MacNeil"},{"id":"4.0","wo":286,"status":"in_review","owner":"Connor MacNeil"},{"id":"4.1","wo":287,"status":"in_review","owner":"Connor MacNeil"},{"id":"4.2","wo":288,"status":"in_review","owner":"Connor MacNeil"},{"id":"4.3","wo":289,"status":"in_review","owner":"Connor MacNeil"},{"id":"5.0","wo":290,"status":"in_review","owner":"Connor MacNeil"},{"id":"5.1","wo":291,"status":"in_review","owner":"Connor MacNeil"},{"id":"5.2","wo":292,"status":"in_review","owner":"Connor MacNeil"},{"id":"5.3","wo":293,"status":"in_review","owner":"Connor MacNeil"},{"id":"6.0","wo":294,"status":"in_review","owner":"Connor MacNeil"},{"id":"6.1","wo":296,"status":"in_review","owner":"Connor MacNeil"},{"id":"6.2","wo":295,"status":"in_review","owner":"Connor MacNeil"},{"id":"6.3","wo":297,"status":"in_review","owner":"Connor MacNeil"},{"id":"6.4","wo":298,"status":"in_review","owner":"Connor MacNeil"},{"id":"6.5","wo":299,"status":"in_review","owner":"Connor MacNeil"}]}
+</script>
+
+<script>
+function goTab(id){
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.pane === id));
+  document.querySelectorAll('.pane').forEach(p => p.classList.toggle('active', p.id === id));
+}
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => goTab(t.dataset.pane)));
+</script>
+
+</body>
+</html>
