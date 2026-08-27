@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WordPress → JSG CMS rebuild brief</title>
+<style>
+  :root { --fg:#1a1a1a; --bg:#fdfdfd; --accent:#0a7d4a; --warn:#b45309; --red:#b91c1c; --muted:#666; --border:#ddd; --code-bg:#f5f5f5; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e4e4e4; --bg:#1a1a1a; --accent:#4ade80; --warn:#fbbf24; --red:#f87171; --muted:#999; --border:#333; --code-bg:#262626; }
+  }
+  * { box-sizing:border-box; }
+  body { font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--fg); background:var(--bg); max-width:980px; margin:1.5em auto; padding:0 1.5em 3em; }
+  h1,h2,h3,h4 { font-weight:600; margin-top:1.6em; line-height:1.3; }
+  h1 { font-size:1.7em; margin-bottom:.2em; }
+  h2 { font-size:1.35em; border-bottom:1px solid var(--border); padding-bottom:.2em; }
+  h3 { font-size:1.1em; }
+  a { color:var(--accent); }
+  code { background:var(--code-bg); padding:.15em .35em; border-radius:3px; font-size:.92em; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; word-break:break-word; }
+  pre { background:var(--code-bg); padding:1em 1.2em; border-radius:6px; overflow-x:auto; font-size:.87em; line-height:1.5; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  pre code { background:none; padding:0; }
+  .scroll { overflow-x:auto; margin:.8em 0; -webkit-overflow-scrolling:touch; }
+  table { border-collapse:collapse; width:100%; margin:.8em 0; font-size:.93em; }
+  .scroll table { margin:0; min-width:640px; }
+  th,td { border:1px solid var(--border); padding:.45em .7em; vertical-align:top; text-align:left; word-break:break-word; }
+  th { font-weight:600; background:var(--code-bg); }
+  ul { padding-left:1.4em; } li { margin:.25em 0; }
+  details { margin:.5em 0; } details > summary { cursor:pointer; font-weight:600; padding:.4em 0; }
+  hr { border:none; border-top:1px solid var(--border); margin:2em 0; }
+  .meta { color:var(--muted); font-size:.85em; }
+  .sub { color:var(--muted); font-size:.95em; margin-top:.3em; }
+  .status { background:color-mix(in srgb, var(--accent) 12%, var(--bg)); border:1px solid var(--accent); border-radius:8px; padding:.9em 1.2em; margin:1.2em 0; }
+  .status .badge { display:inline-block; background:var(--accent); color:var(--bg); padding:.1em .6em; border-radius:4px; font-size:.78em; font-weight:600; letter-spacing:.02em; }
+  .status p { margin:.5em 0 0; font-size:.92em; }
+  .next { border:1px solid var(--warn); border-left:4px solid var(--warn); border-radius:8px; padding:.8em 1.2em; margin:1.2em 0; background:color-mix(in srgb, var(--warn) 8%, var(--bg)); }
+  .next > summary { cursor:pointer; font-weight:600; font-size:1.02em; padding:0; }
+  .next > summary .meta { font-weight:400; }
+  .next ol { margin:.5em 0 .1em 1.3em; padding:0; }
+  .next ol li { margin:.3em 0; }
+  .next .who { font-weight:600; }
+  .pill { display:inline-block; font-size:.78em; padding:.1em .55em; border-radius:10px; background:var(--code-bg); color:var(--muted); margin-left:.15em; vertical-align:1px; white-space:nowrap; }
+  .pill.done { background:var(--accent); color:var(--bg); }
+  .pill.now  { background:var(--warn);   color:var(--bg); }
+  .pill.next { background:var(--code-bg); color:var(--fg); border:1px solid var(--border); }
+  .pill.warn { background:var(--red);    color:var(--bg); }
+  .callout { border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:4px; padding:.7em 1em; margin:1em 0; font-size:.93em; background:color-mix(in srgb, var(--accent) 5%, var(--bg)); }
+  .callout.warn { border-left-color:var(--warn); background:color-mix(in srgb, var(--warn) 8%, var(--bg)); }
+  .callout.bad { border-left-color:var(--red); background:color-mix(in srgb, var(--red) 8%, var(--bg)); }
+  .tabbar { display:flex; flex-wrap:wrap; gap:.2em; border-bottom:2px solid var(--border); margin:1.2em 0 1.5em; }
+  .tabbar .tab { padding:.55em 1em; cursor:pointer; border:1px solid transparent; border-bottom:none; border-radius:6px 6px 0 0; font:inherit; font-weight:500; font-size:.95em; color:var(--muted); background:none; margin-bottom:-2px; }
+  .tabbar .tab:hover { color:var(--fg); }
+  .tabbar .tab.active { color:var(--fg); border-color:var(--border); border-bottom:2px solid var(--bg); background:var(--bg); font-weight:600; }
+  .pane { display:none; } .pane.active { display:block; }
+  .pipe { width:100%; max-width:920px; height:auto; margin:1em 0; }
+  .pipe text { font:11px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; fill:currentColor; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>WordPress → JSG CMS rebuild brief</h1>
+  <div class="sub">Team green-light packet &middot; how each piece is imported, what is a landmine, what is Good / OK / Bad &middot; not a WordPress clone</div>
+</header>
+
+<div class="status">
+  <span class="badge">BRIEF · AWAITING GREEN LIGHT · STAGING FIRST</span>
+  <span class="meta" style="float:right">As of 2026-08-27 12:48 UTC</span>
+  <p>A scrape agent can stand up a reviewable tenant today via <code>POST /api/onboard-client/</code> (same path as Onboard Buddy). Nothing production-publishes. The first POST will look empty if images 301, coverage keys are “Auto” instead of <code>car_insurance</code>, or Steve White is created as a second tenant. Cutover is blocked on main until redirects ship to that env.</p>
+</div>
+
+<details class="next" open>
+  <summary>Next steps <span class="meta">· 3 items</span></summary>
+  <ol>
+    <li><span class="who">Connor + team</span> — green-light or edit this brief (especially: Steve White = update <code>barry-white-insurance</code>; staging only; no DNS until redirects are on the cutover env). <span class="meta">— unblocks the scrape agent’s first POST</span></li>
+    <li><span class="who">CoS</span> — hold POST until the QC table is filled (NAP, catalog coverage keys, final image hosts, no HQ duplicate in locations). <span class="meta">— prevents silent <code>ok: true</code> with missing logo/cards</span></li>
+    <li><span class="who">Ops on staging</span> — add WP image hosts to <code>PORTAL_ASSET_ALLOWED_HOSTS</code> before POST; confirm worker/Redis up. <span class="meta">— logo/headshots and coverage drafts actually land</span></li>
+  </ol>
+</details>
+
+<div class="tabbar">
+  <button class="tab active" data-pane="over">1 &middot; Overview</button>
+  <button class="tab" data-pane="work">2 &middot; Puzzle pieces</button>
+  <button class="tab" data-pane="att">3 &middot; Attention</button>
+  <button class="tab" data-pane="bg">4 &middot; Background</button>
+  <button class="tab" data-pane="plan">5 &middot; Plan</button>
+  <button class="tab" data-pane="risk">6 &middot; Risks</button>
+  <button class="tab" data-pane="faq">7 &middot; FAQ</button>
+</div>
+
+<main>
+
+  <section class="pane active" id="over">
+    <div class="callout">JSG CMS rebuilds an agency from <strong>facts</strong> (NAP, team, catalog coverages, catalog carriers) plus global templates. It does not clone WordPress HTML, Avada, or carrier-slider PNGs. The scrape agent’s job is to fill Onboard Buddy’s payload, not to paste pages.</div>
+
+    <h2>Grades used in this brief</h2>
+    <ul>
+      <li><span class="pill done">Good</span> — onboard-client (or an existing dashboard API) does this today if the agent follows the contract.</li>
+      <li><span class="pill now">OK</span> — works with a second session-auth step, a workaround, or a known parser quirk. Fine for a reviewable staging tenant.</li>
+      <li><span class="pill warn">Bad</span> — no import path on <em>main</em> today. Park in the scrape bundle. Do not promise it in a client demo or DNS cutover.</li>
+      <li><span class="pill warn">Landmine</span> — import still returns <code>ok: true</code> while the data is missing. Looks like success; it is not.</li>
+    </ul>
+
+    <h2>Success criteria (must-have for a green-light staging pilot)</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>Criterion</th><th>Statement</th><th>Check</th><th>Status</th></tr>
+      <tr><td>Reviewable tenant</td><td>One staging tenant exists with NAP, team, logo (or a logged skip + byte-upload), catalog coverages as Review Queue drafts, catalog carriers with logos when matched.</td><td>Dashboard Agency Info + Review Queue + staging URL (unpublished pages allowed on staging).</td><td><span class="pill next">not run</span></td></tr>
+      <tr><td>Nothing live</td><td>Tenant status <code>onboarding</code>. No production publish. No DNS cutover.</td><td>Route always <code>skipBuild</code>; confirm env is staging CMS.</td><td><span class="pill next">gate</span></td></tr>
+      <tr><td>Facts not HTML</td><td>No Gutenberg/Avada/shortcodes in intake. Coverage pages are generated, not copied.</td><td>Spot-check a product draft vs the WP article.</td><td><span class="pill next">gate</span></td></tr>
+      <tr><td>QC before POST</td><td>CoS completeness table + Connor yes. Never POST “to see.”</td><td>Written QC artifact attached to the bundle.</td><td><span class="pill next">gate</span></td></tr>
+      <tr><td>Pilot identity</td><td>Steve White is an <em>update</em> of <code>barry-white-insurance</code>, not a second tenant.</td><td>Payload includes explicit <code>slug</code>; domain does not placeholder.</td><td><span class="pill warn">decide</span></td></tr>
+    </table>
+    </div>
+
+    <h2>Success criteria (nice-to-have / later)</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>Criterion</th><th>Statement</th><th>Check</th><th>Status</th></tr>
+      <tr><td>Non-exact coverage names</td><td>Auto / Workers Comp match catalog without the agent synonym table.</td><td>Instinctive Catalog Matching FRD shipped.</td><td><span class="pill next">Factory FRD</span></td></tr>
+      <tr><td>Niche products</td><td>Laser Tag becomes a tenant-local page, not a global catalog row.</td><td>Create If Missing after FRD accept.</td><td><span class="pill next">Factory FRD</span></td></tr>
+      <tr><td>Cutover-safe URLs</td><td>Old WP paths 301 to CMS paths.</td><td>Redirects import on the cutover env (on this branch, not necessarily main/prod).</td><td><span class="pill warn">blocked on main</span></td></tr>
+      <tr><td>Ranked blogs</td><td>Keep URL equity with rewritten <code>blogPost</code> drafts, not keyword-generate replacements.</td><td>Ingest path does not exist; park inventory.</td><td><span class="pill warn">no ingest</span></td></tr>
+    </table>
+    </div>
+
+    <h2>Out of scope</h2>
+    <ul>
+      <li>Cloning the WordPress theme, Elementor, Avada, Fusion, mega-menu, or custom CSS.</li>
+      <li>Copying coverage or blog HTML into CMS pages.</li>
+      <li>Importing carrier-slider PNGs (catalog logos win).</li>
+      <li>Auto-inserting scrape leftovers into the global Coverage Catalog.</li>
+      <li>Create If Missing for carriers (no invented logos).</li>
+      <li>Crawling passworded / AMS / client-portal pages.</li>
+      <li>Production publish, Build Site, or DNS without Connor.</li>
+      <li>Location × product generation at scale (uniqueness enforce is off).</li>
+    </ul>
+  </section>
+
+  <section class="pane" id="work">
+    <h2>How every piece is imported</h2>
+    <p>Read this table first. Detail for each piece is in the unfold blocks below. “Today” means <strong>main / live onboard-client</strong>, not unmerged Factory work.</p>
+    <div class="scroll">
+    <table>
+      <tr><th>ID</th><th>Piece</th><th>How it enters</th><th>Grade</th></tr>
+      <tr><td>1</td><td>Tenant identity</td><td><code>POST /api/onboard-client/</code> · slugify(<code>clientName</code>) unless <code>slug</code> is sent · domain from <code>business_website</code></td><td><span class="pill done">Good</span> <span class="pill warn">Landmine</span></td></tr>
+      <tr><td>2</td><td>NAP (name, phone, address)</td><td>v2 <code>agencyInfo</code> → <code>business.*</code> / <code>address.*</code></td><td><span class="pill done">Good</span></td></tr>
+      <tr><td>3</td><td>Hours + timezone</td><td>Free-text parse → <code>hours[]</code>; raw kept in extras; <code>time_zone</code> → <code>timeZone</code></td><td><span class="pill now">OK</span></td></tr>
+      <tr><td>4</td><td>Coverages</td><td><code>coverages[].coverage_key</code> must equal catalog keyword · cards + product drafts for <em>matches only</em></td><td><span class="pill now">OK</span> <span class="pill warn">Landmine</span></td></tr>
+      <tr><td>5</td><td>Carriers</td><td><code>carriers_selected</code> + <code>list_carriers</code> → catalog logos; unmatched name-only</td><td><span class="pill done">Good</span></td></tr>
+      <tr><td>6</td><td>Team + authors</td><td><code>teamMembers[]</code> + headshots · Authors upsert (name/role/bio/email/photo)</td><td><span class="pill now">OK</span></td></tr>
+      <tr><td>7</td><td>Logo + headshots</td><td><code>media.*.signedUrl</code> pull into R2 (allowlist, no redirects)</td><td><span class="pill warn">Landmine</span></td></tr>
+      <tr><td>8</td><td>Hero / about photos</td><td>Not on v2. Session media upload + intake PATCH for <code>heroImage</code></td><td><span class="pill now">OK</span></td></tr>
+      <tr><td>9</td><td>Locations</td><td>HQ = <code>address.*</code> (baked as pin 0). Extras = <code>address_2</code>…<code>_6</code></td><td><span class="pill now">OK</span> <span class="pill warn">Landmine</span></td></tr>
+      <tr><td>10</td><td>Fonts + colors</td><td>Not onboard. Session <code>PATCH …/theme</code> after tenant exists</td><td><span class="pill now">OK</span></td></tr>
+      <tr><td>11</td><td>Social + GBP</td><td><code>facebook_link</code> etc. + <code>google_business_listing</code> if <code>https://</code></td><td><span class="pill done">Good</span></td></tr>
+      <tr><td>12</td><td>Reviews</td><td>v2 ignores <code>reviews[]</code>. Later session reviews/refresh from GBP URL</td><td><span class="pill now">OK</span></td></tr>
+      <tr><td>13</td><td>Forms + quoting tools</td><td>Five standard CMS forms provisioned. Quote iframe → <code>quoting_tool_1</code></td><td><span class="pill done">Good</span></td></tr>
+      <tr><td>14</td><td>Tracking</td><td>Session tracking POST. GA4/GTM/Meta/Clarity/Cloudflare only</td><td><span class="pill now">OK</span></td></tr>
+      <tr><td>15</td><td>Sitemap / URL inventory</td><td>Park in bundle <code>urlInventory</code> with triage. Not imported as pages</td><td><span class="pill warn">Bad</span></td></tr>
+      <tr><td>16</td><td>URL redirects</td><td>Park in bundle. Import API exists on this branch; <strong>not assumed on main/prod</strong></td><td><span class="pill warn">Bad on main</span></td></tr>
+      <tr><td>17</td><td>Blog posts</td><td>CMS generate = new Grok posts, not WP ingest. Park titles/URLs</td><td><span class="pill warn">Bad</span></td></tr>
+      <tr><td>18</td><td>Legal / privacy / terms</td><td>CMS generates stubs. Not attorney copy</td><td><span class="pill warn">Bad</span></td></tr>
+      <tr><td>19</td><td>Licences / go-live gate</td><td>NPN + founding year map on v2. Licence numbers do not. Production enqueue can block</td><td><span class="pill now">OK</span></td></tr>
+      <tr><td>20</td><td>Staging preview</td><td>Onboard enqueues staging build (not production) if worker is up</td><td><span class="pill now">OK</span></td></tr>
+    </table>
+    </div>
+
+    <h2>1 · Tenant identity <span class="pill done">Good</span> <span class="pill warn">Landmine</span></h2>
+    <p><strong>Import:</strong> <code>POST /api/onboard-client/</code> with <code>x-api-key: $ONBOARD_API_KEY</code> (trailing slash required). Body is v2: nested <code>agencyInfo</code>. Slug = slugify(<code>clientName</code>) unless <code>slug</code> is set. Domain = host of <code>business_website</code>, <code>www.</code> stripped. Always <code>skipBuild</code>; status stays <code>onboarding</code>. You do <em>not</em> send skipBuild in JSON — the route hardcodes it.</p>
+    <p><strong>Landmine:</strong> Staging already has Steve White as <code>barry-white-insurance</code>. A POST with clientName “Steve White Insurance” creates <code>steve-white-insurance</code> and may placeholder the domain to <code>*.onboarding.invalid</code>.</p>
+    <p><strong>Fix:</strong> Pilot payload sets <code>"slug": "barry-white-insurance"</code>. First greenfield agency omits slug. First POST is staging CMS, never production.</p>
+
+    <h2>2 · NAP <span class="pill done">Good</span></h2>
+    <p><strong>Import:</strong> <code>business_name</code>, <code>business_phone</code>, <code>primary_contact_email</code> (must look like an email), <code>business_address</code> + <code>city</code> / <code>zip_code</code> / <code>seo_state</code>. Required to stand up: name, phone, street, city, state, zip.</p>
+    <p><strong>Landmine:</strong> Footer NAP ≠ JSON-LD. Cloudflare email obfuscation. <code>primary_contact_email</code> also creates a <strong>client-role CMS login</strong>.</p>
+    <p><strong>Fix:</strong> JSON-LD wins on drift; flag the other. Use a real agency inbox, not a personal Gmail, unless you want that login.</p>
+
+    <h2>3 · Hours <span class="pill now">OK</span></h2>
+    <p><strong>Import:</strong> <code>business_hours</code> free text. Parser handles <code>Monday - Friday | 9:00am - 5:00pm</code> and en-dashes. Raw string always stored in extras even if parse fails.</p>
+    <p><strong>Fix:</strong> Prefer the pipe format in the payload. “By appointment” / “24/7” will not become structured hours — keep raw for humans.</p>
+
+    <h2>4 · Coverages <span class="pill now">OK</span> <span class="pill warn">Landmine</span></h2>
+    <p><strong>Import today:</strong> top-level <code>coverages[]</code> with <code>coverage_key</code> equal to a catalog keyword (<code>car_insurance</code>, not “Auto”). Matcher slug-normalizes only; it does <strong>not</strong> read <code>alternativeKeyword</code>. Matches → intake cards + Content Schedule + product-page drafts in Review Queue. Unmatched → reported, <strong>no card, no page</strong>. <code>createIfMissing</code> is ignored on main. <code>high_priority</code> only sorts, then is dropped — put featured keys <em>first</em> in the array.</p>
+    <div class="scroll">
+    <table>
+      <tr><th>WP wording</th><th>If agent sends that string</th><th>Must emit</th></tr>
+      <tr><td>Car Insurance</td><td>hits <code>car_insurance</code></td><td><code>car_insurance</code></td></tr>
+      <tr><td>Auto / Auto Insurance</td><td><strong>miss</strong></td><td><code>car_insurance</code> via synonym table</td></tr>
+      <tr><td>Workers Comp</td><td><strong>miss</strong></td><td><code>workers_compensation_insurance</code></td></tr>
+      <tr><td>Landlord</td><td><strong>miss</strong></td><td><code>landlord_insurance</code></td></tr>
+      <tr><td>Laser Tag Insurance</td><td>unmatched today</td><td>park as custom; ICM later (tenant-local, not global catalog)</td></tr>
+      <tr><td>RV vs Auto/RV</td><td>ambiguous</td><td>do not silent-pick <code>car_insurance</code></td></tr>
+    </table>
+    </div>
+    <p><strong>Wanted:</strong> Instinctive Catalog Matching (Factory FRD, child of Onboard Site Completeness). Alias → exact → unique inference. Ambiguous unbound. Create If Missing = keyword-only schedule row + intake card + Review Queue page; no catalog FK (that column is required on selections). Human Promote only.</p>
+    <p><strong>Fix today:</strong> Agent synonym table is mandatory. CoS rejects the POST if <code>coverageMatches</code> still has raw WP titles. Cap volume (Steve White already had ~37 coverage jobs). Do not also enqueue location×product. Do not copy WP product HTML. When ICM ships, send <code>create_if_missing</code> (snake) as well as camelCase.</p>
+
+    <h2>5 · Carriers <span class="pill done">Good</span></h2>
+    <p><strong>Import:</strong> comma keys in <code>carriers_selected</code> (<code>progressive,the_hartford</code>) plus free-text <code>list_carriers</code>. Catalog (~206) supplies official name, logo, URL. Unmatched stay name-only — never dropped, never given another carrier’s logo. Do not upload slider PNGs.</p>
+    <p><strong>Fix:</strong> Normalize “The Hartford” → <code>the_hartford</code>. Regionals go in <code>list_carriers</code>.</p>
+
+    <h2>6 · Team + authors <span class="pill now">OK</span></h2>
+    <p><strong>Import:</strong> <code>teamMembers[]</code> with stable <code>portalTeamMemberId</code>, <code>name</code>, <code>title</code> (becomes role), <code>bio</code>, <code>email</code>. Invalid email is dropped; member still created. Empty roster falls back to Primary Contact with <strong>no photo</strong>. Authors collection gets the same people (not NPN/licenses/designations).</p>
+    <p><strong>Landmine:</strong> WP <code>/users</code> are often JSG staff (<code>felix</code>, <code>Nik</code>), not the agency. Phone and credentials on team are <strong>not</strong> mapped on v2.</p>
+    <p><strong>Fix:</strong> Team page / About only. Park NPN and state licenses in <code>bundle.authors[]</code> for a human in the Authors tab. Production go-live may still want those filled.</p>
+
+    <h2>7 · Logo + headshots <span class="pill warn">Landmine</span></h2>
+    <p><strong>Import:</strong> CMS fetches <code>media.logo.signedUrl</code> and team headshots (field name is leftover from Supabase; a normal https WP URL is fine). Magic-byte + EXIF strip → R2. Bind by <code>portalTeamMemberId</code>.</p>
+    <p><strong>Why it fails while <code>ok: true</code>:</strong> host must be on <code>PORTAL_ASSET_ALLOWED_HOSTS</code>; https only; <code>redirect: 'error'</code> (http→https and www↔apex <strong>skip the file</strong>); ≤10MB; 15s. Contract text still talks about Supabase. WP almost always 301s.</p>
+    <p><strong>Fix:</strong> Agent follows redirects itself, sends the <strong>final</strong> URL, allowlists every final host (apex, www, <code>i0.wp.com</code>, Gravatar) <em>before</em> POST. Fallback: session <code>POST /api/dashboard/media</code> with bytes (8MB, bypasses allowlist) then PATCH <code>business.logo</code>.</p>
+
+    <h2>8 · Hero / about photos <span class="pill now">OK</span></h2>
+    <p><strong>Import:</strong> v2 does <strong>not</strong> set <code>heroImage</code> or <code>about.image</code>. Park URLs in the bundle. After tenant exists: session media POST, then intake PATCH <code>heroImage</code> (that path is in Agency Info). About image may need a human in Who We Are — it is not the same branding field.</p>
+    <p><strong>Landmine:</strong> Upload alone does not show on the homepage. Do not drop <code>agencyInfo</code> to “use v1” for hero — you lose v2 coverages/media.</p>
+
+    <h2>9 · Locations <span class="pill now">OK</span> <span class="pill warn">Landmine</span></h2>
+    <p><strong>Import:</strong> Primary office is Agency Address, prepended at bake (WO-254). Additional offices only: <code>address_N</code> / <code>city_N</code> / <code>state_N</code> / <code>zip_N</code> / <code>phone_N</code> for N=2…6. Structured NAP required. If local phone is missing, <strong>HQ phone is used</strong> (the agent plan was wrong to say the row is always skipped). Country is forced <code>US</code>. <code>geo</code> is not mapped on v2.</p>
+    <p><strong>Landmine:</strong> Putting HQ in both <code>address.*</code> and <code>locations[]</code> → two map pins. “Cities we serve” landing pages are not offices.</p>
+    <p><strong>Fix:</strong> Physical street NAP only. City pages go to URL inventory. More than five extras → unmapped.</p>
+
+    <h2>10 · Fonts + colors <span class="pill now">OK</span></h2>
+    <p><strong>Import:</strong> Not onboard-client. Onboard Buddy only stores flags like <code>use_existing_website_colors</code> in extras. After tenant id exists, session <code>PATCH /api/dashboard/tenants/:id/theme</code>. That PATCH <strong>replaces</strong> the token map — send every token you care about in one call.</p>
+    <div class="scroll">
+    <table>
+      <tr><th>Token</th><th>Scrape from</th><th>Must send</th></tr>
+      <tr><td><code>--primary</code></td><td>Header / nav</td><td><code>H S% L%</code> e.g. <code>203 73% 39%</code> — no hex, no <code>hsl()</code>, no commas</td></tr>
+      <tr><td><code>--cta</code></td><td>Get a Quote button</td><td>same</td></tr>
+      <tr><td><code>--font-sans</code> / <code>--font-heading</code></td><td>Body / heading</td><td>Exact stack, e.g. <code>var(--font-inter), Inter, system-ui, sans-serif</code> — not the label “Inter”</td></tr>
+      <tr><td><code>--navy</code></td><td>Dark footer</td><td><strong>Dead for live bands.</strong> Site reads <code>--surface-dark</code>, which Theme PATCH drops</td></tr>
+    </table>
+    </div>
+    <p>Fonts that install: Inter, Poppins, Roboto, Montserrat, Open Sans, Lato, Raleway, Nunito, Source Sans 3, Merriweather, Lora, Playfair Display. Typekit extras do not install. <strong>Onboard API key on this route = 401.</strong></p>
+
+    <h2>11–12 · Social, GBP, reviews <span class="pill done">Good</span> / <span class="pill now">OK</span></h2>
+    <p>Socials need full <code>https://</code> or they never become <code>socialLinks</code>. GBP listing → <code>platform: google</code>. Reviews widgets on WP are ignored. After import, session <code>POST …/reviews/refresh</code> reads that Google URL and drafts Google reviews (worker + aggregator keys). Manual refresh never auto-publishes.</p>
+
+    <h2>13 · Forms + quoting <span class="pill done">Good</span></h2>
+    <p>Onboard provisions five standard forms (contact, servicing, business-insurance, personal-insurance, blog) with First/Last/Phone/Email/Message. It does not import WS Form, Gravity, CF7, WPForms, or HubSpot. Quote iframes → <code>quoting_tool_1</code>. Client login URLs → <code>client_portal_1</code>. Extra WP forms stay in unmapped.</p>
+
+    <h2>14 · Tracking <span class="pill now">OK</span></h2>
+    <p>Session tracking POST. Allowed hosts: Google (GA4/GTM/Ads), Meta, Microsoft Clarity/Bing, Cloudflare. <strong>CallRail, HubSpot, LiveChat, Hotjar → rejected.</strong> Park those. Phone tracking is a cutover checklist, not an import.</p>
+
+    <h2>15 · Sitemap / URL inventory <span class="pill warn">Bad</span></h2>
+    <p>Every leftover WP URL goes in <code>urlInventory</code> with triage <code>keep | rewrite | consolidate | retire</code>, plus a guessed CMS page type when known. Nothing in that list becomes a CMS page automatically. Standard sitemap (Home, About, Contact, Team, …) is provisioned empty/generated. Product URLs become coverage drafts only when the catalog key matched.</p>
+    <p>A 500-URL XML sitemap is a triage job, not an import job. City service pages and thin listicles should be retire/consolidate, not 80 extra product jobs.</p>
+
+    <h2>16 · URL redirects <span class="pill warn">Bad on main</span></h2>
+    <p>Park <code>{ source, target, status: "301"|"410" }</code> with <code>source</code> as a path (<code>/auto-insurance/</code>), not an absolute URL. <strong>This git branch</strong> has <code>POST /api/dashboard/tenants/:id/redirects</code> <code>op=import</code> (session, skipBuild). <strong>Main/prod may not.</strong> Targets must match live path rules (on this branch, national products are hierarchical; blogs are <code>/learning-center/{slug}/</code>). Do not guess <code>/products/auto-insurance/</code>.</p>
+    <p><strong>Do not DNS-cut</strong> until redirects exist on the env you are cutting. That is how the old book 404s.</p>
+
+    <h2>17 · Blog posts <span class="pill warn">Bad</span></h2>
+    <p><code>blogs/generate</code> + <code>push</code> creates new <code>blogPost</code> pages from a keyword in agency-grounded Grok voice. It will <strong>not</strong> ingest WP body, date, or Yoast. Using it for ranked URLs <em>replaces</em> equity with different copy. Until an ingest exists: scrape title/date/excerpt/URL for inventory; skip thin/spam; do not paste Avada HTML; author is the agency person, not JSG WP users.</p>
+
+    <h2>18 · Legal <span class="pill warn">Bad</span></h2>
+    <p>Privacy and Terms on the CMS are generated drafts, not the agency attorney’s PDF. Park WP legal URLs. A human pastes or uploads before go-live if counsel cares (they will).</p>
+
+    <h2>19 · Licences / production gate <span class="pill now">OK</span></h2>
+    <p>v2 <strong>does</strong> map <code>npn</code> and <code>year_founded</code> (the agent plan was wrong to park those). <code>licenceNumbers</code> and legal name are still unmapped. Production enqueue can fail the org-credentials gate without founding year / NPN / licences even if staging “looks done.”</p>
+
+    <h2>20 · Staging preview <span class="pill now">OK</span></h2>
+    <p>Onboard enqueues a staging build (not production). A second staging build can fire after coverage jobs finish. Staging may include pending_review and empty-body routes so the frame is not a pile of 404s. If worker/Redis are down, drafts never appear and staging stays empty. That is operational, not a scrape bug.</p>
+  </section>
+
+  <section class="pane" id="att">
+    <h2>Waiting on Connor + team (green light)</h2>
+    <ol>
+      <li><strong>Pilot identity:</strong> treat Steve White as an update of <code>barry-white-insurance</code> (send explicit <code>slug</code>), not a new tenant. Unblocks the first POST without a duplicate agency.</li>
+      <li><strong>Environment:</strong> first POST is staging CMS only. Name the host in the agent runbook. Unblocks “don’t accidentally onboard production.”</li>
+      <li><strong>Cutover rule:</strong> no DNS until redirects are deployed on the cutover env. Unblocks an honest client timeline (rebuild ≠ launch).</li>
+      <li><strong>Coverage volume:</strong> catalog matches + 2–4 featured, not every city×product URL. Unblocks Review Queue and uniqueness.</li>
+      <li><strong>Accept landmines as process, not code:</strong> synonym table + image-host allowlist + CoS gate before POST. Unblocks a first tenant without waiting on ICM.</li>
+    </ol>
+    <h2>Automatic once those land</h2>
+    <ul>
+      <li>Scrape agent emits bundle + <code>onboardBuddyPayload</code>.</li>
+      <li>CoS QC table → Connor yes → allowlist hosts → POST onboard-client.</li>
+      <li>Onboard upserts tenant, maps intake, matches catalogs, pulls allowed media, provisions pages/forms, enqueues coverage drafts + staging preview.</li>
+      <li>Grok session (not the onboard key) does theme / hero / tracking / reviews refresh.</li>
+      <li>Humans use Review Queue. Nothing goes live until someone clicks publish + Build Site.</li>
+    </ul>
+    <h2>Waiting on others</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>Who</th><th>What</th><th>Item</th><th>Where</th></tr>
+      <tr><td>Ops / staging env</td><td>Set <code>ONBOARD_API_KEY</code>, <code>PORTAL_ASSET_ALLOWED_HOSTS</code>, worker + Redis, aggregator keys for reviews</td><td>Images, coverage drafts, GBP refresh</td><td>Staging secrets</td></tr>
+      <tr><td>Factory reviewers</td><td>Accept Instinctive Catalog Matching FRD/blueprint tracked suggestions</td><td>Auto/Workers Comp without synonym table; Laser Tag tenant-local pages</td><td>Software Factory</td></tr>
+      <tr><td>Agency Content Manager</td><td>Review Queue, licences, Promote custom coverages (after ICM)</td><td>Human publish gate (I5)</td><td>Dashboard</td></tr>
+    </table>
+    </div>
+  </section>
+
+  <section class="pane" id="bg">
+    <div class="callout">If you only read one conceptual tab, read this: onboard-client is the same door Onboard Buddy already uses. WordPress is a scrape in front of that door, not a second CMS importer.</div>
+    <h2>Two pipelines, on purpose</h2>
+    <p>Onboard Buddy is for <em>new</em> clients filling a portal. WordPress migration is a crawl + triage + the same onboard POST for facts. URL inventory, blogs, and redirects stay out of onboard-client (Factory: do not overload it). Mixing them is how you get 80 junk product pages and no 301s.</p>
+    <h2>What “imported” means here</h2>
+    <p>Templates are global. Only content and tokens vary. The scrape fills intake JSON; the render pipeline is a pure function of that content. Generated product/about copy is grounded in intake and lands in the Review Queue. A human still publishes. That is invariant I5, not a temporary gap.</p>
+    <h2>Auth split</h2>
+    <p><code>ONBOARD_API_KEY</code> opens only <code>/api/onboard-client/</code>. Theme, media upload, tracking, reviews refresh, intake PATCH, redirect import use a logged-in dashboard session (<code>grok@jumpsuitgroup.com</code> on the shared machine). The scrape agent should stop at the bundle + onboard POST.</p>
+    <h2>Pilot context</h2>
+    <p>Public example in the agent plan: <code>https://stevewhiteinsurance.com/</code>. Staging already ran a Steve White Team coverage backfill on tenant <code>barry-white-insurance</code> (37 schedule rows / product-page jobs). Treat that as the same agency unless the team explicitly wants a throwaway tenant.</p>
+  </section>
+
+  <section class="pane" id="plan">
+    <h2>Approach</h2>
+    <p>Facts first, pages second, URLs last. Do not wait on Instinctive Matching to run a staging pilot — the agent synonym table is the workaround. Do wait on redirects before any DNS conversation.</p>
+
+    <svg class="pipe" viewBox="0 0 900 88" role="img" aria-label="Pipeline from WordPress scrape to human review">
+      <rect x="4" y="18" width="100" height="52" rx="8" fill="none" stroke="currentColor"/>
+      <text x="54" y="48" text-anchor="middle">WP site</text>
+      <rect x="124" y="18" width="108" height="52" rx="8" fill="none" stroke="currentColor"/>
+      <text x="178" y="48" text-anchor="middle">Scrape bundle</text>
+      <rect x="252" y="18" width="88" height="52" rx="8" fill="none" stroke="currentColor"/>
+      <text x="296" y="48" text-anchor="middle">CoS QC</text>
+      <rect x="360" y="18" width="118" height="52" rx="8" fill="none" stroke="currentColor"/>
+      <text x="419" y="42" text-anchor="middle">onboard-client</text>
+      <text x="419" y="58" text-anchor="middle">POST</text>
+      <rect x="498" y="18" width="100" height="52" rx="8" fill="none" stroke="currentColor"/>
+      <text x="548" y="48" text-anchor="middle">Session</text>
+      <rect x="618" y="18" width="118" height="52" rx="8" fill="none" stroke="currentColor"/>
+      <text x="677" y="48" text-anchor="middle">Review Queue</text>
+      <rect x="756" y="18" width="140" height="52" rx="8" fill="none" stroke="currentColor"/>
+      <text x="826" y="42" text-anchor="middle">Human publish</text>
+      <text x="826" y="58" text-anchor="middle">+ DNS later</text>
+    </svg>
+    <p class="meta">Session = theme, hero bind, tracking, reviews refresh. DNS is not in this picture until redirects exist on that env.</p>
+
+    <h2>Phases</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>Phase</th><th>Goal</th><th>Depends on</th></tr>
+      <tr><td>0 · Green light</td><td>This brief accepted. Steve White slug + staging host named. Coverage cap agreed.</td><td>—</td></tr>
+      <tr><td>1 · Scrape</td><td>Bundle: facts, coverageMatches, final image URLs, urlInventory, parked blogs/redirects.</td><td>Phase 0</td></tr>
+      <tr><td>2 · QC gate</td><td>CoS table + Connor yes. Allowlist final image hosts on staging.</td><td>Phase 1</td></tr>
+      <tr><td>3 · Onboard POST</td><td>Tenant upsert, intake, catalogs, media pull, standard pages/forms, coverage drafts, staging enqueue.</td><td>Phase 2, worker up</td></tr>
+      <tr><td>4 · Session polish</td><td>Theme PATCH, hero PATCH, GA/GTM if allowed, reviews refresh if GBP URL.</td><td>Phase 3, grok@ session</td></tr>
+      <tr><td>5 · Human review</td><td>Review Queue, licences/NPN, eyeball staging. Still no production.</td><td>Phase 4</td></tr>
+      <tr><td>6 · Cutover (later)</td><td>Redirects on that env, legal copy, tracking leftovers, DNS, production build.</td><td>Redirects deployed; org-credentials gate</td></tr>
+    </table>
+    </div>
+
+    <h2>Tightened agent runbook</h2>
+    <ol>
+      <li>Scrape public site only. JSON-LD → footer NAP → REST → menus → sitemap. Ignore WP users as team. Offices ≠ city pages.</li>
+      <li>Emit catalog <code>coverage_key</code>s via synonym table. Ambiguous → do not pick. Custom niche → park (ICM later).</li>
+      <li>Resolve image redirects; list final hosts for allowlist.</li>
+      <li>If Steve White: <code>slug: barry-white-insurance</code>.</li>
+      <li>CoS QC → Connor yes → allowlist → <code>POST https://&lt;staging-cms&gt;/api/onboard-client/</code> body = <code>onboardBuddyPayload</code> only.</li>
+      <li>Read response: <code>media[].ok</code>, unmatched coverages/carriers, <code>tenant.slug</code>. Failed logo → byte-upload + PATCH.</li>
+      <li>Session: theme (HSL + font stacks), hero, tracking, reviews refresh.</li>
+      <li>Stop. Humans own Review Queue, publish, Build Site, DNS.</li>
+    </ol>
+  </section>
+
+  <section class="pane" id="risk">
+    <h2>Risks</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>Risk</th><th>L / I</th><th>Mitigation</th><th>Owner</th></tr>
+      <tr><td>Silent <code>ok: true</code> with no logo (allowlist / 301)</td><td>High / High</td><td>Follow redirects before POST; allowlist final hosts; check <code>media[].ok</code>; byte-upload fallback</td><td>CoS + ops</td></tr>
+      <tr><td>“Auto Insurance” never becomes a card</td><td>High / High</td><td>Mandatory synonym table + QC of keys vs catalog; ICM later</td><td>Scrape agent</td></tr>
+      <tr><td>Second Steve White tenant / domain placeholder</td><td>High / High</td><td>Explicit <code>slug: barry-white-insurance</code></td><td>Connor</td></tr>
+      <tr><td>POST to production</td><td>Med / High</td><td>Name staging host in the runbook; no prod key on the scrape machine</td><td>Connor</td></tr>
+      <tr><td>Theme/tracking with onboard API key</td><td>High / Med</td><td>Split actors: scrape stops at onboard POST</td><td>CoS</td></tr>
+      <tr><td>80 coverage jobs + location×product</td><td>Med / High</td><td>Cap to catalog + featured; uniqueness enforce stays off</td><td>CoS</td></tr>
+      <tr><td>HQ duplicated on the map</td><td>Med / Med</td><td>HQ only in <code>address.*</code>; extras in <code>address_2+</code></td><td>Scrape agent</td></tr>
+      <tr><td>Dark footer color does not change</td><td>Med / Low</td><td>Do not promise it; optional small code fix for <code>--surface-dark</code></td><td>Engineering</td></tr>
+      <tr><td>CallRail / chat / Hotjar dropped</td><td>High / Med</td><td>Park; cutover checklist; do not fight the allowlist</td><td>Ops</td></tr>
+      <tr><td>DNS cutover without redirects</td><td>Med / High</td><td>Hard rule: no DNS until import API is on that env</td><td>Connor</td></tr>
+      <tr><td>Ranked blogs replaced by Grok keyword posts</td><td>Med / High</td><td>Do not use blogs/generate for WP URLs; inventory only</td><td>CoS</td></tr>
+      <tr><td>Worker/Redis down</td><td>Med / High</td><td>Confirm before POST; empty Review Queue is a infra fail</td><td>Ops</td></tr>
+      <tr><td>Go-live blocked on licences</td><td>Med / Med</td><td>Send NPN + year_founded; humans fill licence numbers</td><td>ACM</td></tr>
+      <tr><td>ICM <code>createIfMissing</code> vs <code>create_if_missing</code></td><td>Low / High later</td><td>Emit both when ICM ships; default remains off</td><td>Engineering</td></tr>
+    </table>
+    </div>
+    <h4 style="color:var(--red)">The honest caveat</h4>
+    <p>This will produce a <em>JSG site that is true to the agency’s facts</em>, not a pixel clone of WordPress. If the team’s success bar is “looks like the old theme with the old blog HTML and the old URLs on day one,” this plan is the wrong plan. If the bar is “staging tenant we can review, then generate and 301,” it is the right one — and the landmines are process, not architecture.</p>
+    <h2>Open questions (need a decision in the green-light meeting)</h2>
+    <ul>
+      <li>Is the Steve White pilot an update of <code>barry-white-insurance</code> or a disposable second tenant?</li>
+      <li>Exact staging CMS hostname for the POST?</li>
+      <li>Coverage cap for the first POST (catalog + featured vs all 37+ product URLs)?</li>
+      <li>Is “reviewable staging” enough to green-light the agent, with blogs/redirects/legal explicitly later?</li>
+      <li>Who allowlists <code>PORTAL_ASSET_ALLOWED_HOSTS</code> on staging — and how fast?</li>
+      <li>When (if ever) do we implement v2 <code>heroImage</code>, <code>--surface-dark</code> on theme PATCH, and blog ingest?</li>
+    </ul>
+  </section>
+
+  <section class="pane" id="faq">
+    <h3>Can the agent push like Onboard Buddy?</h3>
+    <p>Yes, for agency facts. Same endpoint, same v2 JSON shape, same skipBuild. No, not for the whole WordPress site (HTML, Yoast per URL, blogs, tracking, redirects).</p>
+    <h3>Why not one mega JSON into onboard-client?</h3>
+    <p>Onboard Buddy is new-client intake. A migrate also needs a redirect map and URL triage. Stuffing that into onboard-client mixes pipelines and skips the human URL review. Factory already recorded that split.</p>
+    <h3>Why not copy the WP pages?</h3>
+    <p>Structure is global (invariant). Copied Avada HTML would be a one-off template. Coverage pages are generated from the catalog so every tenant stays on the same components. Boilerplate “10 tips” posts were an SEO liability on the old sites anyway.</p>
+    <h3>Why skip carrier PNGs?</h3>
+    <p>The Carrier Catalog already has official logos. Scraped slider files are inconsistent, often watermarked or outdated, and would fight catalog enrichment at bake.</p>
+    <h3>Is Instinctive Matching required to start?</h3>
+    <p>No. The agent synonym table unblocks a pilot. ICM is required before we scale to agencies whose nav is all “Auto / Home / Comp” without a human mapping pass. Create If Missing is required before niche products (Laser Tag) should appear as pages. Both are written in Factory; neither is on main yet.</p>
+    <h3>What does “done” look like for this brief?</h3>
+    <p>Team agrees the grades. Pilot rules (slug, staging, no DNS) are written. CoS is empowered to block POST on missing catalog keys or unresolved image hosts. First staging tenant is allowed. Cutover is a separate green light after redirects.</p>
+    <h3>What does “done” look like for a rebuilt client?</h3>
+    <p>Staging: NAP complete, team + logo visible, featured coverages in Review Queue, carriers with catalog logos, theme tokens applied, staging URL loadable. Production: human-approved pages, licences/NPN/founding year, redirect map applied, tracking leftovers handled, DNS. That last sentence is not this sprint.</p>
+  </section>
+
+</main>
+
+<script type="application/json" id="artifact-state">
+{"as_of":"2026-08-27 12:48 UTC","workstreams":[{"id":"1","status":"good+landmine","owner":"onboard-client","what":"tenant identity"},{"id":"2","status":"good","owner":"onboard-client","what":"NAP"},{"id":"3","status":"ok","owner":"onboard-client","what":"hours"},{"id":"4","status":"ok+landmine","owner":"agent synonym table","what":"coverages"},{"id":"5","status":"good","owner":"onboard-client","what":"carriers"},{"id":"6","status":"ok","owner":"onboard-client","what":"team"},{"id":"7","status":"landmine","owner":"ops allowlist","what":"logo headshots"},{"id":"8","status":"ok","owner":"session media","what":"hero"},{"id":"9","status":"ok+landmine","owner":"onboard-client","what":"locations"},{"id":"10","status":"ok","owner":"session theme","what":"fonts colors"},{"id":"11","status":"good","owner":"onboard-client","what":"social GBP"},{"id":"12","status":"ok","owner":"session reviews","what":"reviews"},{"id":"13","status":"good","owner":"onboard-client","what":"forms"},{"id":"14","status":"ok","owner":"session tracking","what":"tracking"},{"id":"15","status":"bad","owner":"park","what":"sitemap inventory"},{"id":"16","status":"bad-on-main","owner":"redirects API","what":"URL redirects"},{"id":"17","status":"bad","owner":"park","what":"blog posts"},{"id":"18","status":"bad","owner":"human","what":"legal"},{"id":"19","status":"ok","owner":"human licences","what":"go-live gate"},{"id":"20","status":"ok","owner":"worker","what":"staging preview"}]}
+</script>
+
+<script>
+function goTab(id){
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.pane === id));
+  document.querySelectorAll('.pane').forEach(p => p.classList.toggle('active', p.id === id));
+}
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => goTab(t.dataset.pane)));
+</script>
+
+</body>
+</html>
