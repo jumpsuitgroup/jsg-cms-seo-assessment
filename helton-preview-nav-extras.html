@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Helton preview / nav / extras — cloud agent brief</title>
+<style>
+  :root { --fg:#1a1a1a; --bg:#fdfdfd; --accent:#0a7d4a; --warn:#b45309; --red:#b91c1c; --muted:#666; --border:#ddd; --code-bg:#f5f5f5; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e4e4e4; --bg:#1a1a1a; --accent:#4ade80; --warn:#fbbf24; --red:#f87171; --muted:#999; --border:#333; --code-bg:#262626; }
+  }
+  * { box-sizing:border-box; }
+  body { font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--fg); background:var(--bg); max-width:980px; margin:1.5em auto; padding:0 1.5em 3em; }
+  h1,h2,h3,h4 { font-weight:600; margin-top:1.6em; line-height:1.3; }
+  h1 { font-size:1.7em; margin-bottom:.2em; }
+  h2 { font-size:1.35em; border-bottom:1px solid var(--border); padding-bottom:.2em; }
+  h3 { font-size:1.1em; }
+  a { color:var(--accent); word-break:break-word; }
+  code { background:var(--code-bg); padding:.15em .35em; border-radius:3px; font-size:.92em; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; word-break:break-word; }
+  pre { background:var(--code-bg); padding:1em 1.2em; border-radius:6px; overflow-x:auto; font-size:.87em; line-height:1.5; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  pre code { background:none; padding:0; }
+  table { border-collapse:collapse; width:100%; margin:.8em 0; font-size:.93em; }
+  .scroll { overflow-x:auto; }
+  th,td { border:1px solid var(--border); padding:.45em .7em; vertical-align:top; text-align:left; }
+  th { font-weight:600; background:var(--code-bg); }
+  ul { padding-left:1.4em; } li { margin:.25em 0; }
+  details { margin:.5em 0; } details > summary { cursor:pointer; font-weight:600; padding:.4em 0; }
+  hr { border:none; border-top:1px solid var(--border); margin:2em 0; }
+  .meta { color:var(--muted); font-size:.85em; }
+  .sub { color:var(--muted); font-size:.95em; margin-top:.3em; }
+  .status { background:color-mix(in srgb, var(--accent) 12%, var(--bg)); border:1px solid var(--accent); border-radius:8px; padding:.9em 1.2em; margin:1.2em 0; }
+  .status .badge { display:inline-block; background:var(--accent); color:var(--bg); padding:.1em .6em; border-radius:4px; font-size:.78em; font-weight:600; letter-spacing:.02em; }
+  .status p { margin:.5em 0 0; font-size:.92em; }
+  .next { border:1px solid var(--warn); border-left:4px solid var(--warn); border-radius:8px; padding:.8em 1.2em; margin:1.2em 0; background:color-mix(in srgb, var(--warn) 8%, var(--bg)); }
+  .next > summary { cursor:pointer; font-weight:600; font-size:1.02em; padding:0; }
+  .next > summary .meta { font-weight:400; }
+  .next ol { margin:.5em 0 .1em 1.3em; padding:0; }
+  .next ol li { margin:.3em 0; }
+  .next .who { font-weight:600; }
+  .pill { display:inline-block; font-size:.78em; padding:.1em .55em; border-radius:10px; background:var(--code-bg); color:var(--muted); margin-left:.4em; vertical-align:1px; }
+  .pill.done { background:var(--accent); color:var(--bg); }
+  .pill.now  { background:var(--warn);   color:var(--bg); }
+  .pill.next { background:var(--code-bg); color:var(--fg); border:1px solid var(--border); }
+  .pill.warn { background:var(--red);    color:var(--bg); }
+  .callout { border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:4px; padding:.7em 1em; margin:1em 0; font-size:.93em; background:color-mix(in srgb, var(--accent) 5%, var(--bg)); }
+  .tabbar { display:flex; flex-wrap:wrap; gap:.2em; border-bottom:2px solid var(--border); margin:1.2em 0 1.5em; }
+  .tabbar .tab { padding:.55em 1em; cursor:pointer; border:1px solid transparent; border-bottom:none; border-radius:6px 6px 0 0; font:inherit; font-weight:500; font-size:.95em; color:var(--muted); background:none; margin-bottom:-2px; }
+  .tabbar .tab:hover { color:var(--fg); }
+  .tabbar .tab.active { color:var(--fg); border-color:var(--border); border-bottom:2px solid var(--bg); background:var(--bg); font-weight:600; }
+  .pane { display:none; } .pane.active { display:block; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Helton preview / nav / extras</h1>
+  <div class="sub">Cloud-agent brief for WO-495–501 · JSG CMS
+    · <a href="https://factory.8090.ai/project/f1bede17-b074-40c8-89b7-72f407a62b4c">Software Factory</a>
+    · <a href="https://github.com/jumpsuitgroup/CMS">CMS repo</a>
+  </div>
+</header>
+
+<div class="status">
+  <span class="badge">READY · PHASE 9 · NO CODE YET</span>
+  <span class="meta" style="float:right">As of 2026-09-05 01:29 UTC</span>
+  <p>7 work orders extracted. Spec complete. Start WO-495 and WO-497 in parallel. Do not production-deploy. Do not dump staging DB onto prod.</p>
+</div>
+
+<details class="next" open>
+  <summary>Next steps <span class="meta">· 3 items</span></summary>
+  <ol>
+    <li><span class="who">Cloud agent</span> — Execute WO-495 (preview identity) using the Software Factory execute-work-order skill. <span class="meta">— Stops Beacon copy in Live Preview.</span></li>
+    <li><span class="who">Cloud agent</span> — Execute WO-497 (footer correction) in parallel with 495. <span class="meta">— Independent; no blocker.</span></li>
+    <li><span class="who">Cloud agent</span> — Then 496 (after 495), 498 then 499, 500 then 501. One WO at a time unless the pair is independent. <span class="meta">— Set in_progress when you start; in_review only after checklist + APPROVED review.</span></li>
+  </ol>
+</details>
+
+<div class="tabbar">
+  <button class="tab active" data-pane="over">1 · Overview</button>
+  <button class="tab" data-pane="work">2 · Workstreams</button>
+  <button class="tab" data-pane="bg">3 · Background</button>
+  <button class="tab" data-pane="plan">4 · Plan</button>
+  <button class="tab" data-pane="risk">5 · Risks &amp; open questions</button>
+  <button class="tab" data-pane="faq">6 · Decisions / FAQ</button>
+</div>
+
+<main>
+
+<section class="pane active" id="over">
+  <div class="callout">Helton’s live site is correct. Live Preview is not (Beacon sample identity). Product nav is one long list. “See a mistake?” is too loud. Product/blog body chrome (reviews, figures) is not globally editable. Spec is written. Implement WO-495–501 only.</div>
+
+  <h2>Paste this to the cloud agent</h2>
+  <pre><code>Execute JSG CMS Software Factory WO-495 through WO-501.
+
+Project: f1bede17-b074-40c8-89b7-72f407a62b4c
+Repo: jumpsuitgroup/CMS, workspace at JSG CMS.
+Follow AGENTS.md + Claude.md. Read memory-bank/activeContext.md first.
+Execute with .agents/skills/software-factory/execution/execute-work-order.md.
+One WO at a time unless independent. Start 495 and 497 in parallel.
+Set status in_progress when you begin; in_review only after checklist + APPROVED review log.
+
+If a Work Order, its Feature Requirements, and its Feature Blueprint disagree: WO + FRD + blueprint win over this brief.
+
+Do not: production-deploy; dump staging DB onto prod; weaken YMYL/Autopublish gates; add client JS for nav; write extras onto pages.body; overlay Beacon onto a named tenant; rebuild SidebarShell (WO-359); invent a second CoveragePreviewEnricher.
+
+Uniqueness stays shadow. Production enqueue / custom-domain go-live stay Confirmation-Gated.</code></pre>
+
+  <h2>Success criteria</h2>
+  <div class="scroll">
+  <table>
+    <tr><th>Criterion</th><th>Statement</th><th>Check</th><th>Status</th></tr>
+    <tr><td>Preview identity</td><td>Named-tenant Live Preview never shows Beacon Insurance Group when the tenant supplied a name.</td><td>Open Helton Live Preview; header/about/team/reviews are Helton or empty — never Beacon.</td><td><span class="pill next">not yet</span></td></tr>
+    <tr><td>Preview coverages</td><td>Default preview matches live coverages; unpublished only behind a control that defaults off.</td><td>Control off = live set. Control on = extra cards marked not Live. Control not on baked HTML.</td><td><span class="pill next">not yet</span></td></tr>
+    <tr><td>Mega-menu</td><td>Child items grid by count: 1–7 one shrinking row; 8–19 four-wide; ≥20 five-wide. All-coverage counts.</td><td>Helton ~55 products = 5 columns. No single-column w-52 list on A/B.</td><td><span class="pill next">not yet</span></td></tr>
+    <tr><td>Template C flyout</td><td>Children open beside the left rail onto the page, not as a huge list in the sidebar.</td><td>Desktop overlay left-full; rail stays ~17rem; mobile stacked; no JS.</td><td><span class="pill next">not yet</span></td></tr>
+    <tr><td>Footer correction</td><td>Quiet “Request a correction” in footer trust row; no page-bottom headline; Signature does not duplicate it.</td><td>Mailto in trustNav on every Footer variant. PageRenderer has no CorrectionChannel.</td><td><span class="pill next">not yet</span></td></tr>
+    <tr><td>Article extras</td><td>GSE can add ReviewStrip/Figure (all LPE types) for product + blog; composed at bake; Unique Article stays the publish gate.</td><td>One extra appears on every product page after Update Site without writing pages.body. Empty article still unpublishable.</td><td><span class="pill next">not yet</span></td></tr>
+  </table>
+  </div>
+
+  <h2>Out of scope</h2>
+  <ul>
+    <li>Prompt-template SAMPLE_TOKENS.agency_name (Beacon dummy copy on that screen only).</li>
+    <li>Pending Draft Overlay still shows a pending body (REQ-LPE-002). Do not hide drafts to “match live.”</li>
+    <li>Matching baked nav/footer/signature assembly from the last export (preview stays intake-composed except identity + coverages + extras).</li>
+    <li>Location Product Page extras, per-page opt-out, Home/about extras.</li>
+    <li>Moving Related Coverages frame section into the article (“grid below FAQ” is not this work).</li>
+    <li>Rebuilding Template C SidebarShell (WO-359). Only change how children present.</li>
+    <li>Production deploy, Helton go-live, dumping cms_staging onto prod, uniqueness un-shadow, Autopublish on production enqueue.</li>
+  </ul>
+
+  <h2>Invariants (must stay true)</h2>
+  <ul>
+    <li><strong>I1</strong> — Templates are pure functions of content. Composed body is baked. No DB read at render.</li>
+    <li><strong>I4</strong> — Literal Tailwind class maps for grid-cols-1…7. Byte-identical when extras/identity absent.</li>
+    <li><strong>I5</strong> — Nothing publishes without a human. GSE extras/frame approve uses skipBuild; Update Site still publishes. Autopublish exceptions stay as already authorized (Google reviews cron; Grokbot staging Autopublish). Production enqueue / custom-domain go-live stay Confirmation-Gated.</li>
+    <li>Static export: nav flyouts CSS-only (group-hover / focus-within / details). No client JS.</li>
+  </ul>
+</section>
+
+<section class="pane" id="work">
+  <h2>Status</h2>
+  <p class="meta">X.Y numbering: X is a stage; Y are parallel within a stage. 1.1 needs 1.0. 2.0 can run with stage 1. No PRs yet.</p>
+  <div class="scroll">
+  <table>
+    <tr><th>ID</th><th>What</th><th>WO</th><th>Depends on</th><th>Status</th></tr>
+    <tr><td>1.0</td><td>Stop named-tenant Live Preview from overlaying Sample Agency Identity</td><td>WO-495</td><td>—</td><td><span class="pill next">ready</span></td></tr>
+    <tr><td>1.1</td><td>Match Live Preview coverages to the published set</td><td>WO-496</td><td>after 1.0</td><td><span class="pill next">ready</span></td></tr>
+    <tr><td>2.0</td><td>Move Correction Channel into the Footer trust-link row</td><td>WO-497</td><td>—</td><td><span class="pill next">ready</span></td></tr>
+    <tr><td>3.0</td><td>Count-based mega-menu on Default Shell (Header, HeaderV2, HeaderV3)</td><td>WO-498</td><td>—</td><td><span class="pill next">ready</span></td></tr>
+    <tr><td>3.1</td><td>Fly children out of Template C sidebar onto the page</td><td>WO-499</td><td>after 3.0</td><td><span class="pill next">ready</span></td></tr>
+    <tr><td>4.0</td><td>Store and compose Article Extras without mutating page.body</td><td>WO-500</td><td>—</td><td><span class="pill next">ready</span></td></tr>
+    <tr><td>4.1</td><td>Article Extras editor in GSE + LPE global markers</td><td>WO-501</td><td>after 4.0</td><td><span class="pill next">ready</span></td></tr>
+  </table>
+  </div>
+
+  <hr>
+  <h2>PR 1.0 — WO-495 · preview identity <span class="pill next">no commits yet</span></h2>
+  <p>FRD: <a href="https://factory.8090.ai/project/f1bede17-b074-40c8-89b7-72f407a62b4c/requirements/392788e0-07bb-4ba7-b683-b0df69ed4406">Live Preview Tenant Fidelity</a> · Blueprint: <a href="https://factory.8090.ai/project/f1bede17-b074-40c8-89b7-72f407a62b4c/blueprints/e43e0fb0-9ad4-452b-8769-0e1b81786fc1">same title</a> · REQ-LPF-001, 003, 004.</p>
+  <h3>Do</h3>
+  <ul>
+    <li>Rewrite <code>buildPreviewSite</code> in <code>src/lib/dashboard/sectionFixtures.ts</code> so a named tenant never merges onto Beacon <code>previewSite</code>.</li>
+    <li>Split structural filler (hours/address shapes, empty arrays, no agency name/about/team/reviews) vs Sample Agency fixture (catalog demos with no tenant only).</li>
+    <li>Keep supplied business.name / phone / email / address. Surface a Preview Fallback Notice when filler was used.</li>
+    <li>Same rule for GSE preview and Agency Info preview (they already call <code>buildPreviewSite</code>).</li>
+  </ul>
+  <h3>Do not</h3>
+  <ul>
+    <li>Hide Pending Draft Overlay. Do not read the last bake directory.</li>
+    <li>Rename prompt-template SAMPLE_TOKENS.</li>
+  </ul>
+  <h3>Files</h3>
+  <pre><code>src/lib/dashboard/sectionFixtures.ts
+src/lib/publish/previewSignature.ts   — agencyName from the fixed Site
+tests next to those</code></pre>
+  <p class="meta">No commits yet — fills in once the branch is cut.</p>
+
+  <hr>
+  <h2>PR 1.1 — WO-496 · preview coverages <span class="pill next">no commits yet</span></h2>
+  <p>REQ-LPF-002. Blocked by WO-495.</p>
+  <h3>Do</h3>
+  <ul>
+    <li>Gate unpublished coverages <strong>inside</strong> existing <code>#CoveragePreviewEnricher</code> (<code>src/lib/coverages/coveragePreviewEnricher.ts</code>). Do not add a second writer.</li>
+    <li>Default off = live set only. Toggle on = enabled-not-Live, marked, editor-only.</li>
+    <li>Empty live set → empty, not Beacon coverages.</li>
+  </ul>
+  <p class="meta">This changes WO-394’s default of always showing enabled drafts in preview. Bake path unchanged.</p>
+
+  <hr>
+  <h2>PR 2.0 — WO-497 · footer correction <span class="pill next">no commits yet</span></h2>
+  <p>FRD: <a href="https://factory.8090.ai/project/f1bede17-b074-40c8-89b7-72f407a62b4c/requirements/f3d9a852-d01c-42c4-bb6d-74357463ddae">Footer Correction Channel</a> · Blueprint: <a href="https://factory.8090.ai/project/f1bede17-b074-40c8-89b7-72f407a62b4c/blueprints/008ee537-b27a-470a-8d01-01703f2c8345">same</a> · REQ-FCC-001–003.</p>
+  <h3>Do</h3>
+  <ul>
+    <li>Append mailto to <code>trustNav</code> in <code>src/components/sections/utility/Footer.tsx</code> (all variants). Use <code>correctionChannelMailto</code>.</li>
+    <li>Remove <code>&lt;CorrectionChannel /&gt;</code> from <code>PageRenderer.tsx</code>. That is a deletion, not a new component.</li>
+    <li>Stop Editorial Trust Signature from rendering a second invitation.</li>
+    <li>Every page with a Footer gets the link when an email exists (ADR: tenant-global, not Content Pages only).</li>
+    <li>Bind to trustNav, <strong>not</strong> <code>showLegalText</code> (ADR supersedes AC-FCC-002.2).</li>
+  </ul>
+  <h3>Files</h3>
+  <pre><code>src/components/sections/utility/Footer.tsx + Footer.test.tsx
+src/components/render/PageRenderer.tsx
+src/components/seo/CorrectionChannel.tsx   — unused after; thin or leave
+Editorial Trust Signature render</code></pre>
+
+  <hr>
+  <h2>PR 3.0 — WO-498 · Default Shell mega-menu <span class="pill next">no commits yet</span></h2>
+  <p>FRD: <a href="https://factory.8090.ai/project/f1bede17-b074-40c8-89b7-72f407a62b4c/requirements/e9632bc4-6804-4a43-b051-818f7f363e55">Coverage Mega-Menu Presentation</a> · Blueprint: <a href="https://factory.8090.ai/project/f1bede17-b074-40c8-89b7-72f407a62b4c/blueprints/9351c3b6-2cfd-498d-9d47-05381670be2c">same</a> · REQ-MMP-001, 002, 004.</p>
+  <h3>Do</h3>
+  <ul>
+    <li><code>coverageMegaColumns(count)</code>: 1–7 → count; 8–19 → 4; ≥20 → 5. Include All-coverage in n. Tests at 0,1,3,7,8,19,20,55.</li>
+    <li>Literal Tailwind map <code>grid-cols-1</code>…<code>grid-cols-7</code>. One-row 1–7 shrinks (<code>minmax(0,1fr)</code>); no wrap before 8; no horizontal scroll.</li>
+    <li>CSS-only hover/focus-within; mobile stacked <code>&lt;details&gt;</code>.</li>
+    <li>Wire <code>Header.tsx</code>, <code>HeaderV2.tsx</code> (right-hand parent: align panel end so 5-col does not clip), and <code>HeaderV3.tsx</code>.</li>
+  </ul>
+  <h3>Do not</h3>
+  <ul><li>Change <code>buildSiteNav</code> / which items appear.</li></ul>
+  <h3>Files</h3>
+  <pre><code>src/lib/nav/coverageMegaMenu.ts + tests
+shared MegaMenuPanel component
+src/components/sections/utility/Header.tsx
+src/components/sections/utility/HeaderV2.tsx
+src/components/sections/utility/HeaderV3.tsx</code></pre>
+
+  <hr>
+  <h2>PR 3.1 — WO-499 · Template C flyout <span class="pill next">no commits yet</span></h2>
+  <p>REQ-MMP-003 (+ 001, 004). Blocked by WO-498 (reuse helper + panel). Do not rebuild SidebarShell (WO-359).</p>
+  <ul>
+    <li>Desktop: panel <code>absolute left-full</code> over content; rail does not expand.</li>
+    <li>Every parent with children, not only coverages.</li>
+    <li>Hover bridge so the pointer can enter the panel. Narrow viewport stacked list. No JS.</li>
+  </ul>
+  <pre><code>src/components/render/shells/SidebarShell.tsx</code></pre>
+
+  <hr>
+  <h2>PR 4.0 — WO-500 · extras store + compose + bake <span class="pill next">no commits yet</span></h2>
+  <p>FRD: <a href="https://factory.8090.ai/project/f1bede17-b074-40c8-89b7-72f407a62b4c/requirements/3b643a46-9e09-4587-a93f-656aa81bf99c">Article Extras</a> · Blueprint: <a href="https://factory.8090.ai/project/f1bede17-b074-40c8-89b7-72f407a62b4c/blueprints/83285ad7-3626-4dcc-94c3-bbad64282bf1">same</a> · REQ-AX-001.4–5, 003, 004, 006.</p>
+  <h3>Do</h3>
+  <ul>
+    <li>Additive <code>tenants.contentBodyDefaults</code> jsonb: <code>{ productPage?, blogPost? }</code> each <code>{ blocks: Block[], articleIndex: number }</code>.</li>
+    <li><code>composedBody = [...blocks.slice(0, articleIndex), ...page.body, ...blocks.slice(articleIndex)]</code>.</li>
+    <li>Bake in <code>toContentPage</code> / <code>materializeTenant</code>. Page Live Preview uses <strong>approved</strong> extras only.</li>
+    <li>Never write extras onto <code>pages.body</code>. Generation does not emit extras.</li>
+    <li><code>isPublishableBody(pageType, page.body)</code> — Unique Article only. Do not pass Composed Body into <code>validateBody</code>.</li>
+    <li>Approve path like <code>__frame__</code>: persist + <code>skipBuild</code>. Do not enqueue 55 page rebuilds (not GSE-007.3).</li>
+    <li><code>db:sync</code> after merge (additive; no tenant seeds).</li>
+  </ul>
+  <h3>Files</h3>
+  <pre><code>src/payload/collections/Tenants.ts
+src/lib/content/composeContentBody.ts + tests
+src/lib/dashboard/globalContentBody.ts   — parse/validate/apply, mirror globalFrameStructure.ts
+src/lib/publish/materializeTenant.ts     — toContentPage compose
+PageFramePreview / LPE preview compose with approved defaults</code></pre>
+
+  <hr>
+  <h2>PR 4.1 — WO-501 · GSE editor + LPE markers <span class="pill next">no commits yet</span></h2>
+  <p>REQ-AX-001, 002, 003.4, 005, 007. Blocked by WO-500.</p>
+  <ul>
+    <li>Article Extras card on Product Page / Blog Post layouts only. Locked Article Slot. All LPE-addable types including ReviewStrip and Figure.</li>
+    <li><code>canAdd</code> / <code>validateBody</code> in this editor must skip Product Page Unique Article vocabulary or ReviewStrip cannot be added.</li>
+    <li>Review item <code>__bodyDefaults__</code>, one per layout. GSE preview = pending extras. LPE = approved extras.</li>
+    <li>LPE: extras marked global, not deletable from one page. Body editor list is Unique Article only.</li>
+  </ul>
+  <pre><code>src/components/dashboard/GlobalSectionEditorClient.tsx
+src/lib/dashboard/globalFrameStructure.ts   — parallel reserved sectionType
+LPE preview marker on composed extras</code></pre>
+
+  <h2>Do not duplicate</h2>
+  <ul>
+    <li>WO-394 — CoveragePreviewEnricher (extend it in 496).</li>
+    <li>WO-359 — SidebarShell itself (still ready; flyout only in 499).</li>
+    <li>WO-350–352 — GSE store/UI/review (reuse <code>#GlobalSectionChangeReview</code>).</li>
+    <li>WO-416 — Footer config model (trustNav is hardcoded chrome, not footerConfig.columns).</li>
+  </ul>
+</section>
+
+<section class="pane" id="bg">
+  <div class="callout">If you only read one tab besides Overview, read this — why Helton preview says Beacon, and why body blocks are not frame sections.</div>
+  <h2>Beacon in Live Preview, not on the live site</h2>
+  <p>Helton DB and bake contain zero “Beacon Insurance Group.” Tenant name is Helton. Live Preview does not use the bake. <code>buildPreviewSite()</code> in <code>sectionFixtures.ts</code> tries <code>siteSchema.safeParse(intake)</code>. On failure it merges intake onto <code>previewSite</code>, whose branded fixture is Beacon (name, about, team, reviews, stats, owner quote). Unsupplied or Zod-stripped fields stay Beacon. That is the bug WO-495 fixes.</p>
+  <h2>Frames vs body</h2>
+  <p>GSE today edits <strong>frame</strong> sections (<code>tenants.frameOverrides</code>): Header, RelatedCoverages, ReviewStrip<strong>Section</strong>. Article body blocks (prose, FAQ, reviewStrip <strong>block</strong>, figure) live on <code>pages.body</code> per page. Google reviews <em>in the article</em> after FAQ is a body block extra, not the frame. Related Coverages stays a frame section. Do not move the coverage grid into the article in this work.</p>
+  <h2>Template C</h2>
+  <p>Template C uses <code>SidebarShell</code> (left rail ~17rem). <code>FrameComposer</code> skips the top Header on C. Helton has ~55 products, so nested <code>&lt;details&gt;</code> in the rail is unusable. The flyout must overlay the page. A/B still use top Header.</p>
+  <h2>Correction Channel today</h2>
+  <p><code>CorrectionChannel</code> is a centered paragraph under the whole page in <code>PageRenderer</code>. Mailto from <code>correctionChannelMailto</code> (correctionsEmail or business.email). Footer already has Privacy, Terms, Editorial Process, Trust &amp; Standards, AI Info as <code>trustNav</code>. Compact Credit does not include the channel.</p>
+  <h2>Environment</h2>
+  <ul>
+    <li>Staging: <code>/root/cms-staging</code> port 3001, DB <code>cms_staging</code>. Helton tenant 22, slug <code>helton-insurance-group</code>.</li>
+    <li>Prod: <code>/root/cms</code> port 3000. Do not promote this work to production unless Connor says so.</li>
+    <li>Current prod SHA was <code>50cf7d9</code> at last checkpoint; staging has Prompt Pools PR #65 (<code>c38419b</code>). Pull current SHAs before branching.</li>
+    <li>Software Factory MCP: <code>software-factory-jsg-cms</code>, project <code>f1bede17-b074-40c8-89b7-72f407a62b4c</code>. Binding: <code>.agents/mcp/software-factory-jsg-cms.json</code>.</li>
+  </ul>
+</section>
+
+<section class="pane" id="plan">
+  <h2>Approach</h2>
+  <p>Ship in four stages matching the approved plan. Each stage is its own PR. 1.0 and 2.0 can land together. Do not mix uncommitted coverage prompt-set junk from the working tree into these PRs.</p>
+  <h2>Phases</h2>
+  <div class="scroll">
+  <table>
+    <tr><th>Phase</th><th>Goal</th><th>Depends on</th></tr>
+    <tr><td>1 · Preview</td><td>WO-495 then WO-496. Beacon gone. Coverages match live by default.</td><td>—</td></tr>
+    <tr><td>2 · Footer</td><td>WO-497. Quiet correction in trustNav.</td><td>—</td></tr>
+    <tr><td>3 · Nav</td><td>WO-498 then WO-499. Mega-menu + C flyout.</td><td>Helper from 498</td></tr>
+    <tr><td>4 · Extras</td><td>WO-500 then WO-501. Schema + bake first, then GSE UI. db:sync after 500 merges.</td><td>500 before 501</td></tr>
+  </table>
+  </div>
+  <h2>Execution ritual</h2>
+  <ol>
+    <li>Read AGENTS.md, Claude.md, memory-bank/activeContext.md.</li>
+    <li><code>read_work_order</code> for the WO you are about to start. Then its FRD and blueprint. Follow <code>@</code> links.</li>
+    <li>Follow <code>.agents/skills/software-factory/execution/execute-work-order.md</code>. Every checklist item <code>[x]</code> or <code>[SKIP]</code> with reason.</li>
+    <li>Set WO <code>in_progress</code> when you begin. <code>in_review</code> only after tests + APPROVED review log.</li>
+    <li>UI changes: verify in the browser (Helton staging tenant 22) before declaring done. If no browser tools, say so and use tests/curl.</li>
+    <li>Do not commit unless the operator asks. Do not production-deploy.</li>
+  </ol>
+</section>
+
+<section class="pane" id="risk">
+  <h2>Risks</h2>
+  <div class="scroll">
+  <table>
+    <tr><th>Risk</th><th>Likelihood / impact</th><th>Mitigation</th><th>Owner</th></tr>
+    <tr><td>Second CoveragePreviewEnricher forks WO-394</td><td>Med / high</td><td>Gate unpublished inside existing enricher only.</td><td>WO-496</td></tr>
+    <tr><td>HeaderV2 left/right split clips a 5-col panel</td><td>High / med</td><td>Align right-hand parent panel to the end.</td><td>WO-498</td></tr>
+    <tr><td>Extras approve rebuilds 55 pages</td><td>Med / high</td><td>Follow __frame__ skipBuild, not GSE-007.3 per-page rebuild.</td><td>WO-500</td></tr>
+    <tr><td>validateBody rejects ReviewStrip extras</td><td>High / high</td><td>Publishability and vocabulary on Unique Article only. Extras editor skips page-type vocabulary.</td><td>WO-500/501</td></tr>
+    <tr><td>ETS blueprint still says Signature invites corrections</td><td>Med / med</td><td>Implement from Footer Correction Channel ADR-003; edit Signature render even if parent blueprint lags.</td><td>WO-497</td></tr>
+    <tr><td>Dirty local tree (prompt pools, xlsx) mixed into PRs</td><td>Med / high</td><td>Branch from origin/main; do not add untracked coverage-prompt files.</td><td>Agent</td></tr>
+  </table>
+  </div>
+  <h4 style="color:var(--red)">⚠ The honest caveat</h4>
+  <p>Live Preview will still not equal the live site after this work: pending drafts overlay the body, and nav/footer/signature still compose from intake rather than the last bake. Identity + coverages + extras are the fidelity this batch guarantees. Operators should still use the baked preview URL as source of truth for remaining chrome.</p>
+  <h2>Open questions (v1 defaults already decided — do not reopen)</h2>
+  <ul>
+    <li>Coverages match live; unpublished toggle default <strong>off</strong>.</li>
+    <li>Article extras: productPage + blogPost only; all pages of type; no per-page opt-out; Location Product Page out.</li>
+    <li>“All coverage” counts toward 7 / 20.</li>
+    <li>C flyout desktop overlay; mobile stacked list.</li>
+    <li>Correction link on every Footer, not Content Pages only; not gated by showLegalText.</li>
+    <li>Related Coverages stays in the frame.</li>
+  </ul>
+</section>
+
+<section class="pane" id="faq">
+  <h3>Why not overlay Beacon as a schema fallback?</h3>
+  <p>Helton preview then shows another agency’s name, about, team, and reviews. Preview stops being a check against the live site. Empty structural placeholders plus a fallback notice are honest; Beacon copy is not.</p>
+  <h3>Why not write extras onto each product page.body?</h3>
+  <p>Helton has ~55 products. Writing would clobber Unique Articles and duplicate on re-save. Compose at bake from tenant JSON. LPE and generation never copy extras into pages.body.</p>
+  <h3>Why skipBuild on extras approve?</h3>
+  <p>GSE-007.3 queues a rebuild of affected pages. For extras that is every product page. Frame structure already uses skipBuild; Update Site still publishes. Same path for <code>__bodyDefaults__</code>.</p>
+  <h3>Why not client JS for the mega-menu?</h3>
+  <p>Static export. No-JS is an invariant (AC-NDT-007.6). Hover/focus-within/details only.</p>
+  <h3>What does done look like?</h3>
+  <p>All seven WOs in_review with tests. Helton Live Preview says Helton, not Beacon. Coverage dropdown is a grid. Template C children fly onto the page. Footer has a quiet correction link. GSE can add a ReviewStrip extra to all product pages without touching 55 Unique Articles. Nothing production-deployed unless Connor asks.</p>
+  <h3>Where are the source records?</h3>
+  <p>Software Factory project <code>f1bede17-b074-40c8-89b7-72f407a62b4c</code>. Read the WO first, then its linked FRD and blueprint. Binding: <code>.agents/mcp/software-factory-jsg-cms.json</code>.</p>
+</section>
+
+</main>
+
+<script type="application/json" id="artifact-state">
+{"as_of":"2026-09-05 01:29 UTC","workstreams":[{"id":"1.0","wo":495,"status":"ready","owner":"cloud-agent"},{"id":"1.1","wo":496,"status":"ready","owner":"cloud-agent"},{"id":"2.0","wo":497,"status":"ready","owner":"cloud-agent"},{"id":"3.0","wo":498,"status":"ready","owner":"cloud-agent"},{"id":"3.1","wo":499,"status":"ready","owner":"cloud-agent"},{"id":"4.0","wo":500,"status":"ready","owner":"cloud-agent"},{"id":"4.1","wo":501,"status":"ready","owner":"cloud-agent"}]}
+</script>
+<script>
+function goTab(id){
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.pane === id));
+  document.querySelectorAll('.pane').forEach(p => p.classList.toggle('active', p.id === id));
+}
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => goTab(t.dataset.pane)));
+</script>
+</body>
+</html>
