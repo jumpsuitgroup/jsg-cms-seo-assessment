@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Page family guide</title>
+<style>
+  :root { --fg:#1a1a1a; --bg:#fdfdfd; --accent:#0a7d4a; --warn:#b45309; --red:#b91c1c; --muted:#666; --border:#ddd; --code-bg:#f5f5f5; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg:#e4e4e4; --bg:#1a1a1a; --accent:#4ade80; --warn:#fbbf24; --red:#f87171; --muted:#999; --border:#333; --code-bg:#262626; }
+  }
+  * { box-sizing:border-box; }
+  body { font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--fg); background:var(--bg); max-width:980px; margin:1.5em auto; padding:0 1.5em 3em; }
+  h1,h2,h3,h4 { font-weight:600; margin-top:1.6em; line-height:1.3; }
+  h1 { font-size:1.7em; margin-bottom:.2em; }
+  h2 { font-size:1.35em; border-bottom:1px solid var(--border); padding-bottom:.2em; }
+  h3 { font-size:1.1em; }
+  a { color:var(--accent); }
+  code { background:var(--code-bg); padding:.15em .35em; border-radius:3px; font-size:.92em; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; word-break:break-word; }
+  .scroll { overflow-x:auto; margin:.8em 0  .2em; -webkit-overflow-scrolling:touch; }
+  .scroll svg { display:block; width:100%; height:auto; }
+  .scroll table { margin:0; min-width:640px; }
+  table { border-collapse:collapse; width:100%; margin:.8em 0; font-size:.93em; }
+  th,td { border:1px solid var(--border); padding:.45em .7em; vertical-align:top; text-align:left; overflow-wrap:anywhere; }
+  th { font-weight:600; background:var(--code-bg); }
+  ul,ol { padding-left:1.4em; } li { margin:.25em 0; }
+  details { margin:.5em 0; } details > summary { cursor:pointer; font-weight:600; padding:.4em 0; }
+  hr { border:none; border-top:1px solid var(--border); margin:2em 0; }
+  .meta { color:var(--muted); font-size:.85em; }
+  .sub { color:var(--muted); font-size:.95em; margin-top:.3em; }
+  .status { background:color-mix(in srgb, var(--accent) 12%, var(--bg)); border:1px solid var(--accent); border-radius:8px; padding:.9em 1.2em; margin:1.2em 0; }
+  .status .badge { display:inline-block; background:var(--accent); color:var(--bg); padding:.1em .6em; border-radius:4px; font-size:.78em; font-weight:600; letter-spacing:.02em; }
+  .status p { margin:.5em 0 0; font-size:.92em; }
+  .next { border:1px solid var(--warn); border-left:4px solid var(--warn); border-radius:8px; padding:.8em 1.2em; margin:1.2em 0; background:color-mix(in srgb, var(--warn) 8%, var(--bg)); }
+  .next > summary { cursor:pointer; font-weight:600; font-size:1.02em; padding:0; }
+  .next > summary .meta { font-weight:400; }
+  .next ol { margin:.5em 0 .1em 1.3em; padding:0; }
+  .next ol li { margin:.3em 0; }
+  .next .who { font-weight:600; }
+  .pill { display:inline-block; font-size:.78em; padding:.1em .55em; border-radius:10px; background:var(--code-bg); color:var(--muted); margin-left:.4em; vertical-align:1px; }
+  .pill.done { background:var(--accent); color:var(--bg); }
+  .pill.now  { background:var(--warn);   color:var(--bg); }
+  .pill.next { background:var(--code-bg); color:var(--fg); border:1px solid var(--border); }
+  .pill.warn { background:var(--red);    color:var(--bg); }
+  .callout { border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:4px; padding:.7em 1em; margin:1em 0; font-size:.93em; background:color-mix(in srgb, var(--accent) 5%, var(--bg)); }
+  .figure { color:var(--muted); font-size:.85em; margin:.2em 0 1.2em; }
+  .tabbar { display:flex; flex-wrap:wrap; gap:.2em; border-bottom:2px solid var(--border); margin:1.2em 0 1.5em; }
+  .tabbar .tab { padding:.55em 1em; cursor:pointer; border:1px solid transparent; border-bottom:none; border-radius:6px 6px 0 0; font:inherit; font-weight:500; font-size:.95em; color:var(--muted); background:none; margin-bottom:-2px; }
+  .tabbar .tab:hover { color:var(--fg); }
+  .tabbar .tab.active { color:var(--fg); border-color:var(--border); border-bottom:2px solid var(--bg); background:var(--bg); font-weight:600; }
+  .pane { display:none; } .pane.active { display:block; }
+  svg text { fill:var(--fg); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+  .box { fill:color-mix(in srgb, var(--accent) 10%, var(--bg)); stroke:var(--accent); }
+  .box-warm { fill:color-mix(in srgb, var(--warn) 12%, var(--bg)); stroke:var(--warn); }
+  .box-quiet { fill:var(--code-bg); stroke:var(--border); }
+  .arrow { stroke:var(--muted); fill:none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Page family guide</h1>
+  <div class="sub">How one coverage becomes a product page, audience pages, town pages, a review, and a stack of blog posts.</div>
+</header>
+
+<div class="status">
+  <span class="badge">GUIDE</span>
+  <span class="meta" style="float:right">As of 2026-10-18 22:28 UTC</span>
+  <p>Five page types · one worked topic, landscapers · a 25-page month and a 40-page month · a person still publishes.</p>
+</div>
+
+<details class="next" open>
+  <summary>Next steps <span class="meta">· 3 items</span></summary>
+  <ol>
+    <li><span class="who">Publisher</span> — Pick one product page that is already on the site. That page is the topic for the month. <span class="meta">— every audience page, town page, and the review hang off it</span></li>
+    <li><span class="who">Publisher</span> — Ask for ideas first. Push only the pages you will read this month. <span class="meta">— a check does not create a page; push does</span></li>
+    <li><span class="who">A person</span> — Publish on the week you planned. Then publish the parent page again so its cards update. <span class="meta">— the public site changes on this step</span></li>
+  </ol>
+</details>
+
+<div class="tabbar">
+  <button class="tab active" data-pane="over">1 · Overview</button>
+  <button class="tab" data-pane="work">2 · How they connect</button>
+  <button class="tab" data-pane="bg">3 · One topic</button>
+  <button class="tab" data-pane="plan">4 · Monthly plans</button>
+  <button class="tab" data-pane="risk">5 · Watch-outs</button>
+  <button class="tab" data-pane="faq">6 · FAQ</button>
+</div>
+
+<main>
+
+  <section class="pane active" id="over">
+    <div class="callout">Start with one product page, such as Landscaper Insurance. From that single page you can plan audience pages, a town version of each, one review, and a list of blog posts. The examples below use a made-up agency, Harbor Insurance, so the names stay clean. The titles are samples of the kind of idea an ask returns. An ask writes its own titles.</div>
+
+    <h2>What each page is for</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>Page</th><th>Use it for</th><th>Clean example</th><th>Where a visitor finds it</th></tr>
+      <tr>
+        <td>Product page</td>
+        <td>The main page for one coverage. This is the hub. It speaks to that line of business in general.</td>
+        <td>Landscaper Insurance</td>
+        <td>The coverage menu, the coverage gallery, and Related Coverages.</td>
+      </tr>
+      <tr>
+        <td>Audience page</td>
+        <td>One slice of that same buyer. A tighter page, still asking for a quote.</td>
+        <td>Workers' Comp for Landscapers</td>
+        <td>A card on the product page, under a heading that reads “By business” until you change it.</td>
+      </tr>
+      <tr>
+        <td>Town page</td>
+        <td>That same audience page, written for one city.</td>
+        <td>Workers' Comp for Landscapers in Wayland, Massachusetts</td>
+        <td>A card on the city page for that town.</td>
+      </tr>
+      <tr>
+        <td>City page</td>
+        <td>The local hub for one town. The system creates it the first time you push a town. It gets one article.</td>
+        <td>Insurance in Wayland, Massachusetts</td>
+        <td>Its own address. The town-page cards sit on it. It stays out of the menu, the gallery, Related Coverages, and coverage search.</td>
+      </tr>
+      <tr>
+        <td>Review page</td>
+        <td>One practical walkthrough for that coverage: limits, what is left out, contracts, subcontractors, and a quote. One per product page.</td>
+        <td>Landscaper Insurance review</td>
+        <td>Its own address, with a quote form. It is not a card on the product page.</td>
+      </tr>
+      <tr>
+        <td>Blog post</td>
+        <td>An article that answers one question. It goes deeper than a product page. It does not join the card grids.</td>
+        <td>Does a landscaper need workers' comp in Massachusetts?</td>
+        <td>The blog. Its own short address.</td>
+      </tr>
+    </table>
+    </div>
+
+    <h2>The family, in one picture</h2>
+    <div class="scroll">
+      <svg viewBox="0 0 640 520" role="img" style="min-width:640px" aria-label="Landscaper Insurance at the top. Audience pages sit under it. A review sits beside the product page. Town pages sit under the audience pages and card onto a city page. Blog posts sit off to the side.">
+        <rect class="box" x="170" y="16" width="300" height="64" rx="8"/>
+        <text x="320" y="40" text-anchor="middle" font-size="15" font-weight="600">Landscaper Insurance</text>
+        <text x="320" y="60" text-anchor="middle" font-size="12" fill="var(--muted)">Product page · the hub · in the menu</text>
+
+        <path class="arrow" d="M250 80 V118" stroke-width="1.5"/>
+        <path class="arrow" d="M390 80 V118" stroke-width="1.5"/>
+        <path class="arrow" d="M500 48 H560 V118" stroke-width="1.5"/>
+
+        <rect class="box" x="36" y="118" width="250" height="64" rx="8"/>
+        <text x="161" y="142" text-anchor="middle" font-size="14" font-weight="600">Audience pages</text>
+        <text x="161" y="162" text-anchor="middle" font-size="12" fill="var(--muted)">Cards on the product page</text>
+
+        <rect class="box-warm" x="310" y="118" width="220" height="64" rx="8"/>
+        <text x="420" y="142" text-anchor="middle" font-size="14" font-weight="600">Review page</text>
+        <text x="420" y="162" text-anchor="middle" font-size="12" fill="var(--muted)">One · own address</text>
+
+        <rect class="box-quiet" x="548" y="118" width="80" height="64" rx="8"/>
+        <text x="588" y="146" text-anchor="middle" font-size="13" font-weight="600">Blogs</text>
+        <text x="588" y="164" text-anchor="middle" font-size="11" fill="var(--muted)">own list</text>
+
+        <path class="arrow" d="M161 182 V220" stroke-width="1.5"/>
+        <rect class="box-warm" x="36" y="220" width="250" height="72" rx="8"/>
+        <text x="161" y="246" text-anchor="middle" font-size="14" font-weight="600">Town pages</text>
+        <text x="161" y="266" text-anchor="middle" font-size="12" fill="var(--muted)">One city added to each</text>
+        <text x="161" y="282" text-anchor="middle" font-size="12" fill="var(--muted)">audience page you already have</text>
+
+        <path class="arrow" d="M161 292 V330" stroke-width="1.5"/>
+        <rect class="box-warm" x="36" y="330" width="420" height="72" rx="8"/>
+        <text x="246" y="356" text-anchor="middle" font-size="14" font-weight="600">Insurance in Wayland, Massachusetts</text>
+        <text x="246" y="376" text-anchor="middle" font-size="12" fill="var(--muted)">City page · town cards sit here</text>
+        <text x="246" y="392" text-anchor="middle" font-size="12" fill="var(--muted)">Created once, the first time you push</text>
+
+        <text x="36" y="440" font-size="13">A blog is planned from a keyword, not from the card chain.</text>
+        <text x="36" y="462" font-size="13">Wayland, MA and Wayland, Massachusetts share one city page.</text>
+        <text x="36" y="484" font-size="13">Audience, town, city, and review pages stay out of the menu.</text>
+      </svg>
+    </div>
+    <p class="figure">The same facts are in the table above. The picture is only the shape.</p>
+
+    <h2>The five moves</h2>
+    <div class="scroll">
+      <svg viewBox="0 0 900 120" role="img" style="min-width:900px" aria-label="Five steps: Ask, Check, Push, Read, Publish.">
+        <rect class="box-quiet" x="8" y="28" width="150" height="64" rx="8"/>
+        <text x="83" y="54" text-anchor="middle" font-size="15" font-weight="600">1 · Ask</text>
+        <text x="83" y="74" text-anchor="middle" font-size="12" fill="var(--muted)">ideas only</text>
+        <path class="arrow" d="M158 60 H178" stroke-width="1.5"/>
+        <rect class="box-quiet" x="178" y="28" width="150" height="64" rx="8"/>
+        <text x="253" y="54" text-anchor="middle" font-size="15" font-weight="600">2 · Check</text>
+        <text x="253" y="74" text-anchor="middle" font-size="12" fill="var(--muted)">still no page</text>
+        <path class="arrow" d="M328 60 H348" stroke-width="1.5"/>
+        <rect class="box" x="348" y="28" width="160" height="64" rx="8"/>
+        <text x="428" y="54" text-anchor="middle" font-size="15" font-weight="600">3 · Push</text>
+        <text x="428" y="74" text-anchor="middle" font-size="12" fill="var(--muted)">page + article queued</text>
+        <path class="arrow" d="M508 60 H528" stroke-width="1.5"/>
+        <rect class="box-quiet" x="528" y="28" width="160" height="64" rx="8"/>
+        <text x="608" y="54" text-anchor="middle" font-size="15" font-weight="600">4 · Read</text>
+        <text x="608" y="74" text-anchor="middle" font-size="12" fill="var(--muted)">on the date you set</text>
+        <path class="arrow" d="M688 60 H708" stroke-width="1.5"/>
+        <rect class="box" x="708" y="28" width="176" height="64" rx="8"/>
+        <text x="796" y="54" text-anchor="middle" font-size="15" font-weight="600">5 · Publish</text>
+        <text x="796" y="74" text-anchor="middle" font-size="12" fill="var(--muted)">a person does this</text>
+      </svg>
+    </div>
+    <p class="figure">Push lines up the writing. It does not put the page on the public site. One article is written at a time, up to 100 in a push.</p>
+
+    <h2>What “good” looks like</h2>
+    <table>
+      <tr><th>You can do this</th><th>How you know</th><th>Status</th></tr>
+      <tr><td>Name the job of each page</td><td>You can say, in one sentence, why a town page exists and why a blog exists.</td><td><span class="pill done">in this guide</span></td></tr>
+      <tr><td>Trace one page back to its parent</td><td>A Wayland town page points at one audience page and one city page. The audience page points at Landscaper Insurance.</td><td><span class="pill done">in this guide</span></td></tr>
+      <tr><td>Plan a month from one topic</td><td>The 25-page month and the 40-page month each have a week-by-week list and a count of what is left on the shelf.</td><td><span class="pill done">in this guide</span></td></tr>
+    </table>
+
+    <h2>Out of scope</h2>
+    <ul>
+      <li>Office location pages, and the older location-product pairs, stay as they are. A town ask does not create an office page.</li>
+      <li>This guide does not put audience, town, city, or review pages into the menu.</li>
+      <li>Nothing here publishes a site by itself.</li>
+    </ul>
+  </section>
+
+  <section class="pane" id="work">
+    <h2>The order</h2>
+    <p>You need the product page first. Audience pages come from that page. Town pages come from audience pages you already created. The city page appears with the first town you push. The review is one extra page on the same product page. Blogs run beside all of this.</p>
+    <div class="scroll">
+    <table>
+      <tr><th>Step</th><th>Page</th><th>Comes after</th><th>What you do</th></tr>
+      <tr><td>1</td><td>Product page</td><td>—</td><td><span class="pill done">start here</span> Publish Landscaper Insurance before you plan the rest.</td></tr>
+      <tr><td>2</td><td>Audience pages</td><td>Step 1</td><td><span class="pill next">then</span> On the Audience tab, pick that product page and ask. You get up to 12 ideas.</td></tr>
+      <tr><td>3</td><td>Town pages</td><td>Step 2</td><td><span class="pill next">then</span> On the Town tab, type a city and a state. The list is audience pages that do not yet have that town. Up to 12.</td></tr>
+      <tr><td>3b</td><td>City page</td><td>The first town push</td><td><span class="pill now">with the town</span> The first push for Wayland creates Insurance in Wayland, Massachusetts and queues one article. The next Wayland push reuses it.</td></tr>
+      <tr><td>4</td><td>Review page</td><td>Step 1</td><td><span class="pill next">one</span> On Coverage Review, pick the same product page. The row is titled Landscaper Insurance review. A second review for that page is refused.</td></tr>
+      <tr><td>5</td><td>Blog posts</td><td>A keyword</td><td><span class="pill next">beside</span> On Blogs, type a seed such as landscaper insurance. About 20 ideas come back. Push the ones you want.</td></tr>
+    </table>
+    </div>
+
+    <h2>One page, followed all the way through</h2>
+    <p>This is the smallest loop. One audience page, then one town, with the review and one blog beside them.</p>
+    <ol>
+      <li><strong>Hub, already live.</strong> Landscaper Insurance. The buyer stored on later pages is Landscaper. That word is the title with Insurance taken off the end. If a title does not end in Insurance, the buyer is the whole title.</li>
+      <li><strong>Ask for audience ideas.</strong> Audience tab. Choose Landscaper Insurance. Ask. Twelve ideas come back when twelve are available. One of them is Workers' Comp for Landscapers. Checking it does not create a page. Starring it does not create a page. The star is for this client only.</li>
+      <li><strong>Push that one idea.</strong> The Audience tab gains an unpublished page. The article is queued. The page remembers two things: buyer Landscaper, and parent Landscaper Insurance. It shows up as a card on Landscaper Insurance only after a person publishes it, and only after Landscaper Insurance itself is previewed or published again.</li>
+      <li><strong>Ask for Wayland.</strong> Town tab. City Wayland, state Massachusetts. Because the audience page exists, the list can offer Workers' Comp for Landscapers in Wayland, Massachusetts. If you have no audience pages yet, the list is empty. A town ask will not invent a town page from the hub alone.</li>
+      <li><strong>Push the Wayland idea.</strong> Two things are created if they are new. The town page, linked to the audience page it came from. And the city page Insurance in Wayland, Massachusetts, with one article queued. The town card sits on the city page. It does not sit on Landscaper Insurance.</li>
+      <li><strong>Ask for the review.</strong> Coverage Review tab. Pick Landscaper Insurance. You get one suggestion. Push it. The row title is Landscaper Insurance review. The article is queued. The page has a quote form. It is not a card, and it is not in the menu.</li>
+      <li><strong>Ask for a blog.</strong> Blogs tab. Seed landscaper insurance. Push Does a landscaper need workers' comp in Massachusetts? That creates a blog draft and queues the article. It does not create an audience page, and it does not fill a card grid.</li>
+      <li><strong>A person publishes</strong> each draft. The hub is published again so the audience card is on it. The city page is published after the town page, so the town card is on it.</li>
+    </ol>
+
+    <h2>What the buttons do</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>Button</th><th>What you get</th><th>What stays undone</th></tr>
+      <tr><td>Ask</td><td>Audience or town: up to 12 ideas. Review: one idea. Blog: about 20 ideas from the keyword. Ideas are saved, grouped by that ask.</td><td>No page is created. A failed ask leaves the schedule as it was.</td></tr>
+      <tr><td>Check</td><td>Selects the ideas you want to push together.</td><td>No page is created.</td></tr>
+      <tr><td>Favorite</td><td>Keeps an idea easy to find later, for this client.</td><td>No page is created. Another client does not get the star.</td></tr>
+      <tr><td>Push to Planner</td><td>Creates the unpublished page and queues the article. A town push also creates the city page the first time, and queues that one city article. Up to 100 pages. They write one at a time. A page that runs long does not cancel the rest.</td><td>The public site does not change. Pushing the same idea again does not create a second page, and does not queue a second article.</td></tr>
+      <tr><td>Schedule date</td><td>The day that row is due. Use it so a month is spread across four weeks. A row that has not been written can be picked up when its date arrives.</td><td>The date is not a publish. Publish stays a separate human step.</td></tr>
+      <tr><td>Generate</td><td>Writes rows already on the schedule. The menu offers 1, 2, 5, 10, 20, 50, and 100. The usual batch is 20. A new batch is added to one that is already open.</td><td>Generate does not publish.</td></tr>
+      <tr><td>Publish</td><td>A person puts that page on the site.</td><td>Publishing a child does not publish the parent. Publish the hub again for new audience cards. Publish the city page again for new town cards.</td></tr>
+    </table>
+    </div>
+
+    <h3>Asking again</h3>
+    <ul>
+      <li>Ask the same product page for audience ideas again. New ideas are added. Ideas already in the list are not repeated. Pages you already pushed stay.</li>
+      <li>Ask the same town again. You get audience pages that still have no page for that town, up to 12.</li>
+      <li>Ask the same product page for a review again, after you have pushed it. You are told the guide is already on the schedule. A second page is not created.</li>
+    </ul>
+
+    <h3>Where you click</h3>
+    <p>Content Schedule tabs, in order: All, Product Pages, Blogs, Audience, Town, Coverage Review, Publishing History. The schedule opens on Product Pages. All is a look-only list: name, type, publish date, and authors. Do the asking, pushing, and publishing on the matching tab.</p>
+  </section>
+
+  <section class="pane" id="bg">
+    <div class="callout">This is the part to remember. One product page is a hub. The first ask gives you a dozen audience pages. Each of those can be rewritten for every town you care about. One review and a stack of blogs sit beside that. A calm quarter of publishing can be a single topic.</div>
+
+    <h2>The modest pass</h2>
+    <p>Stay with Landscaper Insurance. Take the first audience ask. Give those pages to three towns. Add the one review. Write the blogs from one keyword. Count:</p>
+    <div class="scroll">
+      <svg viewBox="0 0 760 300" role="img" aria-label="One product page becomes 12 audience pages, 36 town pages, 3 city pages, 1 review, and about 20 blog posts.">
+        <rect class="box" x="250" y="12" width="260" height="52" rx="8"/>
+        <text x="380" y="34" text-anchor="middle" font-size="14" font-weight="600">1 product page</text>
+        <text x="380" y="52" text-anchor="middle" font-size="12" fill="var(--muted)">Landscaper Insurance · already live</text>
+        <path class="arrow" d="M380 64 V88" stroke-width="1.5"/>
+        <rect class="box" x="230" y="88" width="300" height="44" rx="8"/>
+        <text x="380" y="116" text-anchor="middle" font-size="14" font-weight="600">12 audience pages · one ask</text>
+        <path class="arrow" d="M380 132 V156" stroke-width="1.5"/>
+        <rect class="box-warm" x="190" y="156" width="380" height="44" rx="8"/>
+        <text x="380" y="184" text-anchor="middle" font-size="14" font-weight="600">36 town pages · 12 audiences × 3 towns</text>
+        <text x="40" y="230" font-size="14">+ 3 city pages, one per town, written once</text>
+        <text x="40" y="254" font-size="14">+ 1 review · Landscaper Insurance review</text>
+        <text x="40" y="278" font-size="14">+ about 20 blog posts from the keyword “landscaper insurance”</text>
+      </svg>
+    </div>
+    <p>That is about <strong>72 new pages</strong> from one hub: 12 + 36 + 3 + 1 + 20. The hub was already published, so it is not in the 72. The menu still shows the one product page. The other pages are reached from cards, from the city page, from the review’s own address, and from the blog.</p>
+    <p>Ask for audience ideas a second time and you get up to 12 more. Three towns would then want up to 36 more town pages. That second ring is real. It is also why a month should take a slice, not the whole tree.</p>
+
+    <h2>A sample audience list</h2>
+    <p>You picked Landscaper Insurance. The ask returns pages for that buyer. They all belong to Landscaper Insurance, and the cards for the ones you publish sit on that page. These twelve titles are samples:</p>
+    <ol>
+      <li>General Liability for Landscapers</li>
+      <li>Workers' Comp for Landscapers</li>
+      <li>Truck Insurance for Landscapers</li>
+      <li>Equipment Insurance for Landscapers</li>
+      <li>Umbrella Insurance for Landscapers</li>
+      <li>Tools and Mowers for Landscapers</li>
+      <li>Business Owners Policy for Landscapers</li>
+      <li>Inland Marine for Landscapers</li>
+      <li>Seasonal Crews for Landscapers</li>
+      <li>New Landscaping Businesses</li>
+      <li>Landscaper Insurance for Snow Removal</li>
+      <li>Landscaper Insurance for Lawn Care Only</li>
+    </ol>
+    <p>Push eight of them in a calm month. The other four stay ideas. They cost nothing until you push.</p>
+
+    <h2>How a town multiplies the list</h2>
+    <p>You have published, or at least pushed, those eight audience pages. You type Wayland, Massachusetts. The ask offers those eight, because none of them has a Wayland page yet. Push six. You now have:</p>
+    <ul>
+      <li>Workers' Comp for Landscapers in Wayland, Massachusetts, linked back to Workers' Comp for Landscapers.</li>
+      <li>The same pattern for the other five you pushed.</li>
+      <li>One city page, Insurance in Wayland, Massachusetts, with a single article. The six town pages card onto it after they are published and the city page is published again.</li>
+    </ul>
+    <p>Framingham is the same move. The audience pages already exist, so Framingham can be asked the same week you ask Wayland. Each town is a copy of the audience list, not a new topic.</p>
+    <p>Three towns and all twelve audience pages would be 36 town pages plus 3 city pages. That is the dozen-into-dozens step. You do not have to do it in one month.</p>
+
+    <h2>Blogs are the flexible layer</h2>
+    <p>A blog seed is a keyword, not a parent page. “landscaper insurance” can return ideas like these:</p>
+    <ul>
+      <li>Does a landscaper need workers' comp in Massachusetts?</li>
+      <li>What a landscaper truck policy often leaves out</li>
+      <li>How to insure a mower and a trailer</li>
+      <li>What happens when a mower throws a rock</li>
+      <li>Certificates of insurance for a commercial property</li>
+    </ul>
+    <p>About twenty come back. Push a handful each week. A second seed, “landscaper workers comp”, is another twenty. Leave that second list unpushed and next month already has a shelf.</p>
+    <p>Use a blog when the piece answers a question. Use an audience page when the piece should sit on the hub as a coverage someone can buy. Use a town page when that same offer should name a city. Use the review when you want one checklist for the whole program.</p>
+
+    <h2>What a quarter looks like</h2>
+    <p>At 25 published pages a month, three months is 75 pages. The modest pass above is about 72 new pages. One topic can fill a calm quarter.</p>
+    <p>At 40 a month, that same pass is a bit under two months. The third month can start the next hub, such as Plumber Insurance, or take the second audience ask and one more town.</p>
+  </section>
+
+  <section class="pane" id="plan">
+    <h2>How to run the month</h2>
+    <p>Both examples start the same way. Harbor Insurance already has Landscaper Insurance published. No landscaper audience pages exist yet. You want a steady public site, and a shelf of ideas and drafts for the month after.</p>
+    <p>Three piles, every week:</p>
+    <ul>
+      <li><strong>Ideas.</strong> Asked, not pushed. Free to keep. They are not pages.</li>
+      <li><strong>Drafts.</strong> Pushed. The article is writing or written. The page is not on the site.</li>
+      <li><strong>Live.</strong> A person published it.</li>
+    </ul>
+    <p>Push a few more pages than you publish. Read them before they go live. The writer does one page at a time, so a push of eight is an afternoon in line, and a push of forty is a long line. Spread the pushes across the weeks. The cap on one push is 100.</p>
+
+    <h2>Side by side</h2>
+    <div class="scroll">
+    <table>
+      <tr><th></th><th>Calm month · 25 live</th><th>Busy month · 40 live</th></tr>
+      <tr><td>Audience pages live</td><td>8</td><td>10</td></tr>
+      <tr><td>Town pages live</td><td>6, all Wayland</td><td>18 · 10 Wayland and 8 Framingham</td></tr>
+      <tr><td>City pages live</td><td>1 · Wayland</td><td>2 · Wayland and Framingham</td></tr>
+      <tr><td>Review live</td><td>1</td><td>1</td></tr>
+      <tr><td>Blog posts live</td><td>9</td><td>9</td></tr>
+      <tr><td>New pages live</td><td>8 + 6 + 1 + 1 + 9 = 25</td><td>10 + 10 + 8 + 2 + 1 + 9 = 40</td></tr>
+      <tr><td>Pages pushed</td><td>30</td><td>46</td></tr>
+      <tr><td>Drafts still waiting</td><td>5 · 2 town pages and 3 blogs</td><td>6 · 2 Framingham pages and 4 blogs</td></tr>
+      <tr><td>Ideas left unpushed</td><td>12 · 4 audience and 8 blogs</td><td>29 · 2 audience, 7 from the first blog seed, 20 from a second seed</td></tr>
+      <tr><td>Towns opened</td><td>Wayland only</td><td>Wayland, then Framingham</td></tr>
+      <tr><td>Parent republish</td><td>Landscaper Insurance once the 8 audience pages are live. The Wayland city page once its 6 town pages are live.</td><td>The hub once the 10 audience pages are live. Each city page once the town pages you are shipping that week are live.</td></tr>
+    </table>
+    </div>
+    <p class="figure">Republishing the hub or a city page refreshes cards. Those republishes are not counted in the 25 or the 40. The counts are new pages.</p>
+
+    <h2>A 25-page month</h2>
+    <p>One town. Most of the first audience list. A short blog list. Friday is the publish day in this exercise. Move the day if you like. Keep the shape: ask early in the week, push a batch you can read, publish a set number.</p>
+
+    <h3>Week 1 · Open the buyer</h3>
+    <ul>
+      <li>Audience tab. Pick Landscaper Insurance. Ask. Twelve sample ideas come back. The list is in the One topic tab.</li>
+      <li>Push the first eight: General Liability, Workers' Comp, Truck, Equipment, Umbrella, Tools and Mowers, Business Owners Policy, Inland Marine. All “for Landscapers”.</li>
+      <li>Leave four ideas unpushed: Seasonal Crews, New Landscaping Businesses, Snow Removal, Lawn Care Only.</li>
+      <li>Blogs tab. Seed <em>landscaper insurance</em>. About twenty ideas. Push six. Two samples: “Does a landscaper need workers' comp in Massachusetts?” and “What a landscaper truck policy often leaves out.”</li>
+      <li>Put this Friday on four audience rows and two blog rows.</li>
+      <li><strong>Publish 6:</strong> 4 audience pages and 2 blogs. Eight pages are still in the queue from this week’s push.</li>
+    </ul>
+
+    <h3>Week 2 · Finish the hub, start Wayland</h3>
+    <ul>
+      <li><strong>Publish 6:</strong> the other 4 audience pages and 2 blogs. The month is at 12. All eight audience pages are live.</li>
+      <li>Publish Landscaper Insurance again so those eight cards show on the hub.</li>
+      <li>Town tab. Wayland, Massachusetts. The ask lists the eight audience pages. Push six of them. Leave Umbrella and Inland Marine without a Wayland page.</li>
+      <li>That push creates Insurance in Wayland, Massachusetts and queues its one article.</li>
+      <li>Push three more blogs. Nine blogs are now pushed.</li>
+    </ul>
+
+    <h3>Week 3 · Ship Wayland</h3>
+    <ul>
+      <li>Coverage Review. Pick Landscaper Insurance. Push the one suggestion, Landscaper Insurance review.</li>
+      <li>Push the last two Wayland pages, Umbrella and Inland Marine, so eight town pages are in drafts or live. You will publish six and hold two.</li>
+      <li>Push three more blogs. Twelve blogs are now pushed.</li>
+      <li><strong>Publish 7:</strong> 4 Wayland town pages, the Wayland city page, and 2 blogs. The month is at 19.</li>
+    </ul>
+
+    <h3>Week 4 · Close the month, keep a shelf</h3>
+    <ul>
+      <li>No new ask. Read what is left.</li>
+      <li><strong>Publish 6:</strong> 2 Wayland town pages, the review, and 3 blogs. The month is at 25.</li>
+      <li>Publish the Wayland city page again so the six live town cards are on it.</li>
+      <li>Still in drafts, on purpose: 2 Wayland town pages and 3 blogs.</li>
+      <li>Still ideas, on purpose: 4 audience ideas and 8 blog ideas.</li>
+    </ul>
+
+    <h3>What the 25 are</h3>
+    <div class="scroll">
+    <table>
+      <tr><th>Week</th><th>You push</th><th>You publish</th><th>Live so far</th></tr>
+      <tr><td>1</td><td>8 audience, 6 blogs</td><td>4 audience, 2 blogs</td><td>6</td></tr>
+      <tr><td>2</td><td>6 town, and the city page is created with them. 3 blogs</td><td>4 audience, 2 blogs. Republish the hub.</td><td>12</td></tr>
+      <tr><td>3</td><td>2 town, 1 review, 3 blogs</td><td>4 town, 1 city, 2 blogs</td><td>19</td></tr>
+      <tr><td>4</td><td>Nothing new</td><td>2 town, 1 review, 3 blogs. Republish the city page.</td><td>25</td></tr>
+    </table>
+    </div>
+    <p>Pushed pages: 8 audience + 8 town + 1 city + 1 review + 12 blogs = 30. Live: 25. Waiting: 5.</p>
+
+    <h2>A 40-page month</h2>
+    <p>Same hub. Same first audience ask. You keep two more audience pages, you open a second town, and you ask for a second blog list that you do not push. The week still publishes about ten pages, so reading stays possible.</p>
+
+    <h3>Week 1 · Take almost the whole audience list</h3>
+    <ul>
+      <li>Ask on Landscaper Insurance. Push ten of the twelve. Leave Snow Removal and Lawn Care Only as ideas.</li>
+      <li>Blog seed <em>landscaper insurance</em>. Push six.</li>
+      <li><strong>Publish 10:</strong> 6 audience pages and 4 blogs.</li>
+    </ul>
+
+    <h3>Week 2 · Finish the audience pages, open Wayland</h3>
+    <ul>
+      <li>Ask Wayland. Ten suggestions, one per audience page you pushed. Push all ten. The Wayland city page is created and its article is queued.</li>
+      <li>Push four more blogs. Ten blogs are now pushed.</li>
+      <li><strong>Publish 10:</strong> the other 4 audience pages, 4 Wayland town pages, and 2 blogs. All ten audience pages are live. Publish the hub again so the ten cards show. The month is at 20. Six Wayland drafts are still writing.</li>
+    </ul>
+
+    <h3>Week 3 · Finish Wayland, add the review</h3>
+    <ul>
+      <li>Push the review for Landscaper Insurance.</li>
+      <li>Push three more blogs. Thirteen blogs are now pushed.</li>
+      <li><strong>Publish 10:</strong> the other 6 Wayland town pages, the Wayland city page, the review, and 2 blogs. The month is at 30.</li>
+      <li>Publish the Wayland city page once the six new town pages are live, so all ten town cards are on it. If the city page went live earlier in the week, publish it again after the last town pages.</li>
+    </ul>
+
+    <h3>Week 4 · Open Framingham, bank a second keyword</h3>
+    <ul>
+      <li>Ask Framingham, Massachusetts. Ten suggestions. Push all ten. Insurance in Framingham, Massachusetts is created and its one article is queued.</li>
+      <li>Ask a second blog seed, <em>landscaper workers comp</em>. About twenty ideas. Push none. That list is next month’s shelf. Samples you might see: “What a landscaper workers' comp audit looks at” and “Payroll, subcontractors, and the workers' comp bill.”</li>
+      <li><strong>Publish 10:</strong> 8 Framingham town pages, the Framingham city page, and 1 blog. The month is at 40.</li>
+      <li>Hold 2 Framingham town pages and 4 blogs as drafts.</li>
+    </ul>
+
+    <h3>What the 40 are</h3>
+    <div class="scroll">
+    <table>
+      <tr><th>Week</th><th>You push</th><th>You publish</th><th>Live so far</th></tr>
+      <tr><td>1</td><td>10 audience, 6 blogs</td><td>6 audience, 4 blogs</td><td>10</td></tr>
+      <tr><td>2</td><td>10 Wayland town, city page created with them, 4 blogs</td><td>4 audience, 4 town, 2 blogs. Republish the hub.</td><td>20</td></tr>
+      <tr><td>3</td><td>1 review, 3 blogs</td><td>6 town, 1 city, 1 review, 2 blogs</td><td>30</td></tr>
+      <tr><td>4</td><td>10 Framingham town, city page created with them. Second blog seed, none pushed.</td><td>8 town, 1 city, 1 blog</td><td>40</td></tr>
+    </table>
+    </div>
+    <p>Pushed pages: 10 audience + 10 Wayland + 10 Framingham + 2 city + 1 review + 13 blogs = 46. Live: 40. Waiting: 6. Unpushed ideas: 2 audience + 7 blogs from the first seed + about 20 from the second seed.</p>
+
+    <h2>If the 25-page month already happened</h2>
+    <p>Do not rebuild it. Eight audience pages, a Wayland city page, and a review may already be live, with five drafts and twelve ideas on the shelf. A following busy month then spends its 40 on the shelf, on Framingham, and on the next hub. The counts above are for a month that starts from the hub alone, so the two examples can be compared on the same footing.</p>
+
+    <h2>A pace you can keep</h2>
+    <ul>
+      <li>Publish about the same number every week. Six in the calm month. Ten in the busy month. A week that publishes twenty will not get read.</li>
+      <li>Audience pages before town pages. The town list is made of audience pages you already have.</li>
+      <li>One new town per calm month. Two in a busy month. A third town is thirty-six town pages once you have twelve audience pages. Save it.</li>
+      <li>One review per hub, whenever the audience pages for that hub are underway. It does not multiply.</li>
+      <li>Blogs fill the gaps. If a town batch runs long, publish blogs that week and move two town pages to next week. The month’s shape survives.</li>
+      <li>End the month with drafts and ideas still unused. That is the next month’s head start.</li>
+    </ul>
+  </section>
+
+  <section class="pane" id="risk">
+    <h2>Easy to get wrong</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>What goes wrong</th><th>How likely, and how costly</th><th>What to do</th><th>Who</th></tr>
+      <tr>
+        <td>You push a whole month on Monday. The line is long, and the drafts sit unread.</td>
+        <td>Likely · the site looks unfinished if someone publishes the pile to catch up</td>
+        <td>Push what that week can read. The calm plan pushes 30 across three weeks, not 30 on one morning.</td>
+        <td>Publisher</td>
+      </tr>
+      <tr>
+        <td>You ask for a town before any audience page exists. The list comes back empty.</td>
+        <td>Likely the first time · you lose a day, not a site</td>
+        <td>Push audience pages first. The town ask offers those pages.</td>
+        <td>Publisher</td>
+      </tr>
+      <tr>
+        <td>Wayland, MA and Wayland, Massachusetts become two hubs.</td>
+        <td>Unlikely if you reuse the town · confusing cards if it happens</td>
+        <td>They share one page titled Insurance in Wayland, Massachusetts. A later push reuses it and does not write a second city article.</td>
+        <td>Publisher</td>
+      </tr>
+      <tr>
+        <td>You expect a second review for the same product page.</td>
+        <td>The second push is refused</td>
+        <td>One review per product page. The title is that page’s title plus the word review.</td>
+        <td>Publisher</td>
+      </tr>
+      <tr>
+        <td>Town cards are missing on the product page.</td>
+        <td>They were never going to be there</td>
+        <td>Audience cards sit on the product page. Town cards sit on the city page. Publish the parent after the children are live.</td>
+        <td>Publisher</td>
+      </tr>
+      <tr>
+        <td>New cards are published on the child, and the hub still shows the old set.</td>
+        <td>Common · the hub looks empty of work you already did</td>
+        <td>Publishing a child does not publish the parent. Preview or publish the parent again.</td>
+        <td>Whoever publishes</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3>The honest limit</h3>
+    <p>The pages multiply faster than a person can read them. Twelve audience pages across three towns is already thirty-six town pages, before blogs. The machine will queue them. It will not decide which ones deserve to be on the site. The monthly plans exist so the queue stays smaller than the tree.</p>
+
+    <h2>Open on purpose</h2>
+    <ul>
+      <li>The twelve audience titles and the blog titles in this guide are samples. An ask writes the real ones. Keep the ones that match the agency. Delete the rest. Deleting an idea does not delete a page you already pushed.</li>
+      <li>A hand-added page is allowed when the list missed one. On the Audience tab it still belongs to the product page you picked. On the Town tab it still stores the audience page it came from and the city page it sits on.</li>
+    </ul>
+  </section>
+
+  <section class="pane" id="faq">
+    <h3>Why can one topic become dozens of pages?</h3>
+    <p>Because the pages are combinations, not new subjects. One hub has many audience slices. Each slice can be written for many towns. The review happens once. Blogs are a keyword list beside that. Twelve audience pages and three towns are already thirty-six town pages.</p>
+
+    <h3>What is the buyer?</h3>
+    <p>The product page title with the word Insurance taken off the end. Landscaper Insurance stores the buyer Landscaper. Every audience page from that ask is a Landscaper page, and the cards sit on Landscaper Insurance.</p>
+
+    <h3>Where does a visitor open a town page?</h3>
+    <p>From the city page, Insurance in Wayland, Massachusetts. The town page is not in the menu, the gallery, Related Coverages, or coverage search. The city page stays out of those places too.</p>
+
+    <h3>Where does a visitor open an audience page?</h3>
+    <p>From a card on the product page. The card shows the title, one sentence when you have stored one, and a Learn more link. The list has no cap. Unpublished audience pages are left off it.</p>
+
+    <h3>Why is there only one review?</h3>
+    <p>The review is the single walkthrough for that coverage, with a quote form. A second one for the same product page is refused. It is not another audience page, and it is not shown as a card.</p>
+
+    <h3>Does Push to Planner publish?</h3>
+    <p>It creates the unpublished page and queues the article. A person publishes later. Checking an idea, or starring it, does not create the page.</p>
+
+    <h3>What does the schedule date do?</h3>
+    <p>It marks the day that row is due, so the month stays spread out. Push is what lines up the writing. The date does not put the page on the site.</p>
+
+    <h3>What if I ask again?</h3>
+    <p>An audience ask or a town ask adds new ideas and keeps the pages you already pushed. A review ask, once that guide is on the schedule, tells you it is already there.</p>
+
+    <h3>What if the suggestion list missed a page?</h3>
+    <p>Add it by hand. An audience page still belongs to the product page you chose. A town page still needs its audience page and its city page. A duplicate title on the same parent is refused.</p>
+
+    <h3>Do blogs feed the town pages?</h3>
+    <p>No. A blog is its own article from a keyword. Planning audience and town pages does not create blog posts. Pushing a blog does not create an audience page.</p>
+
+    <h3>What should I do after the first topic is well covered?</h3>
+    <p>Start the next product page, or take a second audience ask and one new town. Taking every remaining combination in one month is how the queue gets ahead of the reading.</p>
+  </section>
+
+</main>
+
+<script type="application/json" id="artifact-state">
+{"as_of":"2026-10-18 22:28 UTC","kind":"guide","workstreams":[{"id":"product","name":"Product page","status":"hub","owner":"publisher"},{"id":"audience","name":"Audience pages","status":"from-hub","owner":"publisher"},{"id":"town","name":"Town pages","status":"from-audience","owner":"publisher"},{"id":"city","name":"City page","status":"with-first-town-push","owner":"publisher"},{"id":"review","name":"Review page","status":"one-per-hub","owner":"publisher"},{"id":"blog","name":"Blog posts","status":"keyword-list","owner":"publisher"},{"id":"month-25","name":"25-page month","status":"example","owner":"publisher"},{"id":"month-40","name":"40-page month","status":"example","owner":"publisher"}]}
+</script>
+
+<script>
+function goTab(id){
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.pane === id));
+  document.querySelectorAll('.pane').forEach(p => p.classList.toggle('active', p.id === id));
+}
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => goTab(t.dataset.pane)));
+</script>
+
+</body>
+</html>
