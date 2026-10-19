@@ -65,8 +65,8 @@
 
 <div class="status">
   <span class="badge">GUIDE</span>
-  <span class="meta" style="float:right">As of 2026-10-18 23:26 UTC</span>
-  <p>Five page types · one worked topic, landscapers · a 25-page month and a 40-page month · a person still publishes.</p>
+  <span class="meta" style="float:right">As of 2026-10-19 00:35 UTC</span>
+  <p>Five page types · one worked topic, landscapers · a 25-page month and a 40-page month · a push fills the days · you can pick the month · a person still publishes.</p>
 </div>
 
 <details class="next" open>
@@ -255,12 +255,51 @@
       <tr><td>Ask</td><td>Audience or Town/City + Coverage: up to 12 ideas. Review: one idea. Blog: about 20 ideas from the keyword. Ideas are saved, grouped by that ask.</td><td>No page is created. A failed ask leaves the schedule as it was.</td></tr>
       <tr><td>Check</td><td>Selects the ideas you want to push together.</td><td>No page is created.</td></tr>
       <tr><td>Favorite</td><td>Keeps an idea easy to find later, for this client.</td><td>No page is created. Another client does not get the star.</td></tr>
-      <tr><td>Push to Planner</td><td>Creates the unpublished page and queues the article. A Town/City + Coverage push also creates the Town/City page the first time, and queues that one Town/City article. Up to 100 pages. They write one at a time. A page that runs long does not cancel the rest.</td><td>The public site does not change. Pushing the same idea again does not create a second page, and does not queue a second article.</td></tr>
-      <tr><td>Schedule date</td><td>The day that row is due. Use it so a month is spread across four weeks. A row that has not been written can be picked up when its date arrives.</td><td>The date is not a publish. Publish stays a separate human step.</td></tr>
+      <tr><td>Push to Planner</td><td>Creates the unpublished page, gives it the next open day, and queues the article. A Town/City + Coverage push also creates the Town/City page the first time, queues that one Town/City article, and gives the Town/City page the following day. Up to 100 pages. They write one at a time, and another client can take a turn between them. A page that runs long or fails does not cancel the rest.</td><td>The public site does not change. A duplicate is skipped and named. The later ideas in that same push are still created. Pushing the same idea again does not create a second page, and does not rewrite the page you already have.</td></tr>
+      <tr><td>Month</td><td>Optional, on the push. Leave it blank and the days use tomorrow's month. Pick a month and the days start on the 1st of that month. The list is this month and the next eleven months.</td><td>Choosing a month does not publish. A day in that month that is already past is still filled in, and that page stays unpublished. Adding one page by hand does not show this menu.</td></tr>
+      <tr><td>Schedule date</td><td>Filled in by the push. With no month chosen, start tomorrow, or on the 1st when tomorrow is the 1st. With a month chosen, start on the 1st of that month. One new page on each empty day through the last day of the month, including the 31st when the month has one. Then go back to the 1st and add a second page, then the 2nd, and so on. Stay in that month.</td><td>The day is a plan. It is not a publish, and a future day does not go live by itself. Changing one day does not move the others.</td></tr>
       <tr><td>Generate</td><td>Writes rows already on the schedule. The menu offers 1, 2, 5, 10, 20, 50, and 100. The usual batch is 20. A new batch is added to one that is already open.</td><td>Generate does not publish.</td></tr>
       <tr><td>Publish</td><td>A person puts that page on the site.</td><td>Publishing a child does not publish the parent. Publish the hub again for new audience cards. Publish the Town/City page again for new Town/City + Coverage cards.</td></tr>
     </table>
     </div>
+
+    <h2>How the days land</h2>
+    <p>The push reads tomorrow once and uses that date for the whole batch.</p>
+    <ul>
+      <li>If tomorrow is the 1st, the first page lands on the 1st.</li>
+      <li>If the month has already started, the first page lands on tomorrow.</li>
+      <li>The push walks forward to the last real day of that month. A day that already has a page is skipped on this walk.</li>
+      <li>When the walk is finished, the next page goes on the 1st as a second page, then the 2nd, then the 3rd. The extra pages stay in that same month.</li>
+    </ul>
+    <p>On 18 October, a push of 20 new pages onto a month with no days taken lands on 19 October through 31 October, then 1 October through 7 October. The Town/City page created with a Town/City + Coverage page takes the next day in that same list. A page that already has a day keeps it. An idea that is skipped does not take a day.</p>
+
+    <h2>Choosing a month</h2>
+    <p>The walk above is what happens when you do not pick a month. The push offers a month. The starting choice is no month. The list is this month and the next eleven months.</p>
+    <ul>
+      <li>On 18 October, pick December, and the first twelve undated pages land on 1 December through 12 December, when that December has no days taken.</li>
+      <li>Pick this month after the 1st, and the days still start on the 1st. A day that has already passed is still filled in. That page stays unpublished.</li>
+      <li>A page that already has a day keeps it. In that December example, a page already set to 25 December stays on 25 December, and no other page in the push takes 25 December.</li>
+      <li>Choosing a month does not publish, and it does not set the publish date.</li>
+      <li>Adding one page by hand, with no day, still uses tomorrow's month. The month menu is on the push.</li>
+    </ul>
+
+    <h2>One writing line</h2>
+    <p>Blogs, audience pages, Town/City + Coverage pages, Town/City pages, and reviews share one line for the whole app. You can push 12 blogs, then push 12 audience pages while those blogs are still writing, then open another client and line up more. The screen comes back as soon as the pages are lined up. One page writes at a time. After each page, if another client is waiting, that client gets the next page. Inside one client, the order stays the order you pushed. You can leave the client. The line keeps going. A page that fails, including one that does not finish within 800 seconds, is marked failed and is not started again on its own. When you come back, each page shows In Queue, Failed, or Succeeded. The page being written is In Queue. Pages past 100 in one push stay ideas, and you are told their names.</p>
+
+    <h2>Publishing Status</h2>
+    <p>The global menu has Publishing Status. It opens with no client selected. One table lists every client's lined-up pages: client name, page title, whether the copy is ready, whether the images are ready, and the queue status. The queue status is In Queue, Failed, or Succeeded. The table opens on In Queue, oldest first. You can switch to Failed, Succeeded, or all. A finished row and a failed row stay until you line that same page up again. Copy is ready when the article body exists on the page or on a draft. A title alone is not ready. Prompt missing is for coverage rows. A blog shows images ready, not ready, or that images are not used. Opening this list does not publish. A planned day by itself does not put a page on the list. The page has to be lined up to be written.</p>
+
+    <h3>Duplicates</h3>
+    <p>The same client does not get a second copy of a page.</p>
+    <ul>
+      <li>An audience page with the same title on the same product page is skipped.</li>
+      <li>A Town/City + Coverage page for the same audience page and the same place is skipped.</li>
+      <li>Wayland, MA and Wayland, Massachusetts keep one Town/City page.</li>
+      <li>A second review for the same product page is skipped.</li>
+      <li>A blog with the same title, or the same web address, is skipped. The post you already have is not rewritten, including a post you wrote by hand.</li>
+      <li>Two copies of the same idea in one push: the first is created, and the second is skipped.</li>
+      <li>One skip does not stop the rest of the push. The skipped names are shown.</li>
+    </ul>
 
     <h3>Asking again</h3>
     <ul>
@@ -553,10 +592,19 @@
     <p>The review is the single walkthrough for that coverage, with a quote form. A second one for the same product page is refused. It is not another audience page, and it is not shown as a card.</p>
 
     <h3>Does Push to Planner publish?</h3>
-    <p>It creates the unpublished page and queues the article. A person publishes later. Checking an idea, or starring it, does not create the page.</p>
+    <p>It creates the unpublished pages, dates them, and queues the articles. A person publishes later. Checking an idea, or starring it, does not create the page. Picking a month does not publish either.</p>
 
     <h3>What does the schedule date do?</h3>
-    <p>It marks the day that row is due, so the month stays spread out. Push is what lines up the writing. The date does not put the page on the site.</p>
+    <p>The push fills it. Leave the month blank and the days start tomorrow, inside that month. Pick a month and the days start on the 1st of that month, including this month. The date does not put the page on the site. A day that is already past stays unpublished.</p>
+
+    <h3>Where do I see every client's queue?</h3>
+    <p>Publishing Status, in the global menu. No client has to be selected. The list opens on In Queue. The page being written counts as In Queue. Failed and Succeeded stay until you line that same page up again.</p>
+
+    <h3>What if I push for two clients at once?</h3>
+    <p>They share one writing line and take turns, one page at a time. You can switch clients while the line is moving. The first client's pages keep their place.</p>
+
+    <h3>What if the page already exists?</h3>
+    <p>The push skips it, tells you the name, and still creates the other ideas you selected. The page you already have is left as it is.</p>
 
     <h3>What if I ask again?</h3>
     <p>An audience ask or a Town/City + Coverage ask adds new ideas and keeps the pages you already pushed. A review ask, once that guide is on the schedule, tells you it is already there.</p>
@@ -574,7 +622,7 @@
 </main>
 
 <script type="application/json" id="artifact-state">
-{"as_of":"2026-10-18 23:26 UTC","kind":"guide","workstreams":[{"id":"product","name":"Product page","status":"hub","owner":"publisher"},{"id":"audience","name":"Audience pages","status":"from-hub","owner":"publisher"},{"id":"town","name":"Town/City + Coverage pages","status":"from-audience","owner":"publisher"},{"id":"city","name":"Town/City","status":"with-first-town-push","owner":"publisher"},{"id":"review","name":"Review page","status":"one-per-hub","owner":"publisher"},{"id":"blog","name":"Blog posts","status":"keyword-list","owner":"publisher"},{"id":"month-25","name":"25-page month","status":"example","owner":"publisher"},{"id":"month-40","name":"40-page month","status":"example","owner":"publisher"}]}
+{"as_of":"2026-10-19 00:35 UTC","kind":"guide","workstreams":[{"id":"product","name":"Product page","status":"hub","owner":"publisher"},{"id":"audience","name":"Audience pages","status":"from-hub","owner":"publisher"},{"id":"town","name":"Town/City + Coverage pages","status":"from-audience","owner":"publisher"},{"id":"city","name":"Town/City","status":"with-first-town-push","owner":"publisher"},{"id":"review","name":"Review page","status":"one-per-hub","owner":"publisher"},{"id":"blog","name":"Blog posts","status":"keyword-list","owner":"publisher"},{"id":"month-25","name":"25-page month","status":"example","owner":"publisher"},{"id":"month-40","name":"40-page month","status":"example","owner":"publisher"},{"id":"push-month","name":"Push month","status":"optional","owner":"publisher"},{"id":"publishing-status","name":"Publishing Status","status":"global-menu","owner":"publisher"}]}
 </script>
 
 <script>
